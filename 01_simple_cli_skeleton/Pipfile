@@ -4,8 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+pyyaml = "*"
+python-json-logger = "*"
 
 [dev-packages]
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-2020 = "*"
+pytest = "*"
+black = "*"
 
 [requires]
 python_version = "3.11"
@@ -15,4 +22,3 @@ python_version = "3.11"
 "start:example" = "python main.py"
 test = "pytest"
 lint = "flake8"
-
