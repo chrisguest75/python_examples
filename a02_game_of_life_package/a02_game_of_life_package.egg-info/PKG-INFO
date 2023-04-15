@@ -1,5 +1,5 @@
 Metadata-Version: 2.1
-Name: 02-game-of-life-package
+Name: a02-game-of-life-package
 Version: 0.0.1
 Summary: A package for creating game of life boards.
 Home-page: https://github.com/chrisguest75/python_examples/tree/master/02_game_of_life_package
@@ -15,7 +15,15 @@ Demonstrate how a package can be created.
 ## Start
 
 ```sh
+export PIPENV_VENV_IN_PROJECT=1
+pipenv install
 pipenv run test
+```
+
+## Package
+
+```sh
+pipenv run package
 ```
 
 ## Troubleshooting
@@ -33,3 +41,6 @@ pipenv run test:stdout
 * How to print to console in pytest? [here](https://stackoverflow.com/questions/24617397/how-to-print-to-console-in-pytest)  
 
 https://www.pythonforthelab.com/blog/how-create-setup-file-your-project/
+
+https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+

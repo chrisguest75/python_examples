@@ -1,4 +1,4 @@
-from board import Board
+from a02_game_of_life_package.board import Board
 
 
 def test_board_constructs_empty():

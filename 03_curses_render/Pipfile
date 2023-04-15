@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+a02_game_of_life_package = {path = "./../a02_game_of_life_package"}
 
 [dev-packages]
 flake8 = "*"

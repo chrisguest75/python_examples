@@ -5,6 +5,8 @@ Demonstrate how a package can be created.
 ## Start
 
 ```sh
+export PIPENV_VENV_IN_PROJECT=1
+pipenv install
 pipenv run test
 ```
 
@@ -29,3 +31,6 @@ pipenv run test:stdout
 * How to print to console in pytest? [here](https://stackoverflow.com/questions/24617397/how-to-print-to-console-in-pytest)  
 
 https://www.pythonforthelab.com/blog/how-create-setup-file-your-project/
+
+https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+

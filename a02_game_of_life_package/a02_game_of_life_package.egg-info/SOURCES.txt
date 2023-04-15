@@ -1,0 +1,11 @@
+LICENSE.txt
+README.md
+setup.py
+a02_game_of_life_package/__init__.py
+a02_game_of_life_package/board.py
+a02_game_of_life_package.egg-info/PKG-INFO
+a02_game_of_life_package.egg-info/SOURCES.txt
+a02_game_of_life_package.egg-info/dependency_links.txt
+a02_game_of_life_package.egg-info/top_level.txt
+tests/__init__.py
+tests/test_game_of_life.py
