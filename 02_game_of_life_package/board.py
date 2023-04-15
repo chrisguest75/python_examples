@@ -1,8 +1,14 @@
 class Board:
-    def __init__(self, board: list[list[int]]):
-        self.width = len(board[0])
-        self.height = len(board)
-        self.cells = board
+    def __init__(self, width: int, height: int):
+        self.width = width
+        self.height = height
+        # create array of 0 values size width by height
+        self.cells = [[0 for _ in range(width)] for _ in range(height)]
+
+    def set_state(self, x: int, y: int, sprite: list[list[int]]):
+        for y1 in range(len(sprite)):
+            for x1 in range(len(sprite[0])):
+                self.cells[y + y1][x + x1] = sprite[y1][x1]
 
     def sum_adjacent(self, x: int, y: int, cells: list[list[int]]) -> int:
         count = 0

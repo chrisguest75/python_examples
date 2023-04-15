@@ -17,10 +17,8 @@ pipenv run test:stdout
 ## Resources
 
 * Packaging Python Projects [here](https://packaging.python.org/en/latest/tutorials/packaging-projects/)  
+* Use Pipenv to build and publish a Python package [here](https://stackoverflow.com/questions/62131724/use-pipenv-to-build-and-publish-a-python-package)  
+* Guardian Coding Exercises [here](https://github.com/guardian/coding-exercises)  
+* Coding Exercise Project [here](https://github.com/guardian/coding-exercise-project)  
+* How to print to console in pytest? [here](https://stackoverflow.com/questions/24617397/how-to-print-to-console-in-pytest)  
 
-https://stackoverflow.com/questions/62131724/use-pipenv-to-build-and-publish-a-python-package
-
-https://github.com/guardian/coding-exercises
-https://github.com/guardian/coding-exercise-project
-
-https://stackoverflow.com/questions/24617397/how-to-print-to-console-in-pytest
