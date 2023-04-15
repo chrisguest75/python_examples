@@ -1,12 +1,11 @@
 # README
 
-A repo containing some python examples.  
+A repository containing python examples.  
 
 TODO:
 
-* Game of life package
 * Connect4
-* pytest/pymock
+* pymock
 * using requests library
 * pandas
 * dockerising
@@ -15,6 +14,7 @@ TODO:
 * OTEL
 * Flask
 * SQL
+* generators and comprehensions
 
 ## Configuration
 
