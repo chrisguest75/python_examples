@@ -17,4 +17,5 @@ python_version = "3.11"
 
 [scripts]
 "test" = "pytest"
+"test:stdout" = "pytest -s"
 lint = "flake8"

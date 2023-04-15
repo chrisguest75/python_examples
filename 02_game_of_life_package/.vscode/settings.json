@@ -2,5 +2,8 @@
   "python.formatting.provider": "black",
   // format on save
   "editor.formatOnSave": true,
-  "git.openRepositoryInParentFolders": "always"
+  "git.openRepositoryInParentFolders": "always",
+  "python.testing.pytestArgs": ["tests"],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }
