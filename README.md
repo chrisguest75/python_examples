@@ -12,6 +12,8 @@ TODO:
 * debugging
 * quokka style environment
 * OTEL
+* Connect4
+* Flask
 
 ## Configuration
 
@@ -50,6 +52,12 @@ cd xx_my_project
 
 # create a new project in current folder.
 pipenv install
+
+# enter venv
+pipenv shell
+
+# installing packages
+pipenv install --dev flake8  
 
 # remove venv if you want to
 pipenv --rm
