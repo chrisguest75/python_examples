@@ -4,7 +4,8 @@ A repo containing some python examples.
 
 TODO:
 
-* a simple cli
+* Game of life package
+* Connect4
 * pytest/pymock
 * using requests library
 * pandas
@@ -12,8 +13,8 @@ TODO:
 * debugging
 * quokka style environment
 * OTEL
-* Connect4
 * Flask
+* SQL
 
 ## Configuration
 

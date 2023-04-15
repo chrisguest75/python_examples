@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+
+[dev-packages]
+pytest = "*"
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-2020 = "*"
+black = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+"test" = "pytest"
+"test:stdout" = "pytest -s"
+"lint" = "flake8"
+"package" = "python setup.py sdist bdist_wheel"
