@@ -1,0 +1,16 @@
+services:
+    podinfo:
+        image: "stefanprodan/podinfo:6.3.5"
+        environment:
+            - VERSION=0.0.1   
+            - PODNAME=info                    
+        ports:
+            - "9001:9898"
+        command: [ "./podinfo", "--level=debug" ]            
+        networks:
+            - service_bridge
+
+networks:
+    service_bridge:
+        driver: bridge
+

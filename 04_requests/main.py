@@ -6,6 +6,7 @@ import sys
 import traceback
 import yaml
 import os
+from simple import simple_get
 
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
@@ -24,10 +25,11 @@ def str2bool(v):
     return v.lower() in ("yes", "true", "t", "1")
 
 
-def test():
+def simple(url: str):
     logger = logging.getLogger()
     logger.info("Test")
-
+    response = simple_get(url)
+    logger.info(response)
 
 def main():
     with io.open(
@@ -40,17 +42,25 @@ def main():
 
     sys.excepthook = log_uncaught_exceptions
 
-    parser = argparse.ArgumentParser(description="CLI Skeleton")
-    parser.add_argument("--test", dest="test", action="store_true")
+    parser = argparse.ArgumentParser(description="Requests")
+    parser.add_argument("--simple", dest="simple", action="store_true")
+    parser.add_argument(
+        "--url",
+        type=str,
+        help="Endpoint to invoke",
+    )
     args = parser.parse_args()
+    if not args.url or args.url == "":
+        parser.print_help()
+        exit(1)
 
-    if args.test:
-        logger.info("Test mode")
-        test()
+    if args.simple:
+        logger.info("Simple")
+        simple(args.url)
     else:
         parser.print_help()
 
+
 if __name__ == "__main__":
-    print(f"Enter {__name__}")
     main()
     exit(0)

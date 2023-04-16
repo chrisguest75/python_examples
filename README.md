@@ -23,11 +23,17 @@ TODO:
 * docker compose
 * github actions
 
+## VSCODE
+
+* If using vscode if you `pipenv --rm` it might be best to reload
+* Select the interpreter to get black code formatting
+* Running tests can be done by selecting `Testing` extension
+
 ## Configuration
 
-REF: pyenv [here](https://github.com/pyenv/pyenv)  
-
 ### pyenv
+
+REF: pyenv [here](https://github.com/pyenv/pyenv)  
 
 ```sh
 # install pyenv version manager
@@ -49,7 +55,7 @@ pyenv global 3.11.1
 ## pipenv
 
 REF: Pipenv: Python Dev Workflow for Humans [here](https://pipenv.pypa.io/en/latest/)  
- 
+
 ```sh
 # required if you're already in a virtualenv.
 export PIPENV_IGNORE_VIRTUALENVS=1 
