@@ -33,7 +33,34 @@ transform("Bbbb")
 
 ## Generators
 
+```python
+def fibonacci_sequence():
+    num1, num2 = 0, 1
+    while True:
+        yield num1
+        num1, num2 = num2, num1 + num2
+
+
+g = fibonacci_sequence()
+next(g)
+```
+
+### Arrays
+
+```python
+# 1d array
+[i for i in range(10)]
+
+# 2d array
+[[i for i in range(10)] for j in range(5)]
+
+# array of dict
+[{"x": 0, "y" :0} for j in range(5)]
+```
+
 ## Lambdas
 
 
 ## Resources
+
+https://realpython.com/introduction-to-python-generators/

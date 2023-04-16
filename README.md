@@ -4,15 +4,15 @@ A repository containing python examples.
 
 TODO:
 
+* OTEL
+* Flask/fastapi
+* generators and comprehensions
+* SQL
 * Connect4
 * pandas
 * dockerising
 * debugging
 * quokka style environment
-* OTEL
-* Flask
-* SQL
-* generators and comprehensions
 * data structures
 * gstreamer
 * wasm
