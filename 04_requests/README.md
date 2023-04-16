@@ -10,6 +10,12 @@ docker compose up -d
 
 # quick test
 curl 0.0.0.0:9001
+```
+
+## Run
+
+```sh
+pipenv run test
 
 pipenv run start --simple --url http://0.0.0.0:9001
 ```
@@ -25,3 +31,4 @@ docker compose down --volumes
 
 * stefanprodan/podinfo [here](https://github.com/stefanprodan/podinfo)  
 
+https://pypi.org/project/requests-mock/
