@@ -1,0 +1,30 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyyaml = "*"
+python-json-logger = "*"
+flask = "*"
+python-dotenv = "*"
+ptvsd = "*"
+swagger-ui-bundle = "*"
+connexion = "*"
+
+[dev-packages]
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-2020 = "*"
+black = "*"
+pytest = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+"start" = "python main.py"
+"start:default" = "python main.py"
+"start:example" = "python main.py"
+test = "pytest"
+lint = "flake8"

@@ -27,9 +27,9 @@ pipenv run start:default --test
 ```sh
 # install
 pipenv install --dev flake8 flake8-bugbear flake8-2020 black
-pipenv install --dev pytest
+pipenv install --dev pytest 
 
-pipenv install pyyaml
+pipenv install pyyaml python-json-logger
 ```
 
 ## Resources
