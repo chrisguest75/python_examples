@@ -37,6 +37,8 @@ The requests library is a popular Python library for making HTTP requests. It ab
 ## 🏠 Start
 
 ```sh
+pipenv install --dev 
+
 pipenv run start:docker  
 
 # quick test

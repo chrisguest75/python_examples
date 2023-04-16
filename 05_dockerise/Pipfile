@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+
+[dev-packages]
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-2020 = "*"
+black = "*"
+pytest = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+"start" = "python main.py"
+"start:default" = "python main.py"
+"start:example" = "python main.py"
+test = "pytest"
+lint = "flake8"
+"build:docker" = "docker buildx build --load -f v3.11.3.Dockerfile -t 05_dockerise:latest ."
+"start:docker" = "docker run 05_dockerise:latest"
