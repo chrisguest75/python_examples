@@ -1,7 +1,18 @@
+import argparse
 import curses
+import os
 import random
 from game_of_life_package.board import Board
 from game_of_life_package.cell_parser import CellParser
+
+
+def list_cells():
+    print("Available cells:")
+    files = os.listdir("cells")
+    files.sort()
+    for file in files:
+        if file.endswith(".cells"):
+            print(f"  {file}")
 
 
 def init_color_pairs():
@@ -9,11 +20,7 @@ def init_color_pairs():
     curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_WHITE)  # Medium
 
 
-def generate_data(height, width):
-    return [[random.randint(0, 100) for _ in range(width)] for _ in range(height)]
-
-
-def draw_heatmap(stdscr, data):
+def draw_grid(stdscr, data):
     max_y, max_x = stdscr.getmaxyx()
     max_x //= 2
 
@@ -34,7 +41,7 @@ def draw_heatmap(stdscr, data):
     stdscr.refresh()
 
 
-def main(stdscr):
+def main(stdscr, cell_path):
     curses.curs_set(0)
     init_color_pairs()
 
@@ -42,7 +49,7 @@ def main(stdscr):
     width //= 2
 
     # load cell file
-    with open("./cells/barge2spaceship.cells") as f:
+    with open(cell_path) as f:
         cell_parser = CellParser()
         # join lines together
         lines = "".join(f.readlines())
@@ -59,7 +66,7 @@ def main(stdscr):
 
     while True:
         data = board.cells
-        draw_heatmap(stdscr, data)
+        draw_grid(stdscr, data)
         board.step()
         key = stdscr.getch()
         if key == ord("q") or key == ord("Q"):
@@ -67,4 +74,28 @@ def main(stdscr):
 
 
 if __name__ == "__main__":
-    curses.wrapper(main)
+    parser = argparse.ArgumentParser(description="Game of Life")
+    parser.add_argument(
+        "--file",
+        type=str,
+        help="Path to cell file to load, example: barge2spaceship.cells",
+    )
+    parser.add_argument(
+        "--list", dest="list", action="store_true", help="List cell files"
+    )
+    parser.add_argument(
+        "--info", dest="info", action="store_true", help="Info on cell file"
+    )
+    args = parser.parse_args()
+
+    if args.list:
+        list_cells()
+    elif args.file:
+        cell_path = f"{os.path.dirname(os.path.realpath(__file__))}/cells/{args.file}"
+        if args.info:
+            with open(cell_path) as f:
+                print(f.read())
+        else:
+            curses.wrapper(main, cell_path)
+    else:
+        parser.print_help()
