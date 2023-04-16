@@ -5,8 +5,6 @@ A repository containing python examples.
 TODO:
 
 * Connect4
-* pymock
-* using requests library
 * pandas
 * dockerising
 * debugging
@@ -16,7 +14,6 @@ TODO:
 * SQL
 * generators and comprehensions
 * data structures
-* directory iteration
 * gstreamer
 * wasm
 * aws boto

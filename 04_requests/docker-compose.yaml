@@ -6,6 +6,7 @@ services:
             - PODNAME=info                    
         ports:
             - "9001:9898"
+        restart: unless-stopped
         command: [ "./podinfo", "--level=debug" ]            
         networks:
             - service_bridge

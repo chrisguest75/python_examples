@@ -14,13 +14,16 @@ flake8-bugbear = "*"
 flake8-2020 = "*"
 black = "*"
 pytest = "*"
+pytest-mock = "*"
 
 [requires]
 python_version = "3.11"
 
 [scripts]
 "start" = "python main.py"
+"start:docker" = "docker compose up -d"
 "start:default" = "python main.py"
 "start:example" = "python main.py"
 test = "pytest"
 lint = "flake8"
+"stop:docker" = "docker compose down --volumes"
