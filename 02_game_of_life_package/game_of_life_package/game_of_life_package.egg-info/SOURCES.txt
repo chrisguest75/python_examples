@@ -1,0 +1,13 @@
+LICENSE.txt
+README.md
+setup.py
+game_of_life_package/__init__.py
+game_of_life_package/board.py
+game_of_life_package/cell_parser.py
+game_of_life_package.egg-info/PKG-INFO
+game_of_life_package.egg-info/SOURCES.txt
+game_of_life_package.egg-info/dependency_links.txt
+game_of_life_package.egg-info/top_level.txt
+tests/__init__.py
+tests/test_cell_parser.py
+tests/test_game_of_life.py

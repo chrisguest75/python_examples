@@ -1,12 +1,11 @@
 # README
 
-A repo containing some python examples.  
+A repository containing python examples.  
 
 TODO:
 
-* Game of life package
 * Connect4
-* pytest/pymock
+* pymock
 * using requests library
 * pandas
 * dockerising
@@ -15,6 +14,14 @@ TODO:
 * OTEL
 * Flask
 * SQL
+* generators and comprehensions
+* data structures
+* directory iteration
+* gstreamer
+* wasm
+* aws boto
+* docker compose
+* github actions
 
 ## Configuration
 
@@ -53,6 +60,9 @@ cd xx_my_project
 
 # create a new project in current folder.
 pipenv install
+
+# check installed packages
+pipenv run pip list
 
 # enter venv
 pipenv shell

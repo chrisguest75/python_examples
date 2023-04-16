@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+game_of_life_package = {path = "./../02_game_of_life_package/game_of_life_package"}
+
+[dev-packages]
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-2020 = "*"
+black = "*"
+pytest = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+"start" = "python main.py"
+"start:default" = "python main.py"
+"start:example" = "python main.py"
+test = "pytest"
+lint = "flake8"
