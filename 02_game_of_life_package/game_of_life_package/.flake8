@@ -19,3 +19,4 @@ max-line-length = 80
 docstring-convention = google
 rst-roles = class,const,func,meth,mod,ref
 rst-directives = deprecated
+per-file-ignores = setup.py:E501

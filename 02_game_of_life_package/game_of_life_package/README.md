@@ -1,22 +1,17 @@
-Metadata-Version: 2.1
-Name: a02-game-of-life-package
-Version: 0.0.1
-Summary: A package for creating game of life boards.
-Home-page: https://github.com/chrisguest75/python_examples/tree/master/02_game_of_life_package
-Author: Chris Guest
-Author-email: chris@chrisguest.dev
-License: LICENSE.txt
-License-File: LICENSE.txt
-
 # GAME OF LIFE PACKAGE EXAMPLE
 
 Demonstrate how a package can be created.  
+
+NOTES:
+
+* Package names cannot begin with numbers.  
+* `setup.py` is created manually, not yet found a way to build automatically.  
 
 ## Start
 
 ```sh
 export PIPENV_VENV_IN_PROJECT=1
-pipenv install
+pipenv install --dev
 pipenv run test
 ```
 

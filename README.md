@@ -15,6 +15,13 @@ TODO:
 * Flask
 * SQL
 * generators and comprehensions
+* data structures
+* directory iteration
+* gstreamer
+* wasm
+* aws boto
+* docker compose
+* github actions
 
 ## Configuration
 
@@ -53,6 +60,9 @@ cd xx_my_project
 
 # create a new project in current folder.
 pipenv install
+
+# check installed packages
+pipenv run pip list
 
 # enter venv
 pipenv shell

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "459ea3fa4d110902496e3ad840bc59896ed9e330675583deb429bb1844c440ab"
+            "sha256": "27f191c3f20ddcabc645422b88bc1dfc227583b15b326b8307e7fe1256c716e5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,8 +16,8 @@
         ]
     },
     "default": {
-        "a02-game-of-life-package": {
-            "path": "./../a02_game_of_life_package",
+        "game-of-life-package": {
+            "path": "./../02_game_of_life_package/game_of_life_package",
             "version": "==0.0.1"
         }
     },

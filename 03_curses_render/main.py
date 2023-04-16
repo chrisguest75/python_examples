@@ -1,6 +1,6 @@
 import curses
 import random
-from a02_game_of_life_package.board import Board
+from game_of_life_package.board import Board
 
 def init_color_pairs():
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)   # Low
