@@ -1,13 +1,17 @@
 import curses
 import random
 from game_of_life_package.board import Board
+from game_of_life_package.cell_parser import CellParser
+
 
 def init_color_pairs():
-    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)   # Low
+    curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_BLACK)  # Low
     curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_WHITE)  # Medium
+
 
 def generate_data(height, width):
     return [[random.randint(0, 100) for _ in range(width)] for _ in range(height)]
+
 
 def draw_heatmap(stdscr, data):
     max_y, max_x = stdscr.getmaxyx()
@@ -30,7 +34,6 @@ def draw_heatmap(stdscr, data):
     stdscr.refresh()
 
 
-
 def main(stdscr):
     curses.curs_set(0)
     init_color_pairs()
@@ -38,19 +41,16 @@ def main(stdscr):
     height, width = stdscr.getmaxyx()
     width //= 2
 
+    # load cell file
+    with open("./cells/barge2spaceship.cells") as f:
+        cell_parser = CellParser()
+        # join lines together
+        lines = "".join(f.readlines())
+        cells = cell_parser.parse(lines)
+
     # Arrange
     board = Board(width, height)
-    board.set_state(
-        0,
-        0,
-        [
-            [0, 0, 0, 0, 0],
-            [0, 0, 1, 0, 0],
-            [0, 0, 1, 0, 0],
-            [0, 0, 1, 0, 0],
-            [0, 0, 0, 0, 0],
-        ],
-    )
+    board.set_state(0, 0, cells)
 
     # Set up the terminal
     curses.curs_set(0)
@@ -64,6 +64,7 @@ def main(stdscr):
         key = stdscr.getch()
         if key == ord("q") or key == ord("Q"):
             break
+
 
 if __name__ == "__main__":
     curses.wrapper(main)
