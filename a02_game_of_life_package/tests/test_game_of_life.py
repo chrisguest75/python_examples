@@ -115,7 +115,7 @@ def test_board_step_blinker():
     assert board.cells[4] == [0, 0, 0, 0, 0]
 
 
-def test_board_step_overlap():
+def test_board_step_overlap_right():
     # Arrange
     board = Board(5, 5)
     board.set_state(
@@ -145,3 +145,99 @@ def test_board_step_overlap():
     assert board.cells[2] == [0, 0, 0, 0, 1]
     assert board.cells[3] == [0, 0, 0, 0, 1]
     assert board.cells[4] == [0, 0, 0, 0, 0]
+
+
+def test_board_step_overlap_left():
+    # Arrange
+    board = Board(5, 5)
+    board.set_state(
+        0,
+        0,
+        [
+            [0, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+        ],
+    )
+    # Act
+    board.step()
+
+    assert board.cells[0] == [0, 0, 0, 0, 0]
+    assert board.cells[1] == [0, 0, 0, 0, 0]
+    assert board.cells[2] == [1, 1, 0, 0, 1]
+    assert board.cells[3] == [0, 0, 0, 0, 0]
+    assert board.cells[4] == [0, 0, 0, 0, 0]
+
+    board.step()
+
+    assert board.cells[0] == [0, 0, 0, 0, 0]
+    assert board.cells[1] == [1, 0, 0, 0, 0]
+    assert board.cells[2] == [1, 0, 0, 0, 0]
+    assert board.cells[3] == [1, 0, 0, 0, 0]
+    assert board.cells[4] == [0, 0, 0, 0, 0]
+
+
+def test_board_step_overlap_top():
+    # Arrange
+    board = Board(5, 5)
+    board.set_state(
+        0,
+        0,
+        [
+            [0, 1, 1, 1, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+        ],
+    )
+    # Act
+    board.step()
+
+    assert board.cells[0] == [0, 0, 1, 0, 0]
+    assert board.cells[1] == [0, 0, 1, 0, 0]
+    assert board.cells[2] == [0, 0, 0, 0, 0]
+    assert board.cells[3] == [0, 0, 0, 0, 0]
+    assert board.cells[4] == [0, 0, 1, 0, 0]
+
+    board.step()
+
+    assert board.cells[0] == [0, 1, 1, 1, 0]
+    assert board.cells[1] == [0, 0, 0, 0, 0]
+    assert board.cells[2] == [0, 0, 0, 0, 0]
+    assert board.cells[3] == [0, 0, 0, 0, 0]
+    assert board.cells[4] == [0, 0, 0, 0, 0]
+
+
+def test_board_step_overlap_bottom():
+    # Arrange
+    board = Board(5, 5)
+    board.set_state(
+        0,
+        0,
+        [
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 1, 1, 1, 0],
+        ],
+    )
+    # Act
+    board.step()
+
+    assert board.cells[0] == [0, 0, 1, 0, 0]
+    assert board.cells[1] == [0, 0, 0, 0, 0]
+    assert board.cells[2] == [0, 0, 0, 0, 0]
+    assert board.cells[3] == [0, 0, 1, 0, 0]
+    assert board.cells[4] == [0, 0, 1, 0, 0]
+
+    board.step()
+
+    assert board.cells[0] == [0, 0, 0, 0, 0]
+    assert board.cells[1] == [0, 0, 0, 0, 0]
+    assert board.cells[2] == [0, 0, 0, 0, 0]
+    assert board.cells[3] == [0, 0, 0, 0, 0]
+    assert board.cells[4] == [0, 1, 1, 1, 0]
