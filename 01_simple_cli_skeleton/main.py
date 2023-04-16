@@ -47,7 +47,8 @@ def main():
     if args.test:
         logger.info("Test mode")
         test()
-
+    else:
+        parser.print_help()
 
 if __name__ == "__main__":
     print(f"Enter {__name__}")
