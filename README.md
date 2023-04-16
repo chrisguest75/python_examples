@@ -22,7 +22,7 @@ TODO:
 ## VSCODE
 
 * If using vscode if you `pipenv --rm` it might be best to reload
-* Select the interpreter to get black code formatting
+* Select the interpreter to get black code formatting.  On a mac use `cmd + shift + .` in the folder select dialog
 * Running tests can be done by selecting `Testing` extension
 * To get the formatting on save you need to open in the project folder  
 
