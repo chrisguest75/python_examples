@@ -1,0 +1,15 @@
+services:
+    mitmproxy:
+        image: mitmproxy/mitmproxy:9.0.1
+        volumes:
+            - ./mitm_scripts:/scripts        
+        ports:
+            - "8080:8080"
+            - "8081:8081"
+        command: [ "mitmweb", "--verbose", "-s", "/scripts/flow-counter.py", "-s", "/scripts/random-outage.py", "--web-host", "0.0.0.0" ]                
+        networks:
+            - service_bridge
+
+networks:
+    service_bridge:
+        driver: bridge
