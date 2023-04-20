@@ -2,6 +2,10 @@
 
 Demonstrate a simple aws client for testing.  
 
+TODO:
+
+* transparent and tls proxy https://earthly.dev/blog/mitmproxy/
+ 
 ## Reason
 
 Using boto3 for AWS access with python is a useful set of tools to have.  
@@ -29,7 +33,27 @@ pipenv run start --upload --file ./README.md --bucket ${BUCKET_NAME} --prefix RE
 pipenv run start --delete --bucket ${BUCKET_NAME} --prefix README.md 
 ```
 
-## MITM interception
+## Wireshark Packet Capture (tls decode)
+
+```sh
+mkdir -p ./captures
+
+export SSLKEYLOGFILE=$(pwd)/captures/.ssl-key.log
+echo $SSLKEYLOGFILE
+
+# open termminal and run 
+sudo tcpdump -vvv -i any port 443 -w ./captures/aws.pcap
+
+# run a test
+pipenv run start --upload --file ./random.bin --bucket ${BUCKET_NAME} --prefix random.bin
+
+# configure Wireshark to decrypt using the SSLKEYLOGFILE:  
+# copy full path of .ssl-key.log add to the preferences->protocols->tls->pre-master-secret-log-filename
+# in packet view filter by tls
+wireshark -r ./captures/aws.pcap
+```
+
+## MITM interception (not-working)
 
 Try and recreate failing network scenarios.  
 
@@ -46,9 +70,8 @@ curl -vvv --proxy 0.0.0.0:8080 -i https://www.google.com
 export HTTP_PROXY=0.0.0.0:8080
 export HTTPS_PROXY=0.0.0.0:8080
 
+# failing with tls issue.
 pipenv run start --upload --file ./random.bin --bucket ${BUCKET_NAME} --prefix random.bin            
-
-
 ```
 
 ## 🧼 Clean up
