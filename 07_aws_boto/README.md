@@ -5,7 +5,7 @@ Demonstrate a simple aws client for testing.
 TODO:
 
 * transparent and tls proxy https://earthly.dev/blog/mitmproxy/
- 
+
 ## Reason
 
 Using boto3 for AWS access with python is a useful set of tools to have.  
@@ -35,6 +35,8 @@ pipenv run start --delete --bucket ${BUCKET_NAME} --prefix README.md
 
 ## Wireshark Packet Capture (tls decode)
 
+REF: [31_packet_capture/README.md](https://github.com/chrisguest75/sysadmin_examples/blob/master/31_packet_capture/README.md)  
+
 ```sh
 mkdir -p ./captures
 
@@ -56,6 +58,8 @@ wireshark -r ./captures/aws.pcap
 ## MITM interception (not-working)
 
 Try and recreate failing network scenarios.  
+
+REF: [23_mitmproxy/README.md](https://github.com/chrisguest75/sysadmin_examples/blob/master/23_mitmproxy/README.md)  
 
 ## 🏠 Start
 
