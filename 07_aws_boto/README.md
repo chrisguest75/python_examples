@@ -38,9 +38,12 @@ pipenv run start --upload --file ./README.md --bucket ${BUCKET_NAME} --prefix RE
 pipenv run start --delete --bucket ${BUCKET_NAME} --prefix README.md
 
 # generate signed put urls 
-pipenv run start --upload --signed --bucket ${BUCKET_NAME} --prefix random.bin 
-export SIGNEDURL1=[output]
-curl -v --request PUT --data-binary "@./random.bin" $SIGNEDURL1
+SIGNEDURL1=$(pipenv run start --upload --signed --bucket ${BUCKET_NAME} --prefix random4.bin | jq -r -s '.[].url' | grep https --color=no)
+echo $SIGNEDURL1
+# upload file
+curl -v -X PUT -T "./random.bin" -H "Content-Type: application/octet-stream" $SIGNEDURL1
+# list files
+AWS_PROFILE=myprofile aws s3 ls ${BUCKET_NAME}
 ```
 
 ## Wireshark Packet Capture (tls decode)

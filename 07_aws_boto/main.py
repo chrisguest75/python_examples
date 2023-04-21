@@ -68,7 +68,7 @@ def signedupload(bucket_name: str, s3_key: str):
         ExpiresIn=3600,
     )
 
-    print(f"{presigned_url}")
+    logger.info({ "message": "presigned", "url": f"{presigned_url}"})
 
 
 def delete(bucket_name: str, s3_key: str):
@@ -86,11 +86,11 @@ def delete(bucket_name: str, s3_key: str):
     # Get a reference to the bucket
     bucket = s3.Bucket(bucket_name)
 
-    print(f"Deleting S3 objects from 's3://{bucket_name}/{s3_key}' recursively...")
+    logger.info(f"Deleting S3 objects from 's3://{bucket_name}/{s3_key}' recursively...")
     # Iterate through objects with the specified prefix and delete them
     for obj in bucket.objects.filter(Prefix=s3_key):
         obj.delete()
-        print(f"Deleted file: {obj.key}")
+        logger.info(f"Deleted file: {obj.key}")
 
 
 
@@ -128,6 +128,6 @@ def main():
         parser.print_help()
 
 if __name__ == "__main__":
-    print(f"Enter {__name__}")
+    # print(f"Enter {__name__}")
     main()
     exit(0)
