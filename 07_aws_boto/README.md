@@ -4,11 +4,12 @@ Demonstrate a simple aws client for testing.
 
 TODO:
 
-* transparent and tls proxy https://earthly.dev/blog/mitmproxy/
+* transparent and tls proxy https://earthly.dev/blog/mitmproxy/3* use wireshark to drop connections and throttle.
 
 ## Reason
 
 Using boto3 for AWS access with python is a useful set of tools to have.  
+Weirdly signed PUT urls cannot be generated with the AWS cli.  So there's a very quick example here.  
 
 ## Start
 
@@ -20,17 +21,26 @@ pipenv run lint
 pipenv run test
 
 pipenv shell
+```
 
+## Usage
 
+```sh
 # file with random data
 dd if=/dev/urandom of=random.bin bs=1024 count=1024
-# 
 
+# upload files
 BUCKET_NAME=mybucket
 pipenv run start --upload --file ./random.bin --bucket ${BUCKET_NAME} --prefix random.bin            
 pipenv run start --upload --file ./README.md --bucket ${BUCKET_NAME} --prefix README.md 
 
-pipenv run start --delete --bucket ${BUCKET_NAME} --prefix README.md 
+# delete files
+pipenv run start --delete --bucket ${BUCKET_NAME} --prefix README.md
+
+# generate signed put urls 
+pipenv run start --upload --signed --bucket ${BUCKET_NAME} --prefix random.bin 
+export SIGNEDURL1=[output]
+curl -v --request PUT --data-binary "@./random.bin" $SIGNEDURL1
 ```
 
 ## Wireshark Packet Capture (tls decode)

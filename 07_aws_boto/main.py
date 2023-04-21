@@ -46,6 +46,31 @@ def upload(local_path: str, bucket_name: str, s3_key: str):
     print(f"File '{file_path}' successfully uploaded to S3 bucket '{bucket_name}' as '{s3_key}'.")
 
 
+def signedupload(bucket_name: str, s3_key: str):
+    logger = logging.getLogger()
+
+    # Replace the following with your own values
+    profile_name = os.environ['AWS_PROFILE']
+
+    # Create a session with the specified profile
+    session = Session(profile_name=profile_name)
+
+    # Create an S3 client using the session
+    s3 = session.client('s3')
+
+    presigned_url = s3.generate_presigned_url(
+        ClientMethod='put_object',
+        Params={
+            'Bucket': bucket_name,
+            'Key': s3_key,
+            'ContentType': "application/octet-stream",
+        },
+        ExpiresIn=3600,
+    )
+
+    print(f"{presigned_url}")
+
+
 def delete(bucket_name: str, s3_key: str):
     logger = logging.getLogger()
 
@@ -83,6 +108,7 @@ def main():
     parser = argparse.ArgumentParser(description="AWS BOTO")
     parser.add_argument("--upload", dest="upload", action="store_true")
     parser.add_argument("--delete", dest="delete", action="store_true")
+    parser.add_argument("--signed", dest="signed", action="store_true")
     parser.add_argument("--file", dest="file", type=str)
     parser.add_argument("--bucket", dest="bucket", type=str)
     parser.add_argument("--prefix", dest="prefix", type=str)
@@ -90,7 +116,11 @@ def main():
 
     if args.upload:
         logger.info(f"Upload {args.file} -> s3://{args.bucket}/{args.prefix}")
-        upload(args.file, args.bucket, args.prefix)
+        if args.signed:
+            logger.info(f"Signed upload")
+            signedupload(args.bucket, args.prefix)
+        else:
+            upload(args.file, args.bucket, args.prefix)
     elif args.delete:
         logger.info(f"Delete s3://{args.bucket}/{args.prefix}")
         delete(args.bucket, args.prefix)
