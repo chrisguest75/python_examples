@@ -40,6 +40,11 @@ pipenv shell
 pipenv run start --publisher
 
 pipenv run start --consumer
+
+# with topics
+pipenv run start --publisher --topic my_topic
+
+pipenv run start --consumer --topic my_topic
 ```
 
 ## Debugging and Troubleshooting
