@@ -9,6 +9,8 @@ import os
 
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
+    ''' catches unhandled exceptions and logs them '''
+
     if issubclass(exc_type, KeyboardInterrupt):
         sys.__excepthook__(exc_type, exc_value, exc_traceback)
         return
@@ -20,23 +22,32 @@ def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     )
 
 
-def str2bool(v):
+def str2bool(v) -> bool:
+    ''' converts strings representing truth to bool '''''
     return v.lower() in ("yes", "true", "t", "1")
 
 
-def test():
+def test() -> int:
+    ''' test function '''
     logger = logging.getLogger()
-    logger.info("Test")
+    logger.info("Invoked test function")
+    return 0
 
 
-def main():
+def main() -> int:
+    '''
+    main function
+
+    returns 0 on success, 1 on failure
+
+    configures logging and processes command line arguments
+    '''
     with io.open(
         f"{os.path.dirname(os.path.realpath(__file__))}/logging_config.yaml"
     ) as f:
         logging_config = yaml.load(f, Loader=yaml.FullLoader)
 
     logging.config.dictConfig(logging_config)
-    logger = logging.getLogger()
 
     sys.excepthook = log_uncaught_exceptions
 
@@ -44,13 +55,15 @@ def main():
     parser.add_argument("--test", dest="test", action="store_true")
     args = parser.parse_args()
 
+    success = 0
     if args.test:
-        logger.info("Test mode")
-        test()
+        success = test()
     else:
         parser.print_help()
 
+    return success
+
+
 if __name__ == "__main__":
-    print(f"Enter {__name__}")
-    main()
-    exit(0)
+    # print(f"Enter {__name__}")
+    exit(main())

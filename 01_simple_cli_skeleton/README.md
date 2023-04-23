@@ -7,6 +7,7 @@ Demonstrates:
 * flake8 linting
 * logging
 * argument parsing
+* docstrings
 
 ## Start
 
@@ -14,12 +15,27 @@ Demonstrates:
 # install
 pyenv install
 
+# lint and test code
 pipenv run lint
 pipenv run test
 
+# enter venv
 pipenv shell
 
-pipenv run start:default --test
+# run with arguments
+pipenv run start --test
+pipenv run start:test 
+```
+
+## Debugging and Troubleshooting
+
+```sh
+# enter python
+pipenv run python
+
+> import main
+
+> main.test.__doc__
 ```
 
 ## Created
@@ -28,7 +44,6 @@ pipenv run start:default --test
 # install
 pipenv install --dev flake8 flake8-bugbear flake8-2020 black
 pipenv install --dev pytest 
-
 pipenv install pyyaml python-json-logger
 ```
 
@@ -40,7 +55,6 @@ pipenv install pyyaml python-json-logger
 * Python Linter Comparison 2022: Pylint vs Pyflakes vs Flake8 vs autopep8 vs Bandit vs Prospector vs Pylama vs Pyroma vs Black vs Mypy vs Radon vs mccabe [here](https://inventwithpython.com/blog/2022/11/19/python-linter-comparison-2022-pylint-vs-pyflakes-vs-flake8-vs-autopep8-vs-bandit-vs-prospector-vs-pylama-vs-pyroma-vs-black-vs-mypy-vs-radon-vs-mccabe/)  
 * Flake8: Your Tool For Style Guide Enforcement [here](https://pypi.org/project/flake8/)  
 * Workspace recommended extensions [here](https://code.visualstudio.com/docs/editor/extension-marketplace#_workspace-recommended-extensions)  
-* Argparse vs Click https://collectiveacuity.medium.com/argparse-vs-click-227f53f023dc
-
-https://til.simonwillison.net/pytest/pytest-argparse
-
+* Argparse vs Click [here](https://collectiveacuity.medium.com/argparse-vs-click-227f53f023dc)
+* Writing pytest tests against tools written with argparse [here](https://til.simonwillison.net/pytest/pytest-argparse)
+* Python Docstrings [here](https://www.programiz.com/python-programming/docstrings)  
