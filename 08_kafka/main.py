@@ -30,17 +30,19 @@ def str2bool(v) -> bool:
     return v.lower() in ("yes", "true", "t", "1")
 
 
-def publisher(topic: str) -> int:
+def publisher(topic: str, admin: bool, create: bool) -> int:
     """publisher function"""
     logger = logging.getLogger()
 
-    logger.info("Posting to Kafka")
     try:
-        topic_config = TopicConfig()
-        newtopic = Topic(topic_config)
-        newtopic.create(topic)
+        if create:
+            logger.info("Create topic")
+            topic_config = TopicConfig(admin=admin)
+            newtopic = Topic(topic_config)
+            newtopic.create(topic)
 
-        config = PublisherConfig()
+        logger.info("Posting to Kafka")
+        config = PublisherConfig(admin=admin)
         producer = Publisher(config, topic)
         producer.send()
         del producer
@@ -51,17 +53,19 @@ def publisher(topic: str) -> int:
     return 0
 
 
-def consumer(topic: str) -> int:
+def consumer(topic: str, admin: bool, create: bool) -> int:
     """publisher function"""
     logger = logging.getLogger()
 
-    logger.info("Receiving from Kafka")
     try:
-        topic_config = TopicConfig()
-        newtopic = Topic(topic_config)
-        newtopic.create(topic)
+        if create:
+            logger.info("Create topic")
+            topic_config = TopicConfig(admin=admin)
+            newtopic = Topic(topic_config)
+            newtopic.create(topic)
 
-        consumer_config = ConsumerConfig()
+        logger.info("Receiving from Kafka")
+        consumer_config = ConsumerConfig(admin=admin)
         consumer = Consumer(consumer_config, topic)
         consumer.receive()
         del consumer
@@ -90,17 +94,19 @@ def main() -> int:
     sys.excepthook = log_uncaught_exceptions
 
     parser = argparse.ArgumentParser(description="Kafka Example")
+    parser.add_argument("--admin", dest="admin", action="store_true")
     parser.add_argument("--publisher", dest="publisher", action="store_true")
     parser.add_argument("--consumer", dest="consumer", action="store_true")
+    parser.add_argument("--create", dest="create", action="store_true")
     parser.add_argument("--topic", dest="topic", type=str, default="default_topic")
     args = parser.parse_args()
 
     success = 0
 
     if args.publisher:
-        success = publisher(args.topic)
+        success = publisher(args.topic, args.admin, args.create)
     elif args.consumer:
-        success = consumer(args.topic)
+        success = consumer(args.topic, args.admin, args.create)
     else:
         parser.print_help()
 

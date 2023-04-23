@@ -4,8 +4,10 @@ from kafka import KafkaConsumer
 
 
 class ConsumerConfig(KafkaConfig):
-    def __init__(self, client_id: str = None, group_id: str = None) -> None:
-        super().__init__()
+    def __init__(
+        self, admin: bool = False, client_id: str = None, group_id: str = None
+    ) -> None:
+        super().__init__(admin=admin)
         if client_id:
             self.client_id = "CONSUMER_CLIENT_ID"
 
@@ -47,6 +49,6 @@ class Consumer:
                 logging.info("Got message using SSL: " + message.value.decode("utf-8"))
 
     def __del__(self) -> None:
-        if self is not None and self.consumer:
+        if self is not None and hasattr(self, "consumer"):
             self.logger.info(f"Closing consumer for topic {self.TOPIC_NAME}")
             self.consumer.close()

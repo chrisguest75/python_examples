@@ -5,8 +5,8 @@ from kafka import KafkaProducer
 
 
 class PublisherConfig(KafkaConfig):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, admin: bool = False) -> None:
+        super().__init__(admin=admin)
 
 
 class Publisher:
@@ -18,7 +18,6 @@ class Publisher:
 
         self.logger.info(f"Create producer for topic {self.TOPIC_NAME}")
 
-        self.logger.info(str(config))
         self.producer = KafkaProducer(
             bootstrap_servers=config.bootstrap_servers,
             security_protocol=config.security_protocol,
@@ -36,6 +35,6 @@ class Publisher:
             time.sleep(1)
 
     def __del__(self) -> None:
-        if self != None and self.producer:
+        if self is not None and hasattr(self, "producer"):
             self.logger.info(f"Closing producer for topic {self.TOPIC_NAME}")
             self.producer.close()

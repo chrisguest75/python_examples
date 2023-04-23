@@ -5,8 +5,8 @@ from kafka.admin import NewTopic
 
 
 class TopicConfig(KafkaConfig):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, admin: bool = False) -> None:
+        super().__init__(admin=admin)
 
 
 class Topic:

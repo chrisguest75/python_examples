@@ -36,15 +36,16 @@ pipenv run test
 # enter venv
 pipenv shell
 
-# run with arguments
-pipenv run start --publisher
+# with topics using admin privleges
+pipenv run start --admin --publisher --create --topic my_topic
+pipenv run start --admin --consumer --create --topic my_topic
 
-pipenv run start --consumer
+pipenv run start --admin --publisher --topic my_topic2
+pipenv run start --admin --consumer --topic my_topic2
 
-# with topics
-pipenv run start --publisher --topic my_topic
-
-pipenv run start --consumer --topic my_topic
+# if not using admin the user will need access to the topic
+pipenv run start --publisher --topic my_topic2
+pipenv run start --consumer --topic my_topic2
 ```
 
 ## Debugging and Troubleshooting
@@ -63,3 +64,4 @@ pipenv run python
 * kafka-python documentation [here](https://kafka-python.readthedocs.io/en/master/)  
 * Aiven CLI [here](https://docs.aiven.io/docs/tools/cli)  
 * Kafka-Python explained in 10 lines of code [here](https://towardsdatascience.com/kafka-python-explained-in-10-lines-of-code-800e3e07dad1)  
+* Use kcat with Aiven for Apache Kafka® [here](https://docs.aiven.io/docs/products/kafka/howto/kcat)  

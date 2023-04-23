@@ -1,5 +1,22 @@
 # CHEATSHEET
 
+## conditional args
+
+args is for lists of positional arguments.  
+
+```python
+def test_function(value1, value2, value3):
+    print(f"{value1} {value2} {value3}")
+
+config = { "value1": "v1", "value2": "v2", "value3": "v3" }
+# explode values into parameters
+test_function(**config)
+
+config = { "value1": "v1", "value2": "v2" }
+# fails as missing value3
+test_function(**config)
+```
+
 ## args
 
 args is for lists of positional arguments.  
