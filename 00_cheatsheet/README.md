@@ -1,5 +1,31 @@
 # CHEATSHEET
 
+## args
+
+args is for lists of positional arguments.  
+
+```python
+def sum_function(*args):
+    result=0
+    for x in args:
+        result += x
+    print(result)
+
+sum_function(1,2,3,4,5)
+```
+
+## kwargs
+
+kwargs is for named arguments.  
+
+```python
+def named_args_function(**args):
+    for x in args.keys():
+        print(f"{x}={args[x]}")
+
+named_args_function(a=1, b=2, c=3)
+```
+
 ## Ternary
 
 ```python
@@ -63,4 +89,5 @@ next(g)
 
 ## Resources
 
-https://realpython.com/introduction-to-python-generators/
+* How to Use Generators and yield in Python [here](https://realpython.com/introduction-to-python-generators/)  
+* Python args and kwargs: Demystified [here](https://realpython.com/python-kwargs-and-args/)  
