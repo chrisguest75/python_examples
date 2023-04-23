@@ -12,8 +12,9 @@ Demonstrates:
 ## Start
 
 ```sh
+export PIPENV_VENV_IN_PROJECT=1
 # install
-pyenv install
+pipenv install --dev
 
 # lint and test code
 pipenv run lint
