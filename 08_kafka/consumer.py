@@ -4,10 +4,13 @@ from kafka import KafkaConsumer
 
 
 class ConsumerConfig(KafkaConfig):
-    def __init__(self) -> None:
+    def __init__(self, client_id: str = None, group_id: str = None) -> None:
         super().__init__()
-        self.client_id = "CONSUMER_CLIENT_ID",
-        self.group_id = "CONSUMER_GROUP_ID",
+        if client_id:
+            self.client_id = "CONSUMER_CLIENT_ID"
+            
+        if group_id:
+            self.group_id = "CONSUMER_GROUP_ID"
 
 
 class Consumer:
@@ -24,16 +27,23 @@ class Consumer:
             ssl_cafile=config.ssl_cafile,
             ssl_certfile=config.ssl_certfile,
             ssl_keyfile=config.ssl_keyfile,
-            client_id=config.client_id,
-            group_id=config.group_id,
+            auto_offset_reset='earliest',
+            enable_auto_commit=True,   
+            consumer_timeout_ms=1000         
+            #client_id=config.client_id,
+            #group_id=config.group_id,
         )
 
 
     def receive(self) -> None:
         self.logger.info(f"Consume messages topic {self.TOPIC_NAME}")
+
         while True:
-            for message in self.consumer.poll().values():
-                logging.info("Got message using SSL: " + message[0].value.decode('utf-8'))
+            logging.info("Looping")
+            self. consumer.subscribe([self.TOPIC_NAME])
+            for message in self.consumer:
+                logging.info("Received message")
+                logging.info("Got message using SSL: " + message.value.decode('utf-8'))
 
 
     def __del__(self) -> None:
