@@ -8,6 +8,7 @@ import yaml
 import os
 from publisher import Publisher, PublisherConfig
 from consumer import Consumer, ConsumerConfig
+from topic import Topic, TopicConfig
 
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
@@ -35,6 +36,10 @@ def publisher(topic: str) -> int:
 
     logger.info("Posting to Kafka")
     try:
+        topic_config = TopicConfig()
+        newtopic = Topic(topic_config)
+        newtopic.create(topic)
+
         config = PublisherConfig()
         producer = Publisher(config, topic)
         producer.send()
@@ -52,8 +57,12 @@ def consumer(topic: str) -> int:
 
     logger.info("Receiving from Kafka")
     try:
-        config = ConsumerConfig()
-        consumer = Consumer(config, topic)
+        topic_config = TopicConfig()
+        newtopic = Topic(topic_config)
+        newtopic.create(topic)
+
+        consumer_config = ConsumerConfig()
+        consumer = Consumer(consumer_config, topic)
         consumer.receive()
         del consumer
     except Exception as e:
@@ -87,6 +96,7 @@ def main() -> int:
     args = parser.parse_args()
 
     success = 0
+
     if args.publisher:
         success = publisher(args.topic)
     elif args.consumer:
