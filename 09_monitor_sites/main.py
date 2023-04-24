@@ -7,7 +7,6 @@ import traceback
 import yaml
 import json
 import os
-import time
 from interval import Interval
 from endpoint import Endpoint
 

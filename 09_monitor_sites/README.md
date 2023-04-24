@@ -2,6 +2,14 @@
 
 Demonstrate a simple tool for testing websites.  
 
+TODO:
+
+* include httpbin compose
+* add a despatcher class for the results
+* pydoc
+* tests
+* test behaviour of complex regex
+
 ## Start
 
 ```sh
