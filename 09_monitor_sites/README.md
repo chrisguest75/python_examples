@@ -29,6 +29,17 @@ pipenv run start --test
 pipenv run start:test 
 ```
 
+```sh
+pipenv run docker:start
+
+# podinfo
+curl 0.0.0.0:9001
+# httpbin
+curl 0.0.0.0:9002
+
+```
+
+
 ## Debugging and Troubleshooting
 
 ```sh
