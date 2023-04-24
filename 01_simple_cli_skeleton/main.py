@@ -9,7 +9,7 @@ import os
 
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
-    ''' catches unhandled exceptions and logs them '''
+    """catches unhandled exceptions and logs them"""
 
     if issubclass(exc_type, KeyboardInterrupt):
         sys.__excepthook__(exc_type, exc_value, exc_traceback)
@@ -22,26 +22,27 @@ def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     )
 
 
-def str2bool(v) -> bool:
-    ''' converts strings representing truth to bool '''''
-    return v.lower() in ("yes", "true", "t", "1")
+def str2bool(value: str) -> bool:
+    """ converts strings representing truth to bool """ ""
+    return value.lower() in ("yes", "true", "t", "1")
 
 
 def test() -> int:
-    ''' test function '''
+    """test function"""
     logger = logging.getLogger()
-    logger.info("Invoked test function")
+    test_config = os.environ["TEST_CONFIG"]
+    logger.info(f"Invoked test function - TEST_CONFIG='{test_config}'")
     return 0
 
 
 def main() -> int:
-    '''
+    """
     main function
 
     returns 0 on success, 1 on failure
 
     configures logging and processes command line arguments
-    '''
+    """
     with io.open(
         f"{os.path.dirname(os.path.realpath(__file__))}/logging_config.yaml"
     ) as f:
