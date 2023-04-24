@@ -8,7 +8,7 @@ import yaml
 import json
 import os
 import time
-from monitor import Monitor
+from interval import Interval
 
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
@@ -47,7 +47,7 @@ def monitor() -> int:
 
         logger.info(f"monitor_config: {monitor_config}")
 
-        monitors = []
+        intervals = []
 
         for name in monitor_config["sites"]:
             logger.info(f"name: {name}")
@@ -55,13 +55,17 @@ def monitor() -> int:
             logger.info(f"site: {site}")
             logger.info(f"url: {site['url']}")
 
-            monitor = Monitor(name, site["interval"])
-            monitors.append(monitor)
-            monitor.start()
+            interval = Interval(name, site["interval"])
+            intervals.append(interval)
+            interval.start()
 
-        while True:
-            time.sleep(5)
-            logger.info("alive...")
+        input("Press Enter to continue...")
+
+        for interval in intervals:
+            interval.stop()
+
+        logger.info("Quitting.....")
+
     except Exception as e:
         logger.critical(f"Exception: {e}")
 
