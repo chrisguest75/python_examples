@@ -2,21 +2,27 @@
   "sites": {
     "https_google_com": {
       "enabled": true,
+      "verb": "GET",
       "url": "https://www.google.com",
-      "timeout": 2000,
+      "timeoutMs": 2000,
       "regex": "I'm Feeling Lucky",
-      "interval": 10000,
-      "followRedirects": true,
-      "verify_ssl": true
+      "intervalMs": 10000,
+      "follow_redirects": true,
+      "check_certificate_expiration": false,
+      "verify_ssl": true,
+      "tags": { "env": "prod" }
     },
     "https_trint_com": {
       "enabled": true,
+      "verb": "GET",
       "url": "https://www.trint.com",
-      "timeout": 2000,
+      "timeoutMs": 2000,
       "regex": "I'm Feeling Lucky",
-      "interval": 5500,
-      "followRedirects": true,
-      "verify_ssl": true
+      "intervalMs": 5500,
+      "follow_redirects": true,
+      "check_certificate_expiration": true,
+      "verify_ssl": true,
+      "tags": { "env": "prod" }
     }
   }
 }

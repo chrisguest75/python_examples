@@ -9,6 +9,7 @@ import json
 import os
 import time
 from interval import Interval
+from endpoint import Endpoint
 
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
@@ -51,11 +52,13 @@ def monitor() -> int:
 
         for name in monitor_config["sites"]:
             logger.info(f"name: {name}")
-            site = monitor_config["sites"][name]
-            logger.info(f"site: {site}")
-            logger.info(f"url: {site['url']}")
+            site_config = monitor_config["sites"][name]
+            site_config["name"] = name
+            endpoint = Endpoint(**site_config)
 
-            interval = Interval(name, site["interval"])
+            logger.info(f"site: {endpoint}")
+
+            interval = Interval(endpoint)
             intervals.append(interval)
             interval.start()
 
