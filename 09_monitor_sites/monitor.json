@@ -17,7 +17,7 @@
       "verb": "GET",
       "url": "https://www.trint.com",
       "timeoutMs": 2000,
-      "regex": "I'm Feeling Lucky",
+      "regex": "Craft powerful content by transcribing",
       "intervalMs": 5500,
       "follow_redirects": true,
       "check_certificate_expiration": true,

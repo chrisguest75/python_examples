@@ -12,6 +12,8 @@ from urllib.parse import urlparse
 
 
 class Interval:
+    """Responsible for requesting the endpoint and recording the response"""
+
     def __init__(self, endpoint: Endpoint) -> None:
         self.logger = logging.getLogger(__name__)
         self.endpoint = endpoint
@@ -23,6 +25,7 @@ class Interval:
         return parsed_url.hostname
 
     def get_certificate_expiration_date(self, hostname, port=443):
+        """"""
         context = ssl.create_default_context()
         conn = context.wrap_socket(
             socket.socket(socket.AF_INET), server_hostname=hostname
@@ -37,6 +40,7 @@ class Interval:
 
     def stop(self):
         self.stopped = True
+        self.timer.cancel()
 
     def start(self):
         self.logger.info(
@@ -45,7 +49,6 @@ class Interval:
                 "name": self.endpoint.name,
             }
         )
-        tic = time.perf_counter()
 
         endpoint_response = Response(
             name=self.endpoint.name,
@@ -59,6 +62,7 @@ class Interval:
             verb=self.endpoint.verb,
         )
 
+        # check the certificate expiration
         if self.endpoint.check_certificate_expiration:
             try:
                 hostname = self.extract_hostname(self.endpoint.url)
@@ -72,7 +76,9 @@ class Interval:
 
         try:
             timeout = max(int(self.endpoint.timeoutMs / 1000.0), 1)
+            tic = time.perf_counter()
             response = requests.get(self.endpoint.url, timeout=timeout)
+            toc = time.perf_counter()
             response.raise_for_status()
             endpoint_response.status = response.status_code
 
@@ -102,8 +108,6 @@ class Interval:
             self.logger.error(f"An error occurred while making the request: {e}", e)
             endpoint_response.status = 999
 
-        toc = time.perf_counter()
-
         endpoint_response.elapsedMs = (toc - tic) * 1000.0
 
         self.logger.info(
@@ -114,5 +118,7 @@ class Interval:
             }
         )
 
+        # if not stopped, start the timer again
         if not self.stopped:
-            threading.Timer(self.intervalMs, self.start).start()
+            self.timer = threading.Timer(self.intervalMs, self.start)
+            self.timer.start()

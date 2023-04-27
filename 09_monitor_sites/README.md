@@ -25,8 +25,10 @@ pipenv run test
 pipenv shell
 
 # run with arguments
-pipenv run start --test
-pipenv run start:test 
+pipenv run start --monitor
+
+# once started press enter to quit
+pipenv run start --monitor --sites ./podinfo_monitor.json
 ```
 
 ```sh
@@ -36,9 +38,7 @@ pipenv run docker:start
 curl 0.0.0.0:9001
 # httpbin
 curl 0.0.0.0:9002
-
 ```
-
 
 ## Debugging and Troubleshooting
 

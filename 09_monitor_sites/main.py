@@ -30,48 +30,41 @@ def str2bool(value: str) -> bool:
     return value.lower() in ("yes", "true", "t", "1")
 
 
-def monitor() -> int:
+def start_monitor(monitor_config: str) -> list[Interval]:
     """monitor function"""
     logger = logging.getLogger()
-
+    print(f"monitor_config: {monitor_config}")
+    # configure each of the monitors
+    intervals = []
     try:
-        monitor_config_file = os.environ["MONITOR_CONFIG"]
-    except KeyError:
-        monitor_config_file = (
-            f"{os.path.dirname(os.path.realpath(__file__))}/monitor.json"
-        )
-
-    try:
-        with io.open(monitor_config_file) as f:
-            monitor_config = json.load(f)
-
         logger.info(f"monitor_config: {monitor_config}")
 
-        intervals = []
-
+        # each site is a separate object
         for name in monitor_config["sites"]:
             logger.info(f"name: {name}")
             site_config = monitor_config["sites"][name]
+            # put namne into site_config object
             site_config["name"] = name
             endpoint = Endpoint(**site_config)
+            if endpoint.enabled:
+                logger.info(f"{name} is enabled")
+                logger.info(f"site: {endpoint}")
 
-            logger.info(f"site: {endpoint}")
-
-            interval = Interval(endpoint)
-            intervals.append(interval)
-            interval.start()
-
-        input("Press Enter to continue...")
-
-        for interval in intervals:
-            interval.stop()
-
-        logger.info("Quitting.....")
+                if endpoint.verb.upper() == "GET":
+                    # start the interval
+                    interval = Interval(endpoint)
+                    intervals.append(interval)
+                    interval.start()
+                else:
+                    logger.warning(f"{endpoint.verb} is not supported")
+            else:
+                logger.info(f"{name} is disabled")
 
     except Exception as e:
         logger.critical(f"Exception: {e}")
+        raise
 
-    return 0
+    return intervals
 
 
 def main() -> int:
@@ -84,6 +77,17 @@ def main() -> int:
     """
     success = 0
     parser = argparse.ArgumentParser(description="Monitor sites")
+    parser.add_argument(
+        "--monitor", dest="monitor", action="store_true", help="start monitoring"
+    )
+    parser.add_argument(
+        "--sites",
+        dest="sites",
+        help="sites configuration json file",
+        type=str,
+        default=f"{os.path.dirname(os.path.realpath(__file__))}/monitor.json",
+    )
+    args = parser.parse_args()
 
     try:
         with io.open(
@@ -95,17 +99,41 @@ def main() -> int:
 
         sys.excepthook = log_uncaught_exceptions
 
-        parser.add_argument(
-            "--monitor", dest="monitor", action="store_true", help="start monitoring"
-        )
-        args = parser.parse_args()
+    except FileNotFoundError as e:
+        print(f"Missing logging_config.yaml")
+        print(e)
+        success = 1
+        return success
 
+    logger = logging.getLogger()
+
+    try:
         if args.monitor:
-            success = monitor()
+            # get the monitor config file path
+            try:
+                monitor_config_file = os.environ["MONITOR_CONFIG"]
+            except KeyError:
+                monitor_config_file = args.sites
+
+            # load the monitor config file
+            with io.open(monitor_config_file) as f:
+                monitor_config = json.load(f)
+
+            intervals = start_monitor(monitor_config)
+
+            # Wait to exit here?  Or sleep infinity?
+            input("Press Enter to quit.....")
+
+            logger.info("Shutting down.....")
+
+            for interval in intervals:
+                interval.stop()
+
+            logger.info("Waiting to stop.....")
         else:
             parser.print_help()
     except Exception as e:
-        print("Missing logging_config.yaml")
+        print(f"Failed during monitoring with {e}")
         success = 1
 
     return success
