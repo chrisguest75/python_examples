@@ -19,12 +19,15 @@ class Interval:
         self.endpoint = endpoint
         self.intervalMs = endpoint.intervalMs / 1000.0
         self.stopped = False
+        self.timer = None
 
-    def extract_hostname(self, url):
+    @staticmethod
+    def extract_hostname(url):
         parsed_url = urlparse(url)
         return parsed_url.hostname
 
-    def get_certificate_expiration_date(self, hostname, port=443):
+    @staticmethod
+    def get_certificate_expiration_date(hostname, port=443):
         """"""
         context = ssl.create_default_context()
         conn = context.wrap_socket(
@@ -40,7 +43,8 @@ class Interval:
 
     def stop(self):
         self.stopped = True
-        self.timer.cancel()
+        if self.timer:
+            self.timer.cancel()
 
     def start(self):
         self.logger.info(

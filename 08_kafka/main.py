@@ -30,7 +30,7 @@ def str2bool(v) -> bool:
     return v.lower() in ("yes", "true", "t", "1")
 
 
-def publisher(topic: str, admin: bool, create: bool) -> int:
+def publisher(topic: str, admin: bool, create: bool, repeat: int) -> int:
     """publisher function"""
     logger = logging.getLogger()
 
@@ -44,7 +44,7 @@ def publisher(topic: str, admin: bool, create: bool) -> int:
         logger.info("Posting to Kafka")
         config = PublisherConfig(admin=admin)
         producer = Publisher(config, topic)
-        producer.send()
+        producer.send(repeat=repeat)
         del producer
     except Exception as e:
         logger.error(f"Exception: {e}")
@@ -99,12 +99,13 @@ def main() -> int:
     parser.add_argument("--consumer", dest="consumer", action="store_true")
     parser.add_argument("--create", dest="create", action="store_true")
     parser.add_argument("--topic", dest="topic", type=str, default="default_topic")
+    parser.add_argument("--repeat", dest="repeat", type=int, default=10)
     args = parser.parse_args()
 
     success = 0
 
     if args.publisher:
-        success = publisher(args.topic, args.admin, args.create)
+        success = publisher(args.topic, args.admin, args.create, args.repeat)
     elif args.consumer:
         success = consumer(args.topic, args.admin, args.create)
     else:
