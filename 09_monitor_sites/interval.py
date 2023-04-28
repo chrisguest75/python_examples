@@ -41,15 +41,37 @@ class Interval:
         expiry_date = datetime.strptime(cert["notAfter"], r"%b %d %H:%M:%S %Y %Z")
         return expiry_date
 
+    def matcher(self, response: str, regex: str) -> bool:
+        # Convert the pattern string to a raw string
+        pattern = re.compile(regex)
+
+        # Search for the pattern in the response text
+        match = re.search(pattern, response)
+
+        # Check if the pattern was found
+        if match:
+            self.logger.info({"message": "Pattern found", "match": match.group(0)})
+            return True
+        else:
+            self.logger.warning(f"Pattern '{regex}' not found in the response")
+            return False
+
     def stop(self):
         self.stopped = True
         if self.timer:
             self.timer.cancel()
 
-    def start(self):
+    def start(self) -> Response:
+        self.ping()
+        # if not stopped, start the timer again
+        if not self.stopped:
+            self.timer = threading.Timer(self.intervalMs, self.start)
+            self.timer.start()
+
+    def ping(self) -> Response:
         self.logger.info(
             {
-                "message": "Operation started",
+                "message": "Interval started",
                 "name": self.endpoint.name,
             }
         )
@@ -83,24 +105,15 @@ class Interval:
             tic = time.perf_counter()
             response = requests.get(self.endpoint.url, timeout=timeout)
             toc = time.perf_counter()
+            endpoint_response.elapsedMs = (toc - tic) * 1000.0
+
             response.raise_for_status()
             endpoint_response.status = response.status_code
 
-            # Convert the pattern string to a raw string
-            pattern = re.compile(self.endpoint.regex)
-
-            # Search for the pattern in the response text
-            match = re.search(pattern, response.text)
-
-            # Check if the pattern was found
-            if match:
-                self.logger.info({"message": "Pattern found", "match": match.group(0)})
-                endpoint_response.regex_match = True
-            else:
-                self.logger.warning(
-                    f"Pattern '{self.endpoint.regex}' not found in the response"
-                )
-                endpoint_response.regex_match = False
+            # check the regex
+            endpoint_response.regex_match = self.matcher(
+                response.text, self.endpoint.regex
+            )
 
         except requests.exceptions.Timeout as e:
             self.logger.warning(f"Request timed out after {timeout} seconds", e)
@@ -112,17 +125,12 @@ class Interval:
             self.logger.error(f"An error occurred while making the request: {e}", e)
             endpoint_response.status = 999
 
-        endpoint_response.elapsedMs = (toc - tic) * 1000.0
-
         self.logger.info(
             {
                 "response": endpoint_response,
-                "message": "Operation ended",
+                "message": "Interval ended",
                 "name": self.endpoint.name,
             }
         )
 
-        # if not stopped, start the timer again
-        if not self.stopped:
-            self.timer = threading.Timer(self.intervalMs, self.start)
-            self.timer.start()
+        return endpoint_response
