@@ -2,6 +2,7 @@ import time
 import logging
 from kafkaconfig import KafkaConfig
 from kafka import KafkaProducer
+import json
 
 
 class PublisherConfig(KafkaConfig):
@@ -26,12 +27,19 @@ class Publisher:
             ssl_keyfile=config.ssl_keyfile,
         )
 
-    def send(self) -> None:
+    def send_message(self, message: dict) -> None:
+        message_json = json.dumps(message)
+        self.producer.send(self.TOPIC_NAME, message_json.encode("utf-8"))
+        self.logger.info(f"Message sent: {message}")
+
+    def send(self, repeat=100) -> None:
         self.logger.info(f"Publish messages topic {self.TOPIC_NAME}")
-        for i in range(100):
-            message = f"Hello from Python using SSL {i + 1}!"
-            self.producer.send(self.TOPIC_NAME, message.encode("utf-8"))
-            self.logger.info(f"Message sent: {message}")
+        for i in range(repeat):
+            message = {
+                "message": f"Message {i}",
+                "timestamp": int(time.time()),
+            }
+            self.send_message(message)
             time.sleep(1)
 
     def __del__(self) -> None:

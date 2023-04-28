@@ -1,0 +1,28 @@
+{
+  "sites": {
+    "https_google_com": {
+      "enabled": true,
+      "verb": "GET",
+      "url": "https://www.google.com",
+      "timeoutMs": 2000,
+      "regex": "I'm Feeling Lucky",
+      "intervalMs": 10000,
+      "follow_redirects": true,
+      "check_certificate_expiration": false,
+      "verify_ssl": true,
+      "tags": { "env": "prod" }
+    },
+    "https_trint_com": {
+      "enabled": true,
+      "verb": "GET",
+      "url": "https://www.trint.com",
+      "timeoutMs": 2000,
+      "regex": "Craft powerful content by transcribing",
+      "intervalMs": 5500,
+      "follow_redirects": true,
+      "check_certificate_expiration": true,
+      "verify_ssl": true,
+      "tags": { "env": "prod" }
+    }
+  }
+}

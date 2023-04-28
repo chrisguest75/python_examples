@@ -1,0 +1,40 @@
+{
+  "sites": {
+    "podinfo_root": {
+      "enabled": true,
+      "verb": "GET",
+      "url": "http://0.0.0.0:9001",
+      "timeoutMs": 2000,
+      "regex": "hostname",
+      "intervalMs": 10000,
+      "follow_redirects": true,
+      "check_certificate_expiration": false,
+      "verify_ssl": true,
+      "tags": { "env": "prod" }
+    },
+    "podinfo_disabled": {
+      "enabled": false,
+      "verb": "GET",
+      "url": "http://0.0.0.0:9001",
+      "timeoutMs": 2000,
+      "regex": "hostname",
+      "intervalMs": 10000,
+      "follow_redirects": true,
+      "check_certificate_expiration": false,
+      "verify_ssl": true,
+      "tags": { "env": "prod" }
+    },
+    "podinfo_root_post": {
+      "enabled": true,
+      "verb": "POST",
+      "url": "http://0.0.0.0:9001",
+      "timeoutMs": 2000,
+      "regex": "hostname",
+      "intervalMs": 10000,
+      "follow_redirects": true,
+      "check_certificate_expiration": false,
+      "verify_ssl": true,
+      "tags": { "env": "prod" }
+    }
+  }
+}

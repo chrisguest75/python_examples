@@ -1,4 +1,5 @@
 import logging
+import json
 from kafkaconfig import KafkaConfig
 from kafka import KafkaConsumer
 
@@ -38,17 +39,25 @@ class Consumer:
             # group_id=config.group_id,
         )
 
+    def check_messages(self) -> None:
+        self.consumer.subscribe([self.TOPIC_NAME])
+        for message_json in self.consumer:
+            try:
+                message = json.loads(message_json.value.decode("utf-8"))
+                self.logger.info(message)
+            except Exception as e:
+                self.logger.error(f"Error decoding message: {e}")
+
     def receive(self) -> None:
+        """Receive messages from Kafka"""
         self.logger.info(f"Consume messages topic {self.TOPIC_NAME}")
 
         while True:
-            logging.info("Looping")
-            self.consumer.subscribe([self.TOPIC_NAME])
-            for message in self.consumer:
-                logging.info("Received message")
-                logging.info("Got message using SSL: " + message.value.decode("utf-8"))
+            self.logger.info("Listening for messages...")
+            self.check_messages()
 
     def __del__(self) -> None:
+        """Close the consumer on GC"""
         if self is not None and hasattr(self, "consumer"):
             self.logger.info(f"Closing consumer for topic {self.TOPIC_NAME}")
             self.consumer.close()

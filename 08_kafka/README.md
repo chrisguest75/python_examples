@@ -37,15 +37,15 @@ pipenv run test
 pipenv shell
 
 # with topics using admin privleges
-pipenv run start --admin --publisher --create --topic my_topic
-pipenv run start --admin --consumer --create --topic my_topic
+pipenv run start --admin --publisher --create --topic metrics-topic
+pipenv run start --admin --consumer --create --topic metrics-topic
 
-pipenv run start --admin --publisher --topic my_topic2
-pipenv run start --admin --consumer --topic my_topic2
+pipenv run start --admin --publisher --topic metrics-topic
+pipenv run start --admin --consumer --topic metrics-topic
 
 # if not using admin the user will need access to the topic
-pipenv run start --publisher --topic my_topic2
-pipenv run start --consumer --topic my_topic2
+pipenv run start --publisher --topic metrics-topic
+pipenv run start --consumer --topic metrics-topic
 ```
 
 ## Debugging and Troubleshooting

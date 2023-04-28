@@ -1,0 +1,26 @@
+services:
+    podinfo:
+        image: "stefanprodan/podinfo:6.3.5"
+        container_name: podinfo
+        environment:
+            - VERSION=0.0.1   
+            - PODNAME=info                    
+        ports:
+            - "9001:9898"
+        restart: unless-stopped
+        command: [ "./podinfo", "--level=debug" ]            
+        networks:
+            - service_bridge
+
+    httpbin:
+        image: kennethreitz/httpbin
+        container_name: httpbin
+        ports:
+            - '9002:80'
+        networks:
+            - service_bridge
+
+networks:
+    service_bridge:
+        driver: bridge
+
