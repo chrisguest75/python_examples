@@ -8,6 +8,8 @@ import yaml
 import os
 from timeout import timeout_get
 import json
+import geoip2.webservice
+import geoip2.database
 
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
@@ -56,12 +58,16 @@ def main():
         type=str,
         help="IP Address to check",
     )
+    parser.add_argument("--whoisxmlapi", dest="whoisxmlapi", action="store_true", help="whoisxmlapi webservice")
+    parser.add_argument("--maxmindws", dest="maxmindws", action="store_true", help="maxmind webservice")
+    parser.add_argument("--maxminddb", dest="maxminddb", action="store_true", help="maxmind database")
+
     args = parser.parse_args()
     if not args.ip or args.ip == "":
         parser.print_help()
         exit(1)
 
-    if args.timeout:
+    if args.whoisxmlapi:
         ip_address = args.ip
         apikey = os.getenv("GEOIP_API_KEY")
         url = f"https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey={apikey}&ipAddress={ip_address}"
@@ -70,6 +76,26 @@ def main():
 
         print(json.dumps(response, indent=1))
 
+    if args.maxmindws:
+        # This creates a Client object that can be reused across requests.
+        # Replace "42" with your account ID and "license_key" with your license
+        # key. Set the "host" keyword argument to "geolite.info" to use the
+        # GeoLite2 web service instead of the GeoIP2 web service. Set the
+        # "host" keyword argument to "sandbox.maxmind.com" to use the Sandbox
+        # GeoIP2 web service instead of the production GeoIP2 web service.
+        license_key = os.getenv("MAXMIND_LICENSE")
+        account_id = os.getenv("MAXMIND_ACCOUNTID")
+        with geoip2.webservice.Client(account_id, license_key) as client:
+            # Replace "city" with the method corresponding to the web service
+            # that you are using, i.e., "country", "city", or "insights". Please
+            # note that Insights is not supported by the GeoLite2 web service.
+            response = client.city(args.ip)
+            print(str(response))
+
+    if args.maxminddb:
+        with geoip2.database.Reader('./GeoLite2-City_20231017/GeoLite2-City.mmdb') as reader:
+            response = reader.city(args.ip)
+            print(str(response))
 
 if __name__ == "__main__":
     main()

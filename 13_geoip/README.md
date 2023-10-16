@@ -14,10 +14,21 @@ Goto [whoisxmlapi](https://ip-geolocation.whoisxmlapi.com/) to create an API key
 
 ```sh
 # use whoisxml
-pipenv run start --timeout 4 --ip 193.248.57.140 | jq . 
+pipenv run start --whoisxmlapi --timeout 4 --ip 193.248.57.140 | jq .
+```
+
+## MaxMind
+
+Download the geolite2 db.  
+
+```sh
+# use
+pipenv run start --maxminddb --ip 193.248.57.140 | jq .
+pipenv run start --maxmindws --ip 193.248.57.140 | jq .
 ```
 
 ## Resources
 
 * MaxMind [here](https://www.maxmind.com/en/home)  
 * WhoIsXMLApi [here](https://ip-geolocation.whoisxmlapi.com/api/documentation)  
+* maxmind/GeoIP2-python [repo](https://github.com/maxmind/GeoIP2-python)  

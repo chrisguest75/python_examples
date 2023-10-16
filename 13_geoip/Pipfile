@@ -8,6 +8,7 @@ requests = "*"
 python-dotenv = "*"
 pyyaml = "*"
 python-json-logger = "*"
+geoip2 = "*"
 
 [dev-packages]
 flake8 = "*"
