@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pip_conf_index_global"
+
+[packages]
+requests = "*"
+python-dotenv = "*"
+pyyaml = "*"
+python-json-logger = "*"
+
+[dev-packages]
+flake8 = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+"start" = "python main.py"
+"start:default" = "python main.py"
+"start:example" = "python main.py"
+test = "pytest"
+lint = "flake8"
