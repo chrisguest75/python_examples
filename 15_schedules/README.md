@@ -18,7 +18,6 @@ pipenv shell
 
 
 . ./.env.prod
-. ./.env.prod_eu
 pipenv run start --render --cluster "${CLUSTER}" --family "${FAMILY}"
 
 pipenv run start:test 
