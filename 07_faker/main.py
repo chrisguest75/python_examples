@@ -6,7 +6,7 @@ import sys
 import traceback
 import yaml
 import os
-from faker import Faker
+from schedules import generate_schedules
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -27,18 +27,13 @@ def str2bool(value: str) -> bool:
     return value.lower() in ("yes", "true", "t", "1")
 
 
-def generate_schedules() -> int:
+def generate() -> int:
     """test function"""
     logger = logging.getLogger()
     test_config = os.environ["TEST_CONFIG"]
     logger.info(f"Invoked test function - TEST_CONFIG='{test_config}'")
 
-    faker = Faker()
-    # Generating a set of start and end times
-    times = [(faker.time(), faker.time()) for _ in range(5)]
-
-    # Sorting each pair so that the earlier time is the start time
-    sorted_times = [(min(start, end), max(start, end)) for start, end in times]
+    sorted_times = generate_schedules()
 
     # Print sorted times
     for start, end in sorted_times:
