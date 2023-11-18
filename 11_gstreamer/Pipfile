@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pip_conf_index_global"
+
+[packages]
+pyyaml = "*"
+python-json-logger = "*"
+python-dotenv = "*"
+pygobject = "*"
+
+[dev-packages]
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-2020 = "*"
+black = "*"
+pytest = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+"start" = "python main.py"
+"start:test" = "python main.py --test"
+test = "pytest"
+lint = "flake8"

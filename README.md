@@ -2,23 +2,6 @@
 
 A repository containing python examples.  
 
-TODO:
-
-* OTEL
-* Flask/fastapi
-* generators and comprehensions
-* SQL
-* Connect4
-* pandas
-* debugging
-* quokka style environment
-* data structures
-* gstreamer
-* wasm
-* aws boto
-* docker compose
-* github actions
-
 ## VSCODE
 
 * If using vscode if you `pipenv --rm` it might be best to reload
