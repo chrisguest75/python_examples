@@ -10,7 +10,7 @@ let res = [
   db.test.createIndex({ id: 1 }, { unique: true }),
   db.test.insert({ id: 1, value: "hello" }),
 
-  // ffprobe data
+  // data
   db.createUser({
     user: "mongouser",
     pwd: "mongopassword",

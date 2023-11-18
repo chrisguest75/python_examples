@@ -44,3 +44,4 @@ pipenv install pyyaml python-json-logger python-dotenv
 ## Resources
 
 * Faker documentation [here](https://faker.readthedocs.io/en/master/fakerclass.html)  
+* joke2k/faker [here](https://github.com/joke2k/faker)

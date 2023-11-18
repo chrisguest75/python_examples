@@ -1,0 +1,9 @@
+{
+  "AWS_PROFILE": "myprofile",
+  "AWS_REGION": "us-east-1",
+  "QUEUE_NAME": "myqueue",
+  "MONGO_CONNECTION": "mongodb://root:rootpassword@0.0.0.0:27017/",
+  "MONGO_DB": "processing",
+  "MONGO_COLLECTION": "jobs",
+  "USERID": "000000000000000000000000"
+}

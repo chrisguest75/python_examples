@@ -9,6 +9,8 @@ python-dotenv = "*"
 pyyaml = "*"
 python-json-logger = "*"
 pymongo = "*"
+jinja2 = "*"
+boto3 = "*"
 
 [dev-packages]
 flake8 = "*"

@@ -4,8 +4,9 @@ To create follow repository [README.md](../README.md)
 
 TODO:
 
-* Load a dataset using faker
 * Query a dataset find users in orgs
+* Load data from aws batch jobs and load into mongo to keep
+* Split into classes to do data loading
 
 ## 🏠 Start
 
@@ -34,16 +35,37 @@ docker logs $(docker ps --filter name=14_monogo-mongodb-1 -q)
 docker-compose --profile backend up -d --build
 ```
 
+## Connect to mongosh
+
+```sh
+mongosh "mongodb://root:rootpassword@0.0.0.0:27017/"
+
+show dbs
+
+mongosh "mongodb://mongouser:mongopassword@/0.0.0.0:27017/"
+
+
+db.getCollection('jobs').find({})
+```
+
+
+
+
 ## Query
 
 ```sh
-# load values from env file
-. ./.env  
 # run the query
-pipenv run start --mongo ${MONGO_CONNECTION} --query ./queries/query1.json --db ${MONGO_DB} --collection ${MONGO_COLLECTION}
+pipenv run start --process=load_batch_jobs --config ./configs/config.localmongo.dev.json
+```
+
+## Shutdown
+
+```sh
+docker compose --profile backend down   
 ```
 
 ## Resources
 
 * https://pymongo.readthedocs.io/en/stable/
 * https://github.com/joke2k/faker
+* https://github.com/chrisguest75/mongo_examples/blob/main/03_ffprobe/README.md
