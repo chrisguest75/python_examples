@@ -36,6 +36,8 @@ pyenv global 3.11.1
 
 REF: Pipenv: Python Dev Workflow for Humans [here](https://pipenv.pypa.io/en/latest/)  
 
+### Configuring and running
+
 ```sh
 # required if you're already in a virtualenv.
 export PIPENV_IGNORE_VIRTUALENVS=1 
@@ -59,6 +61,10 @@ pipenv install --dev flake8
 # remove venv if you want to
 pipenv --rm
 ```
+
+### Maintaining
+
+Goto [UPGRADING.md](./UPGRADING.md)  
 
 ## Resources
 

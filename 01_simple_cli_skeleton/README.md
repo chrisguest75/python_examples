@@ -23,6 +23,9 @@ pipenv run test
 # enter venv
 pipenv shell
 
+# create .env file
+cp .env.template .env
+
 # run with arguments
 pipenv run start --test
 pipenv run start:test 
