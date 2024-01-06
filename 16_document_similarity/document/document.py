@@ -7,6 +7,7 @@ class Document:
         self.path = path
         self.doc = self.load_json(self.path)
         self.words = self.extract_words(self.doc)
+        self.sentences = self.extract_sentences(self.words)
 
 
     def load_json(self, path: str):
@@ -28,8 +29,25 @@ class Document:
             highest_confidence = max(alternatives, key=lambda x: x["confidence"])
             item = {}
             item["word"] = highest_confidence["content"]
+            item["type"] = word["type"]
             item["start_time"] = word["start_time"]
             item["end_time"] = word["end_time"]
             words.append(item)
 
         return words
+
+    def extract_sentences(self, words: list):
+        """Extracts the sentences from the document."""
+        sentences = []
+        sentence = []
+        for word in words:
+            if word["word"] == ".":
+                sentence.append(word)
+                sentences.append(sentence)
+                sentence = []
+            else:
+                sentence.append(word)
+
+        sentences.append(sentence)
+        return sentences
+    
