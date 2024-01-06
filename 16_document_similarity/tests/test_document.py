@@ -3,8 +3,8 @@ from document.document import Document
 
 def test_load_words():
     # Arrange
-    doc = Document("./documents/test1.json")
-
+    doc = Document()
+    doc.process_file("./documents/test1.json")
     assert len(doc.words) == 2
     assert doc.words[0]["word"] == "Extract"
     assert doc.words[1]["word"] == "from"    
@@ -13,7 +13,8 @@ def test_load_words():
 
 def test_confidence_selection():
     # Arrange
-    doc = Document("./documents/test2.json")
+    doc = Document()
+    doc.process_file("./documents/test2.json")
 
     assert len(doc.words) == 2
     assert doc.words[0]["word"] == "Extract"
@@ -21,7 +22,8 @@ def test_confidence_selection():
 
 def test_extract_sentence():
     # Arrange
-    doc = Document("./documents/test3.json")
+    doc = Document()
+    doc.process_file("./documents/test3.json")
 
     assert len(doc.words) == 5
     assert doc.words[0]["word"] == "Extract"

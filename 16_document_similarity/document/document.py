@@ -2,13 +2,18 @@ import os
 import json
 
 class Document:
-    def __init__(self, path: str):
+    def __init__(self):
+        self.path = "memory"
+        self.doc = []
+        self.words = []
+        self.sentences = []
+
+    def process_file(self, path: str):
         """Initializes the document with the given path."""
         self.path = path
         self.doc = self.load_json(self.path)
         self.words = self.extract_words(self.doc)
         self.sentences = self.extract_sentences(self.words)
-
 
     def load_json(self, path: str):
         """Loads the words from the document."""
@@ -20,7 +25,7 @@ class Document:
             doc = json.loads(text)
 
         return doc
-
+    
     def extract_words(self, doc: dict):
         """Extracts the words from the document."""
         words = []

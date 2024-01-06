@@ -8,6 +8,7 @@ import yaml
 import os
 
 from process_documents import process_documents
+from document.document import Document
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -27,6 +28,93 @@ def str2bool(value: str) -> bool:
     """ converts strings representing truth to bool """ ""
     return value.lower() in ("yes", "true", "t", "1")
 
+def sentence_to_line(sentence: list) -> str:
+    if len(sentence) == 0:
+        return ""
+
+    start_time = sentence[0]["start_time"]
+    end_time = sentence[-1]["end_time"]
+    line = f"{start_time:0>9.3f} - {end_time:0>9.3f} "
+    start = ""
+    for word in sentence:
+        if word["type"] == "punctuation":
+            line += word["word"]
+        else:
+            line += f"{start}{word['word']}"
+        start = " "
+    return line
+
+def sentence_by_sentence(out_path: str, document):
+    output = []
+    output.append(f"File: {document.path}")
+    for sentence in document.sentences:
+        line = ""
+        if len(sentence) == 0:
+            continue
+        line = sentence_to_line(sentence)
+        output.append(line)
+    
+    with open(f"./out/{out_path}.txt", "w") as file:
+        for line in output:
+            print(line)
+            file.write(line + "\n")    
+
+def align_sentences(document1, document2):
+    output = []
+    fixed_document = Document()
+    document2_sentence_index = 0
+    document2_sentence_word_index = 0
+
+    threshold = 0.25
+
+    for sentence in document1.sentences:
+        if len(sentence) == 0:
+            continue
+
+        start_time = sentence[0]["start_time"]
+        end_time = sentence[-1]["end_time"]
+
+        d2_start_time = document2.sentences[document2_sentence_index][0]["start_time"]
+        d2_end_time = document2.sentences[document2_sentence_index][-1]["end_time"]
+    
+        if abs(start_time - d2_start_time) <= threshold and abs(end_time - d2_end_time) <= threshold:
+            # Start time is within the threshold
+            output.append(f"Match: {start_time:0>9.3f} - {end_time:0>9.3f} with {d2_start_time:0>9.3f} - {d2_end_time:0>9.3f}")
+
+            line1 = sentence_to_line(sentence)
+            line2 = sentence_to_line(document2.sentences[document2_sentence_index])
+            fixed_document.sentences.append(document2.sentences[document2_sentence_index])
+            output.append(line1)
+            output.append(line2)
+
+            document2_sentence_index += 1
+        else:
+            # Start time is not within the threshold
+            #output.append(f"No match: {start_time:0>9.3f} - {end_time:0>9.3f} with {d2_start_time:0>9.3f} - {d2_end_time:0>9.3f}")
+            start_index = document2_sentence_index
+            line2 = []
+
+            for i in range(start_index, len(document2.sentences)):
+                if len(document2.sentences[i]) == 0:
+                    continue
+                d2_end_time = document2.sentences[i][-1]["end_time"]
+                line2 = line2 + document2.sentences[i]
+
+                if abs(end_time - d2_end_time) <= threshold:
+                    output.append(f"Match: {start_time:0>9.3f} - {end_time:0>9.3f} with {d2_start_time:0>9.3f} - {d2_end_time:0>9.3f}")
+                    output.append(sentence_to_line(sentence))
+                    output.append(sentence_to_line(line2))
+                    fixed_document.sentences.append(line2)
+                    document2_sentence_index = i + 1
+                    break
+
+    with open(f"./out/compare.txt", "w") as file:
+        for line in output:
+            print(line)
+            file.write(line + "\n")
+
+    return fixed_document
+
 
 def test() -> int:
     """test function"""
@@ -34,8 +122,8 @@ def test() -> int:
     test_config = os.environ["TEST_CONFIG"]
     logger.info(f"Invoked test function - TEST_CONFIG='{test_config}'")
 
-    file1 = f"./documents/english_windinthewillows_grahame_rll_8khz_16kb_9.2.0.m4a.json"
-    file2 = f"./documents/english_windinthewillows_grahame_rll_64kb.mp3.json"
+    file1 = f"./documents/english_windinthewillows_grahame_rll_64kb.mp3.json"
+    file2 = f"./documents/english_windinthewillows_grahame_rll_8khz_16kb_9.2.0.m4a.json"
 
     # Create the "out" folder if it doesn't exist
     if not os.path.exists("./out"):
@@ -46,41 +134,18 @@ def test() -> int:
         file2,
     ]
 
-    filename1 = os.path.splitext(os.path.basename(file1))[0]
-    filename2 = os.path.splitext(os.path.basename(file2))[0]
-    out_paths= [
-        filename1,
-        filename2,
-    ]
-
     documents = process_documents(in_paths)
+    document1 = documents[0]
+    document2 = documents[1]
 
-    doc_index = 0
+    fixed_document = align_sentences(document1, document2)
+
+    documents.append(fixed_document)
+
     for document in documents:
-        output = []
-        output.append(f"File: {document.path}")
-        for sentence in document.sentences:
-            line = ""
-            if len(sentence) == 0:
-                continue
-            start_time = sentence[0]["start_time"]
-            end_time = sentence[-1]["end_time"]
-            line = f"{start_time:0>9.3f} - {end_time:0>9.3f} "
-            start = ""
-            for word in sentence:
-                if word["type"] == "punctuation":
-                    line += word["word"]
-                else:
-                    line += f"{start}{word['word']}"
-                start = " "
-            output.append(line)
-        
-        with open(f"./out/{out_paths[doc_index]}.txt", "w") as file:
-            for line in output:
-                print(line)
-                file.write(line + "\n")
-     
-        doc_index += 1
+        out_path = os.path.splitext(os.path.basename(document.path))[0]
+
+        sentence_by_sentence(out_path, document)
 
     return 0
 
