@@ -14,10 +14,16 @@ pipenv install --dev
 ## Start
 
 ```sh
+# print help
 pipenv run start
+
+# list all the cell files
 pipenv run start --list 
+
+# show info on a cell file
 pipenv run start --info --file puffer2.cells
 
+# use a cell flle and play game of life
 pipenv run start --file puffer2.cells
 
 > press q to exit
