@@ -7,6 +7,7 @@ import traceback
 import yaml
 import os
 
+from process_documents import process_documents
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -32,6 +33,55 @@ def test() -> int:
     logger = logging.getLogger()
     test_config = os.environ["TEST_CONFIG"]
     logger.info(f"Invoked test function - TEST_CONFIG='{test_config}'")
+
+    file1 = f"./documents/english_windinthewillows_grahame_rll_8khz_16kb_9.2.0.m4a.json"
+    file2 = f"./documents/english_windinthewillows_grahame_rll_64kb.mp3.json"
+
+    # Create the "out" folder if it doesn't exist
+    if not os.path.exists("./out"):
+        os.mkdir("./out")    
+
+    in_paths= [
+        file1,
+        file2,
+    ]
+
+    filename1 = os.path.splitext(os.path.basename(file1))[0]
+    filename2 = os.path.splitext(os.path.basename(file2))[0]
+    out_paths= [
+        filename1,
+        filename2,
+    ]
+
+    documents = process_documents(in_paths)
+
+    doc_index = 0
+    for document in documents:
+        output = []
+        output.append(f"File: {document.path}")
+        for sentence in document.sentences:
+            line = ""
+            if len(sentence) == 0:
+                continue
+            start_time = sentence[0]["start_time"]
+            end_time = sentence[-1]["end_time"]
+            line = f"{start_time:0>9.3f} - {end_time:0>9.3f} "
+            start = ""
+            for word in sentence:
+                if word["type"] == "punctuation":
+                    line += word["word"]
+                else:
+                    line += f"{start}{word['word']}"
+                start = " "
+            output.append(line)
+        
+        with open(f"./out/{out_paths[doc_index]}.txt", "w") as file:
+            for line in output:
+                print(line)
+                file.write(line + "\n")
+     
+        doc_index += 1
+
     return 0
 
 
