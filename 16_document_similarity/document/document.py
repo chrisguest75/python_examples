@@ -6,7 +6,7 @@ class Document:
         """Initializes the document with the given path."""
         self.path = path
         self.doc = self.load_json(self.path)
-        self.words = []
+        self.words = self.extract_words(self.doc)
 
 
     def load_json(self, path: str):
@@ -18,5 +18,18 @@ class Document:
             text = f.read()
             doc = json.loads(text)
 
+        return doc
 
-        pass    
+    def extract_words(self, doc: dict):
+        """Extracts the words from the document."""
+        words = []
+        for word in doc["results"]:
+            alternatives = word["alternatives"]
+            highest_confidence = max(alternatives, key=lambda x: x["confidence"])
+            item = {}
+            item["word"] = highest_confidence["content"]
+            item["start_time"] = word["start_time"]
+            item["end_time"] = word["end_time"]
+            words.append(item)
+
+        return words
