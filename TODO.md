@@ -18,3 +18,4 @@
 * aws boto
 * docker compose
 * github actions
+* cookiecutter
