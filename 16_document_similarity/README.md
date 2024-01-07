@@ -21,7 +21,6 @@ TODO:
 * Word Information Preserved (WIP)
 * Character Error Rate (CER)
 
-
 ## Start
 
 ```sh
@@ -60,6 +59,7 @@ pipenv run python
 
 * https://yassineelkhal.medium.com/the-complete-guide-to-string-similarity-algorithms-1290ad07c6b7
 * https://towardsdatascience.com/a-complete-beginners-guide-to-document-similarity-algorithms-75c44035df90
-https://pypi.org/project/pywer
-https://pypi.org/project/jiwer/
-https://jitsi.github.io/jiwer/usage/
+* https://pypi.org/project/pywer
+* https://pypi.org/project/jiwer/
+* https://jitsi.github.io/jiwer/usage/
+* https://www.rev.com/blog/resources/what-is-wer-what-does-word-error-rate-mean

@@ -129,18 +129,22 @@ def test() -> int:
                 print(line)
                 file.write(line + "\n")    
 
-    results = calculate_similarity(fixed_document2_a, fixed_document2_b)
-    with open(f"./out/results_1_2.txt", "w") as file:
-        for result in results:
-            file.write(f"WER:{result['wer']:.2f} MER:{result['mer']:.2f} WIL:{result['wil']:.2f}\n")  
-            file.write(f"{result['truth']}\n")
-            file.write(f"{result['line']}\n")
-            print(f"{result['wer']:.2f} {result['mer']:.2f} {result['wil']:.2f}")
-            print(f"{result['truth']}")
-            print(f"{result['line']}")
+    write_similarity_results(fixed_document2_a, fixed_document2_b, f"./out/results_1_2.txt")
+    write_similarity_results(fixed_document2_b, fixed_document2_a, f"./out/results_2_1.txt")
 
 
     return 0
+
+def write_similarity_results(truth_document: Document, document: Document, out_path: str):
+    results = calculate_similarity(truth_document, document)
+    with open(out_path, "w") as file:
+        for result in results:
+            file.write(f"WER:{result['wer']:.2f} MER:{result['mer']:.2f} WIL:{result['wil']:.2f} WIP:{result['wip']:.2f}\n")  
+            file.write(f"{result['truth']}\n")
+            file.write(f"{result['line']}\n")
+            print(f"WER:{result['wer']:.2f} MER:{result['mer']:.2f} WIL:{result['wil']:.2f} WIP:{result['wip']:.2f}")
+            print(f"{result['truth']}")
+            print(f"{result['line']}")
 
 
 def main() -> int:
