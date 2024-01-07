@@ -1,13 +1,26 @@
-# SIMPLE CLI SKELETON
+# DOCUMENT SIMILARITY
 
-Demonstrate a simple skeleton that other projects can be based on.  
+Demonstrate how to compare two documents to generate a measure of similarity.  
 
-Demonstrates:
+TODO:
 
-* flake8 linting
-* logging
-* argument parsing
-* docstrings
+* Compare each sentence to check WER.  
+* I need to generate a ground truth for the text.  
+* String together some of those assets - from the corpus.
+  * ffmpeg them together at specific time points.  
+  * then align the ground truths.  
+  * get the transcript and see how it works.  
+* time code accuracy
+* grammatical accuracy
+
+## Measures
+
+* Word Error Rate (WER), which is where this library got its name from. This has long been (and arguably still is) the de facto standard for computing ASR performance.
+* Match Error Rate (MER)
+*Word Information Lost (WIL)
+* Word Information Preserved (WIP)
+* Character Error Rate (CER)
+
 
 ## Start
 
@@ -42,23 +55,11 @@ pipenv run python
 > main.test.__doc__
 ```
 
-## Created
-
-```sh
-# install
-pipenv install --dev flake8 flake8-bugbear flake8-2020 black
-pipenv install --dev pytest 
-pipenv install pyyaml python-json-logger python-dotenv
-```
 
 ## Resources
 
-* Stylising your Python code: An introduction to linting and formatting [here](https://www.jumpingrivers.com/blog/python-linting-guide/)
-* Hypermodern Python 3: Linting [here](https://medium.com/@cjolowicz/hypermodern-python-3-linting-e2f15708da80)  
-* DmytroLitvinov/awesome-flake8-extensions [here](https://github.com/DmytroLitvinov/awesome-flake8-extensions)  
-* Python Linter Comparison 2022: Pylint vs Pyflakes vs Flake8 vs autopep8 vs Bandit vs Prospector vs Pylama vs Pyroma vs Black vs Mypy vs Radon vs mccabe [here](https://inventwithpython.com/blog/2022/11/19/python-linter-comparison-2022-pylint-vs-pyflakes-vs-flake8-vs-autopep8-vs-bandit-vs-prospector-vs-pylama-vs-pyroma-vs-black-vs-mypy-vs-radon-vs-mccabe/)  
-* Flake8: Your Tool For Style Guide Enforcement [here](https://pypi.org/project/flake8/)  
-* Workspace recommended extensions [here](https://code.visualstudio.com/docs/editor/extension-marketplace#_workspace-recommended-extensions)  
-* Argparse vs Click [here](https://collectiveacuity.medium.com/argparse-vs-click-227f53f023dc)
-* Writing pytest tests against tools written with argparse [here](https://til.simonwillison.net/pytest/pytest-argparse)
-* Python Docstrings [here](https://www.programiz.com/python-programming/docstrings)  
+* https://yassineelkhal.medium.com/the-complete-guide-to-string-similarity-algorithms-1290ad07c6b7
+* https://towardsdatascience.com/a-complete-beginners-guide-to-document-similarity-algorithms-75c44035df90
+https://pypi.org/project/pywer
+https://pypi.org/project/jiwer/
+https://jitsi.github.io/jiwer/usage/
