@@ -2,14 +2,17 @@ import os
 import json
 
 class Document:
-    def __init__(self):
-        self.path = "memory"
+    def __init__(self, name: str = "memory", base: str = "memory"):
+        self.name = name
+        self.base = base
+        self.path = ""
         self.doc = []
         self.words = []
         self.sentences = []
 
     def process_file(self, path: str):
         """Initializes the document with the given path."""
+        self.base = path
         self.path = path
         self.doc = self.load_json(self.path)
         self.words = self.extract_words(self.doc)
@@ -55,4 +58,3 @@ class Document:
 
         sentences.append(sentence)
         return sentences
-    

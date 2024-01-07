@@ -44,8 +44,10 @@ def sentence_to_line(sentence: list) -> str:
         start = " "
     return line
 
-def sentence_by_sentence(out_path: str, document):
+def sentence_by_sentence(document) -> list:
     output = []
+    output.append(f"Name: {document.name}")
+    output.append(f"Base: {document.base}")
     output.append(f"File: {document.path}")
     for sentence in document.sentences:
         line = ""
@@ -54,18 +56,13 @@ def sentence_by_sentence(out_path: str, document):
         line = sentence_to_line(sentence)
         output.append(line)
     
-    with open(f"./out/{out_path}.txt", "w") as file:
-        for line in output:
-            print(line)
-            file.write(line + "\n")    
+    return output
 
-def align_sentences(document1, document2):
+def align_sentences(document1, document2, name: str, threshold=0.25):
     output = []
-    fixed_document = Document()
+    fixed_document = Document(name, document2.base)
+    fixed_document.path = name
     document2_sentence_index = 0
-    document2_sentence_word_index = 0
-
-    threshold = 0.25
 
     for sentence in document1.sentences:
         if len(sentence) == 0:
@@ -108,7 +105,7 @@ def align_sentences(document1, document2):
                     document2_sentence_index = i + 1
                     break
 
-    with open(f"./out/compare.txt", "w") as file:
+    with open(f"./out/compare_{name}.txt", "w") as file:
         for line in output:
             print(line)
             file.write(line + "\n")
@@ -138,14 +135,26 @@ def test() -> int:
     document1 = documents[0]
     document2 = documents[1]
 
-    fixed_document = align_sentences(document1, document2)
+    fixed_document1_a = align_sentences(document1, document2, "english_windinthewillows_grahame_rll_64kb_1")
+    fixed_document2_a = align_sentences(document2, fixed_document1_a, "english_windinthewillows_grahame_rll_64kb_2")
 
-    documents.append(fixed_document)
+    fixed_document1_b = align_sentences(document2, document1, "english_windinthewillows_grahame_rll_8khz_16kb_9.2.0_1")
+    fixed_document2_b = align_sentences(document1, fixed_document1_b, "english_windinthewillows_grahame_rll_8khz_16kb_9.2.0_2")
+
+
+    documents.append(fixed_document1_a)
+    documents.append(fixed_document2_a)
+    documents.append(fixed_document1_b)
+    documents.append(fixed_document2_b)
 
     for document in documents:
         out_path = os.path.splitext(os.path.basename(document.path))[0]
 
-        sentence_by_sentence(out_path, document)
+        output = sentence_by_sentence(document)
+        with open(f"./out/{out_path}.txt", "w") as file:
+            for line in output:
+                print(line)
+                file.write(line + "\n")    
 
     return 0
 
