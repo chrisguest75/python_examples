@@ -5,6 +5,7 @@ def test_load_words():
     # Arrange
     doc = Document()
     doc.process_file("./tests/data/test1.json")
+    # Assert
     assert len(doc.words) == 2
     assert doc.words[0]["word"] == "Extract" and doc.words[0]["type"] == "word"
     assert doc.words[1]["word"] == "from" and doc.words[1]["type"] == "word"
@@ -13,7 +14,7 @@ def test_confidence_selection():
     # Arrange
     doc = Document()
     doc.process_file("./tests/data/test2.json")
-
+    # Assert
     assert len(doc.words) == 2
     assert doc.words[0]["word"] == "Extract"
     assert doc.words[1]["word"] == "from"
@@ -22,7 +23,7 @@ def test_extract_sentence():
     # Arrange
     doc = Document()
     doc.process_file("./tests/data/test3.json")
-
+    # Assert
     assert len(doc.words) == 5
     assert doc.words[0]["word"] == "Extract" and  doc.words[0]["type"] == "word"
     assert doc.words[1]["word"] == "from" and doc.words[1]["type"] == "word"

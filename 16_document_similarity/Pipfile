@@ -21,6 +21,6 @@ python_version = "3.11"
 
 [scripts]
 "start" = "python main.py"
-"start:test" = "python main.py --test"
+"start:process" = "python main.py --process --truth \"./documents/english_windinthewillows_grahame_rll_64kb.mp3.json\" --test \"./documents/english_windinthewillows_grahame_rll_8khz_16kb_9.2.0.m4a.json\""
 test = "pytest"
 lint = "flake8"

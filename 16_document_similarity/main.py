@@ -7,8 +7,8 @@ import traceback
 import yaml
 import os
 
-from process_documents import process_documents, calculate_similarity
 from document.document import Document
+from process_documents import calculate_similarity, normalise_document_sentences
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -29,96 +29,28 @@ def str2bool(value: str) -> bool:
     return value.lower() in ("yes", "true", "t", "1")
 
 
-def align_sentences(document1, document2, name: str, threshold=0.25):
-    output = []
-    fixed_document = Document(name, document2.base)
-    fixed_document.path = name
-    document2_sentence_index = 0
-
-    for sentence in document1.sentences:
-        if len(sentence) == 0:
-            continue
-
-        start_time = sentence[0]["start_time"]
-        end_time = sentence[-1]["end_time"]
-
-        d2_start_time = document2.sentences[document2_sentence_index][0]["start_time"]
-        d2_end_time = document2.sentences[document2_sentence_index][-1]["end_time"]
-    
-        if abs(start_time - d2_start_time) <= threshold and abs(end_time - d2_end_time) <= threshold:
-            # Start time is within the threshold
-            output.append(f"Match: {start_time:0>9.3f} - {end_time:0>9.3f} with {d2_start_time:0>9.3f} - {d2_end_time:0>9.3f}")
-
-            line1 = Document.sentence_to_line(sentence)
-            line2 = Document.sentence_to_line(document2.sentences[document2_sentence_index])
-            fixed_document.sentences.append(document2.sentences[document2_sentence_index])
-            output.append(line1)
-            output.append(line2)
-
-            document2_sentence_index += 1
-        else:
-            # Start time is not within the threshold
-            #output.append(f"No match: {start_time:0>9.3f} - {end_time:0>9.3f} with {d2_start_time:0>9.3f} - {d2_end_time:0>9.3f}")
-            start_index = document2_sentence_index
-            line2 = []
-
-            for i in range(start_index, len(document2.sentences)):
-                if len(document2.sentences[i]) == 0:
-                    continue
-                d2_end_time = document2.sentences[i][-1]["end_time"]
-                line2 = line2 + document2.sentences[i]
-
-                if abs(end_time - d2_end_time) <= threshold:
-                    output.append(f"Match: {start_time:0>9.3f} - {end_time:0>9.3f} with {d2_start_time:0>9.3f} - {d2_end_time:0>9.3f}")
-                    output.append(Document.sentence_to_line(sentence))
-                    output.append(Document.sentence_to_line(line2))
-                    fixed_document.sentences.append(line2)
-                    document2_sentence_index = i + 1
-                    break
-
-    # with open(f"./out/compare_{name}.txt", "w") as file:
-    #     for line in output:
-    #         print(line)
-    #         file.write(line + "\n")
-
-    return fixed_document
-
-
-def test() -> int:
+def process_documents(truth_document_path: str, test_document_path: str) -> int:
     """test function"""
     logger = logging.getLogger()
-    test_config = os.environ["TEST_CONFIG"]
-    logger.info(f"Invoked test function - TEST_CONFIG='{test_config}'")
-
-    file1 = f"./documents/english_windinthewillows_grahame_rll_64kb.mp3.json"
-    file2 = f"./documents/english_windinthewillows_grahame_rll_8khz_16kb_9.2.0.m4a.json"
+    #test_config = os.environ["TEST_CONFIG"]
+    #logger.info(f"Invoked test function - TEST_CONFIG='{test_config}'")
 
     # Create the "out" folder if it doesn't exist
     if not os.path.exists("./out"):
         os.mkdir("./out")    
 
-    in_paths= [
-        file1,
-        file2,
-    ]
+    truth_document = Document("truth", truth_document_path)
+    truth_document.process_file(truth_document_path)
+    test_document = Document("test", test_document_path)
+    test_document.process_file(test_document_path)
 
-    documents = process_documents(in_paths)
-    document1 = documents[0]
-    document2 = documents[1]
+    fixed_truth_document, fixed_test_document = normalise_document_sentences(truth_document, test_document)
 
-    fixed_document1_a = align_sentences(document1, document2, "english_windinthewillows_grahame_rll_64kb_1")
-    fixed_document2_a = align_sentences(document2, fixed_document1_a, "english_windinthewillows_grahame_rll_64kb_2")
-
-    fixed_document1_b = align_sentences(document2, document1, "english_windinthewillows_grahame_rll_8khz_16kb_9.2.0_1")
-    fixed_document2_b = align_sentences(document1, fixed_document1_b, "english_windinthewillows_grahame_rll_8khz_16kb_9.2.0_2")
-
-
-    documents.append(fixed_document1_a)
-    documents.append(fixed_document2_a)
+    documents = []
+    documents.append(fixed_truth_document)
 
     # the b documents are now aligned with each other.  
-    documents.append(fixed_document1_b)
-    documents.append(fixed_document2_b)
+    documents.append(fixed_test_document)
 
     for document in documents:
         out_path = os.path.splitext(os.path.basename(document.path))[0]
@@ -129,11 +61,10 @@ def test() -> int:
                 print(line)
                 file.write(line + "\n")    
 
-    write_similarity_results(fixed_document2_a, fixed_document2_b, f"./out/results_1_2.txt")
-    write_similarity_results(fixed_document2_b, fixed_document2_a, f"./out/results_2_1.txt")
-
+    write_similarity_results(fixed_truth_document, fixed_test_document, f"./out/results_1_2.txt")
 
     return 0
+
 
 def write_similarity_results(truth_document: Document, document: Document, out_path: str):
     results = calculate_similarity(truth_document, document)
@@ -164,13 +95,15 @@ def main() -> int:
 
     sys.excepthook = log_uncaught_exceptions
 
-    parser = argparse.ArgumentParser(description="CLI Skeleton")
-    parser.add_argument("--test", dest="test", action="store_true")
+    parser = argparse.ArgumentParser(description="Process documents")
+    parser.add_argument("--truth", dest="truth", type=str, help="The source of truth document we're aiming to match")
+    parser.add_argument("--test", dest="test", type=str, help="The document to test against the truth document")
+    parser.add_argument("--process", dest="process", action="store_true", help="Process the documents" )
     args = parser.parse_args()
 
     success = 0
-    if args.test:
-        success = test()
+    if args.process:
+        success = process_documents(args.truth, args.test)
     else:
         parser.print_help()
 

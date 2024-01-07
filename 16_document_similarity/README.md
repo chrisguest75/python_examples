@@ -39,8 +39,8 @@ pipenv shell
 cp .env.template .env
 
 # run with arguments
-pipenv run start --test
-pipenv run start:test 
+pipenv run start --process --process --truth "./documents/english_windinthewillows_grahame_rll_64kb.mp3.json" --test "./documents/english_windinthewillows_grahame_rll_8khz_16kb_9.2.0.m4a.json"
+pipenv run start:process 
 ```
 
 ## Debugging and Troubleshooting
