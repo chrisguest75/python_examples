@@ -1,0 +1,36 @@
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Extract",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 0.66,
+      "start_time": 0.06,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 0.5,
+          "content": "for",
+          "language": "en",
+          "speaker": "UU"
+        },
+        {
+          "confidence": 1.0,
+          "content": "from",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 0.84,
+      "start_time": 0.66,
+      "type": "word"
+    }
+  ]
+}

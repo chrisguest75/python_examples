@@ -1,0 +1,77 @@
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Extract",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 0.66,
+      "start_time": 0.06,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 0.5,
+          "content": "for",
+          "language": "en",
+          "speaker": "UU"
+        },
+        {
+          "confidence": 1.0,
+          "content": "from",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 0.84,
+      "start_time": 0.66,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": ".",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "attaches_to": "previous",
+      "end_time": 8.67,
+      "is_eos": true,
+      "start_time": 8.67,
+      "type": "punctuation"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Hello",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 0.66,
+      "start_time": 0.06,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "world",
+          "language": "en",
+          "speaker": "UU"
+        }
+      ],
+      "end_time": 0.84,
+      "start_time": 0.66,
+      "type": "word"
+    }
+  ]
+}
