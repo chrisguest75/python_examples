@@ -1,13 +1,18 @@
-from document.document import Document
+import os
 import jiwer
 
+from document.document import Document
+
+import os
 
 def normalise_document_sentences(truth_document, test_document):
-    fixed_test_document1 = align_sentences(truth_document, test_document, "english_windinthewillows_grahame_rll_64kb_1")
-    fixed_test_document2 = align_sentences(test_document, fixed_test_document1, "english_windinthewillows_grahame_rll_64kb_2")
+    truth_filename = os.path.basename(truth_document.path)
+    test_filename = os.path.basename(test_document.path)
+    fixed_test_document1 = align_sentences(truth_document, test_document, f"{test_filename}_aligned_1")
+    fixed_test_document2 = align_sentences(test_document, fixed_test_document1, f"{test_filename}_aligned_2")
 
-    fixed_truth_document1 = align_sentences(test_document, truth_document, "english_windinthewillows_grahame_rll_8khz_16kb_9.2.0_1")
-    fixed_truth_document2 = align_sentences(truth_document, fixed_truth_document1, "english_windinthewillows_grahame_rll_8khz_16kb_9.2.0_2")
+    fixed_truth_document1 = align_sentences(test_document, truth_document, f"{truth_filename}_aligned_1")
+    fixed_truth_document2 = align_sentences(truth_document, fixed_truth_document1, f"{truth_filename}_aligned_2")
     return fixed_truth_document2, fixed_test_document2
 
 def align_sentences(document1, document2, name: str, threshold=0.25):

@@ -39,18 +39,26 @@ def process_documents(truth_document_path: str, test_document_path: str) -> int:
     if not os.path.exists("./out"):
         os.mkdir("./out")    
 
-    truth_document = Document("truth", truth_document_path)
-    truth_document.process_file(truth_document_path)
-    test_document = Document("test", test_document_path)
-    test_document.process_file(test_document_path)
+    try:
+        truth_document = Document("truth", truth_document_path)
+        truth_document.process_file(truth_document_path)
+        test_document = Document("test", test_document_path)
+        test_document.process_file(test_document_path)
+    except Exception as e:
+        logger.error(f"Failed to process documents: {e}")
+        return 1
 
     fixed_truth_document, fixed_test_document = normalise_document_sentences(truth_document, test_document)
 
     documents = []
-    documents.append(fixed_truth_document)
 
-    # the b documents are now aligned with each other.  
+    documents.append(fixed_truth_document)
     documents.append(fixed_test_document)
+
+    documents.append(truth_document)
+    truth_document.path = "truth_original"
+    documents.append(test_document)
+    test_document.path = "test_original"
 
     for document in documents:
         out_path = os.path.splitext(os.path.basename(document.path))[0]
@@ -73,9 +81,9 @@ def write_similarity_results(truth_document: Document, document: Document, out_p
             file.write(f"WER:{result['wer']:.2f} MER:{result['mer']:.2f} WIL:{result['wil']:.2f} WIP:{result['wip']:.2f}\n")  
             file.write(f"{result['truth']}\n")
             file.write(f"{result['line']}\n")
-            print(f"WER:{result['wer']:.2f} MER:{result['mer']:.2f} WIL:{result['wil']:.2f} WIP:{result['wip']:.2f}")
-            print(f"{result['truth']}")
-            print(f"{result['line']}")
+            #print(f"WER:{result['wer']:.2f} MER:{result['mer']:.2f} WIL:{result['wil']:.2f} WIP:{result['wip']:.2f}")
+            #print(f"{result['truth']}")
+            #print(f"{result['line']}")
 
 
 def main() -> int:
