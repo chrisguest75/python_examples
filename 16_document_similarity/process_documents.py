@@ -35,15 +35,14 @@ def align_sentences(document1: Document, document2: Document, name: str, thresho
 
         start_time = sentence[0]["start_time"]
         end_time = sentence[-1]["end_time"]
-        if document2_sentence_index >= len(document2.sentences):
+        if document2_sentence_index >= len(document2.sentences) or len(document2.sentences[document2_sentence_index]) == 0:
             line1 = Document.sentence_to_line(sentence)
             line2 = ""
             output.append(line1)
             output.append(line2)
             document2_sentence_index += 1
             continue
-
-        # else:
+        
         d2_start_time = document2.sentences[document2_sentence_index][0]["start_time"]
         d2_end_time = document2.sentences[document2_sentence_index][-1]["end_time"]
     
@@ -83,52 +82,10 @@ def align_sentences(document1: Document, document2: Document, name: str, thresho
     #         print(line)
     #         file.write(line + "\n")
 
+    # copy the rest of the sentences from document2
+    for i in range(document2_sentence_index, len(document2.sentences)):
+        fixed_document.sentences.append(document2.sentences[i])
+
     return fixed_document
 
 
-def calculate_similarity(truth_document: Document, document: Document) -> list:
-    """Calculates the similarity between two documents."""
-    truth_doc_lines = Document.sentence_by_sentence(truth_document, add_headers=False, include_time=False)
-    doc_lines = Document.sentence_by_sentence(document, add_headers=False, include_time=False)
-
-    results = []
-    whole_truth = ""
-    whole = ""
-    for index, truth_line in enumerate(truth_doc_lines):
-        if index >= len(doc_lines):
-            break
-
-        whole_truth += truth_line + " "
-        whole += doc_lines[index] + " "
-
-        output = jiwer.process_words(truth_line, doc_lines[index])
-        wer = output.wer
-        mer = output.mer
-        wil = output.wil
-        wip = output.wip
-
-        result = {}
-        result["truth"] = truth_line
-        result["line"] = doc_lines[index]
-        result["wer"] = wer
-        result["mer"] = mer
-        result["wil"] = wil
-        result["wip"] = wip
-        results.append(result)
-
-    output = jiwer.process_words(whole_truth, whole)
-    wer = output.wer
-    mer = output.mer
-    wil = output.wil
-    wip = output.wip
-
-    result = {}
-    result["truth"] = whole_truth
-    result["line"] = whole
-    result["wer"] = wer
-    result["mer"] = mer
-    result["wil"] = wil
-    result["wip"] = wip
-    results.append(result)
-
-    return results

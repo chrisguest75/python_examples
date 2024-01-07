@@ -13,13 +13,14 @@ def test_alignment_empty_test_document():
     test_document = Document()
     test_document.process_file("./tests/data/empty.json")
     assert len(test_document.words) == 0
+    assert len(test_document.sentences) <= 1
     # Act
     fixed_truth_document, fixed_test_document = normalise_document_sentences(truth_document, test_document)
     #assert len(truth_document.words) == len(test_document.words)
 
     # Assert
-    assert len(fixed_truth_document.sentences) == 0
-    assert len(fixed_test_document.sentences) == 0
+    assert len(fixed_truth_document.sentences) == len(truth_document.sentences)
+    assert len(fixed_test_document.sentences) <= len(test_document.sentences)
 
 
 def test_alignment_same_document():
@@ -81,7 +82,7 @@ def test_alignment_truth_truncated():
     truth_document.process_file("./tests/data/test4_a_truncated.json")
     test_document = Document()
     test_document.process_file("./tests/data/test4_a.json")
-    assert len(truth_document.words) > len(test_document.words)
+    assert len(truth_document.words) < len(test_document.words)
     # Act
     fixed_truth_document, fixed_test_document = normalise_document_sentences(truth_document, test_document)
 

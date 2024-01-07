@@ -8,7 +8,8 @@ import yaml
 import os
 
 from document.document import Document
-from process_documents import calculate_similarity, normalise_document_sentences
+from process_documents import normalise_document_sentences
+from similarity import Similarity
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -75,15 +76,11 @@ def process_documents(truth_document_path: str, test_document_path: str) -> int:
 
 
 def write_similarity_results(truth_document: Document, document: Document, out_path: str):
-    results = calculate_similarity(truth_document, document)
+    results = Similarity().calculate(truth_document, document)
     with open(out_path, "w") as file:
-        for result in results:
-            file.write(f"WER:{result['wer']:.2f} MER:{result['mer']:.2f} WIL:{result['wil']:.2f} WIP:{result['wip']:.2f}\n")  
-            file.write(f"{result['truth']}\n")
-            file.write(f"{result['line']}\n")
-            #print(f"WER:{result['wer']:.2f} MER:{result['mer']:.2f} WIL:{result['wil']:.2f} WIP:{result['wip']:.2f}")
-            #print(f"{result['truth']}")
-            #print(f"{result['line']}")
+        file.write(f"{results.overall}\n")  
+        for result in results.sentences:
+            file.write(f"{result}\n")  
 
 
 def main() -> int:
