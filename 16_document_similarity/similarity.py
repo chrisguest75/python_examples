@@ -5,16 +5,29 @@ from document.document import Document
 
 class SimilarityResult:
     def __init__(self):
-        self.wer = 0
-        self.mer = 0
-        self.wil = 0
-        self.wip = 0
+        # representing no errors
+        self.wer = 0.0
+        self.mer = 0.0
+        self.wil = 0.0
+        self.wip = 1.0
         self.truth = ""
         self.line = ""
 
     def calculate(self, truth="", line=""):
         self.truth = truth
         self.line = line
+
+        if (truth.isspace() and line.isspace()) or (truth == "" and line == ""):
+            return
+
+        if (truth.isspace() or line.isspace()) or (truth == "" or line == ""):
+            # representing errors
+            self.wer = 1.0
+            self.mer = 1.0
+            self.wil = 1.0
+            self.wip = 0.0
+            return
+
         output = jiwer.process_words(self.truth, self.line)
         self.wer = output.wer
         self.mer = output.mer
@@ -38,6 +51,7 @@ class Similarity:
 
         whole_truth = ""
         whole = ""
+        document_sentence_index = 0
         for index, truth_line in enumerate(truth_doc_lines):
             if index >= len(doc_lines):
                 line = ""
@@ -45,6 +59,18 @@ class Similarity:
                 line = doc_lines[index]
 
             whole_truth += truth_line + " "
+            whole += line + " "
+
+            result = SimilarityResult()
+            result.calculate(truth_line, line)
+            self.sentences.append(result)
+            document_sentence_index += 1
+
+        # copy the rest of the sentences from document2
+        for i in range(document_sentence_index, len(doc_lines)):
+            truth_line = " "
+            line = doc_lines[i]
+            whole_truth += truth_line
             whole += line + " "
 
             result = SimilarityResult()
