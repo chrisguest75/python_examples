@@ -3,19 +3,20 @@ import jiwer
 
 from document.document import Document
 
-import os
-
-def normalise_document_sentences(truth_document, test_document):
+def normalise_document_sentences(truth_document: Document, test_document: Document) -> (Document, Document):
     truth_filename = os.path.basename(truth_document.path)
     test_filename = os.path.basename(test_document.path)
+
     fixed_test_document1 = align_sentences(truth_document, test_document, f"{test_filename}_aligned_1")
     fixed_test_document2 = align_sentences(test_document, fixed_test_document1, f"{test_filename}_aligned_2")
 
     fixed_truth_document1 = align_sentences(test_document, truth_document, f"{truth_filename}_aligned_1")
     fixed_truth_document2 = align_sentences(truth_document, fixed_truth_document1, f"{truth_filename}_aligned_2")
+
     return fixed_truth_document2, fixed_test_document2
 
-def align_sentences(document1, document2, name: str, threshold=0.25):
+
+def align_sentences(document1: Document, document2: Document, name: str, threshold=0.25) -> Document:
     '''
     Aligns the sentences in document1 with the sentences in document2.
     Takes a sentence and a sentence from document2 and compares the start and end times.
@@ -34,7 +35,15 @@ def align_sentences(document1, document2, name: str, threshold=0.25):
 
         start_time = sentence[0]["start_time"]
         end_time = sentence[-1]["end_time"]
+        if document2_sentence_index >= len(document2.sentences):
+            line1 = Document.sentence_to_line(sentence)
+            line2 = ""
+            output.append(line1)
+            output.append(line2)
+            document2_sentence_index += 1
+            continue
 
+        # else:
         d2_start_time = document2.sentences[document2_sentence_index][0]["start_time"]
         d2_end_time = document2.sentences[document2_sentence_index][-1]["end_time"]
     
@@ -77,7 +86,7 @@ def align_sentences(document1, document2, name: str, threshold=0.25):
     return fixed_document
 
 
-def calculate_similarity(truth_document: Document, document: Document):
+def calculate_similarity(truth_document: Document, document: Document) -> list:
     """Calculates the similarity between two documents."""
     truth_doc_lines = Document.sentence_by_sentence(truth_document, add_headers=False, include_time=False)
     doc_lines = Document.sentence_by_sentence(document, add_headers=False, include_time=False)

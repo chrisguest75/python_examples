@@ -4,7 +4,7 @@ from document.document import Document
 def test_load_words():
     # Arrange
     doc = Document()
-    doc.process_file("./tests/data/test1.json")
+    doc.process_file("./tests/data/no_punctuation.json")
     # Assert
     assert len(doc.words) == 2
     assert doc.words[0]["word"] == "Extract" and doc.words[0]["type"] == "word"
@@ -13,7 +13,7 @@ def test_load_words():
 def test_confidence_selection():
     # Arrange
     doc = Document()
-    doc.process_file("./tests/data/test2.json")
+    doc.process_file("./tests/data/alternatives.json")
     # Assert
     assert len(doc.words) == 2
     assert doc.words[0]["word"] == "Extract"
@@ -22,7 +22,7 @@ def test_confidence_selection():
 def test_extract_sentence():
     # Arrange
     doc = Document()
-    doc.process_file("./tests/data/test3.json")
+    doc.process_file("./tests/data/two_sentences.json")
     # Assert
     assert len(doc.words) == 5
     assert doc.words[0]["word"] == "Extract" and  doc.words[0]["type"] == "word"
