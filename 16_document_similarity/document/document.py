@@ -37,6 +37,7 @@ class Document:
             highest_confidence = max(alternatives, key=lambda x: x["confidence"])
             item = {}
             item["word"] = highest_confidence["content"]
+            item["speaker"] = highest_confidence["speaker"]
             item["type"] = word["type"]
             item["start_time"] = word["start_time"]
             item["end_time"] = word["end_time"]
@@ -48,8 +49,17 @@ class Document:
         """Extracts the sentences from the document."""
         sentences = []
         sentence = []
+        current_speaker = None
         for word in words:
-            if word["word"] == ".":
+            if current_speaker == None:
+                current_speaker = word["speaker"]
+            if word["speaker"] != current_speaker:
+                current_speaker = word["speaker"]
+                sentences.append(sentence)
+                sentence = [word]
+            elif word["word"] == ".":
+                current_speaker = word["speaker"]
+                current_speaker = None
                 sentence.append(word)
                 sentences.append(sentence)
                 sentence = []
@@ -68,7 +78,8 @@ class Document:
         if include_time:
             start_time = sentence[0]["start_time"]
             end_time = sentence[-1]["end_time"]
-            line = f"{start_time:0>9.3f} - {end_time:0>9.3f} "
+            speaker = sentence[0]["speaker"]
+            line = f"{start_time:0>9.3f} - {end_time:0>9.3f} {speaker} "
 
         start = ""
         for word in sentence:

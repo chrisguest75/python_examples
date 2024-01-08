@@ -1,0 +1,337 @@
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "confidence": 0.89,
+          "content": "It",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "end_time": 0.38,
+      "start_time": 0.33,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "recordings",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "end_time": 1.35,
+      "start_time": 0.78,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "in",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "end_time": 1.47,
+      "start_time": 1.35,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "the",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "end_time": 1.56,
+      "start_time": 1.47,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": ".",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "attaches_to": "previous",
+      "end_time": 2.34,
+      "is_eos": true,
+      "start_time": 2.34,
+      "type": "punctuation"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "And",
+          "language": "en",
+          "speaker": "S2"
+        }
+      ],
+      "end_time": 25.29,
+      "start_time": 25.05,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": ",",
+          "language": "en",
+          "speaker": "S2"
+        }
+      ],
+      "attaches_to": "previous",
+      "end_time": 25.68,
+      "is_eos": false,
+      "start_time": 25.68,
+      "type": "punctuation"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "the",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "end_time": 26.04,
+      "start_time": 25.89,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Angel",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "end_time": 26.34,
+      "start_time": 26.04,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "of",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "end_time": 26.43,
+      "start_time": 26.34,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "the",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "end_time": 26.52,
+      "start_time": 26.43,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Lord",
+          "language": "en",
+          "speaker": "S2"
+        }
+      ],
+      "end_time": 26.88,
+      "start_time": 26.52,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "stood",
+          "language": "en",
+          "speaker": "S2"
+        }
+      ],
+      "end_time": 27.21,
+      "start_time": 26.88,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 0.67,
+          "content": "hard",
+          "language": "en",
+          "speaker": "S2"
+        }
+      ],
+      "end_time": 27.48,
+      "start_time": 27.21,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": ".",
+          "language": "en",
+          "speaker": "S2"
+        }
+      ],
+      "attaches_to": "previous",
+      "end_time": 27.48,
+      "is_eos": true,
+      "start_time": 27.48,
+      "type": "punctuation"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "By",
+          "language": "en",
+          "speaker": "S2"
+        }
+      ],
+      "end_time": 27.75,
+      "start_time": 27.49,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 0.9,
+          "content": "there",
+          "language": "en",
+          "speaker": "S2"
+        }
+      ],
+      "end_time": 28.02,
+      "start_time": 27.75,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "the",
+          "language": "en",
+          "speaker": "S2"
+        }
+      ],
+      "end_time": 28.65,
+      "start_time": 28.5,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "brightness",
+          "language": "en",
+          "speaker": "S2"
+        }
+      ],
+      "end_time": 29.1,
+      "start_time": 28.65,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "of",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "end_time": 29.19,
+      "start_time": 29.1,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "the",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "end_time": 29.28,
+      "start_time": 29.19,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "Lord",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "end_time": 29.67,
+      "start_time": 29.28,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "shone",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "end_time": 30.0,
+      "start_time": 29.67,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": "around",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "end_time": 30.24,
+      "start_time": 30.0,
+      "type": "word"
+    },
+    {
+      "alternatives": [
+        {
+          "confidence": 1.0,
+          "content": ".",
+          "language": "en",
+          "speaker": "S1"
+        }
+      ],
+      "attaches_to": "previous",
+      "end_time": 38.14,
+      "is_eos": true,
+      "start_time": 38.14,
+      "type": "punctuation"
+    }
+  ]
+}
