@@ -57,7 +57,7 @@ class Document:
                 current_speaker = word["speaker"]
                 sentences.append(sentence)
                 sentence = [word]
-            elif word["word"] == ".":
+            elif word["word"] == "." or word["word"] == "?" or word["word"] == "!":
                 current_speaker = word["speaker"]
                 current_speaker = None
                 sentence.append(word)
