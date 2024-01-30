@@ -1,5 +1,5 @@
 Metadata-Version: 2.1
-Name: game-of-life-package
+Name: game_of_life_package
 Version: 0.0.1
 Summary: A package for creating game of life boards.
 Home-page: https://github.com/chrisguest75/python_examples/tree/master/02_game_of_life_package/game_of_life_package

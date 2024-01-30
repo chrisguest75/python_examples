@@ -1,5 +1,6 @@
 from distutils.core import setup
 
+# WARNING: Also update the version in the init.py file for game-of-life-package
 setup(
     name="game_of_life_package",
     version="0.0.1",

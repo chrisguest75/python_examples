@@ -2,6 +2,8 @@ import argparse
 import curses
 import os
 import random
+import sys
+import game_of_life_package
 from game_of_life_package.board import Board
 from game_of_life_package.cell_parser import CellParser
 
@@ -86,10 +88,26 @@ if __name__ == "__main__":
     parser.add_argument(
         "--info", dest="info", action="store_true", help="Info on cell file"
     )
+    parser.add_argument(
+        "--version", dest="version", action="store_true", help="Print versions"
+    )    
     args = parser.parse_args()
 
     if args.list:
         list_cells()
+
+    if args.version:
+        versions = []
+        for module_name, module in sys.modules.items():
+            try:
+                versions.append((module_name, module.__version__))
+            except AttributeError:
+                versions.append((module_name, "no version"))
+                # This module doesn't have a __version__ attribute
+                pass
+        print(f"Python version: {sys.version}")
+        print(f"Package versions:{versions}")
+
     elif args.file:
         cell_path = f"{os.path.dirname(os.path.realpath(__file__))}/cells/{args.file}"
         if args.info:
