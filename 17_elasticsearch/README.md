@@ -2,17 +2,27 @@
 
 Demonstrate a simple elasticsearch example.
 
+NOTES:
+
+- Kibana Stack Management -> Index Management -> Indices
+- Create a data view
+
 ## Elasticsearch
 
 ```sh
-docker run -p 9200:9200 -d --name elasticsearch \
+docker network create elastic
+
+docker run --rm -p 9200:9200 -d --net elastic --name elasticsearch \
   -e "discovery.type=single-node" \
   -e "xpack.security.enabled=false" \
   -e "xpack.security.http.ssl.enabled=false" \
-  -e "xpack.license.self_generated.type=trial" \
-  docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+  -e "xpack.license.self_generated.type=basic" \
+  docker.elastic.co/elasticsearch/elasticsearch:8.12.1
 
-open http://localhost:9200
+docker run --rm --env-file elastic.env --net elastic --name kibana -p 5601:5601 docker.elastic.co/kibana/kibana:8.12.1
+
+open http://0.0.0.0:9200
+open http://0.0.0.0:5601
 ```
 
 ## Start
@@ -35,6 +45,13 @@ cp .env.template .env
 # run with arguments
 pipenv run start --test
 pipenv run start:test
+```
+
+## Cleanup
+
+```sh
+docker stop elasticsearch
+docker stop kibana
 ```
 
 ## Debugging and Troubleshooting
@@ -63,4 +80,5 @@ pipenv install elasticsearch
 
 ## Resources
 
-- https://www.elastic.co/search-labs/tutorials/search-tutorial/welcome
+- Search Tutorial [here](https://www.elastic.co/search-labs/tutorials/search-tutorial/welcome)
+- elastic/elasticsearch docker examples [here](https://github.com/elastic/elasticsearch/tree/8.12/docs/reference/setup/install/docker)

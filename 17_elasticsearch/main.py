@@ -35,7 +35,7 @@ def test() -> int:
     logger.info(f"Invoked test function - TEST_CONFIG='{test_config}'")
 
     # Initialize Elasticsearch client
-    es = Elasticsearch("http://localhost:9200")
+    es = Elasticsearch("http://0.0.0.0:9200")
 
     # Define the index name
     index_name = "markdown_documents"
