@@ -14,11 +14,11 @@ cookiecutter --version
 ## Usage
 
 ```sh
-mkdir -p ./xx_my_new_project
+# in root
+cd $(git root)
 
-cd ./xx_my_new_project
-
-cookiecutter $(pwd)/../01_simple_cli_cookiecutter
+# it will create directory of project name
+cookiecutter $(pwd)/01_simple_cli_cookiecutter
 ```
 
 ## Resources
