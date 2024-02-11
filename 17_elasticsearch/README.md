@@ -7,6 +7,10 @@ NOTES:
 - Kibana Stack Management -> Index Management -> Indices
 - Create a data view
 
+TODO:
+
+- Create searches.
+
 ## Elasticsearch
 
 ```sh
@@ -43,7 +47,7 @@ pipenv shell
 cp .env.template .env
 
 # run with arguments
-pipenv run start --test
+pipenv run start --load
 pipenv run start:test
 ```
 

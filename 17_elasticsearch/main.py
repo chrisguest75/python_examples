@@ -8,6 +8,7 @@ import yaml
 import os
 
 from elasticsearch import Elasticsearch
+from typing import List
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -27,36 +28,49 @@ def str2bool(value: str) -> bool:
     """ converts strings representing truth to bool """ ""
     return value.lower() in ("yes", "true", "t", "1")
 
+def find_md_files(directory: str) -> List[str]:
+    """Find all .md files in a directory and its subdirectories"""
+    md_files = []
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith(".md"):
+                md_files.append(os.path.join(root, file))
+    return md_files
 
-def test() -> int:
+def load_md_files(es, files):
+    """Load all .md files into Elasticsearch"""
+
+    for file in files:
+        logging.info(f"Loading {file}")
+        with open(file, 'r') as f:
+            content = f.read()
+            doc = {
+                "content": content,
+                "title": file,
+                "date": "2023-02-01"
+            }
+            res = es.index(index="markdown_documents", document=doc)
+            logging.info(res['result'])
+    
+
+def load() -> int:
     """test function"""
     logger = logging.getLogger()
     test_config = os.environ["TEST_CONFIG"]
     logger.info(f"Invoked test function - TEST_CONFIG='{test_config}'")
 
-    # Initialize Elasticsearch client
-    es = Elasticsearch("http://0.0.0.0:9200")
 
-    # Define the index name
-    index_name = "markdown_documents"
+    files = find_md_files("../")
+    logging.info(f"Found {len(files)} markdown files")
 
-    # Read Markdown file
-    markdown_file_path = 'README.md'
-    with open(markdown_file_path, 'r') as file:
-        markdown_content = file.read()
+    try:
+        # Initialize Elasticsearch client
+        es = Elasticsearch("http://0.0.0.0:9200")
 
-    # Document to be indexed
-    doc = {
-        "content": markdown_content,  # or markdown_content if you prefer raw Markdown
-        "title": "README",  # Extract or define your title
-        "date": "2023-02-01"  # Define or extract the date
-    }
-
-    # Index the document
-    res = es.index(index=index_name, document=doc)
-
-    # Output the result
-    logging.info(res['result'])
+        load_md_files(es, files)
+    except Exception as e:
+        logging.error(f"Error: {e}")
+        return 1
 
     return 0
 
@@ -79,12 +93,12 @@ def main() -> int:
     sys.excepthook = log_uncaught_exceptions
 
     parser = argparse.ArgumentParser(description="Elasticsearch")
-    parser.add_argument("--test", dest="test", action="store_true")
+    parser.add_argument("--load", dest="load", action="store_true")
     args = parser.parse_args()
 
     success = 0
-    if args.test:
-        success = test()
+    if args.load:
+        success = load()
     else:
         parser.print_help()
 
