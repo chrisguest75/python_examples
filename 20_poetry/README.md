@@ -7,6 +7,10 @@ Demonstrates:
 - argument parsing
 - docstrings
 
+NOTES:
+
+- Check with pyenv that the version is installed. `pyenv install` 
+
 TODO:
 
 - It's not working - when you do run it fails to find pyyaml
@@ -27,6 +31,7 @@ export POETRY_VIRTUALENVS_IN_PROJECT=1
 export POETRY_VIRTUALENVS_CREATE=1
 
 # install
+pyenv install
 poetry install
 
 # lint and test code
