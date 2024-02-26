@@ -79,12 +79,42 @@ pipenv --rm
 
 ### Troubleshooting
 
+If you're pip.conf gets overwritten.  
+
 ```sh
 # pip input-url
 cat $HOME/.config/pip/pip.conf
 
 > [global]
 > index-url = https://pypi.org/simple
+```
+
+If `pyenv` fails to install a version of python with build errors
+
+NOTE: This still seems to fail with the tk libraries.  
+
+```sh
+sudo apt update
+sudo apt install \
+    build-essential \
+    curl \
+    libbz2-dev \
+    libffi-dev \
+    liblzma-dev \
+    libncursesw5-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libssl-dev \
+    libxml2-dev \
+    libxmlsec1-dev \
+    llvm \
+    make \
+    tk-dev \
+    wget \
+    xz-utils \
+    zlib1g-dev \
+    python-tk \
+    python3-tk 
 ```
 
 ### Maintaining
