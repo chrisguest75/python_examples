@@ -24,4 +24,4 @@ docker run -it --entrypoint /busybox/sh --rm python3_distroless
 - Publish :nonroot versions of images [here](https://github.com/GoogleContainerTools/distroless/issues/306)
 - Using unprivileged users [here](https://github.com/GoogleContainerTools/distroless/issues/277)
 - Creating an up-to-date Python Distroless Container Image [here](https://alex-moss.medium.com/creating-an-up-to-date-python-distroless-container-image-e3da728d7a80)
-  https://stackoverflow.com/questions/77175636/building-multi-stage-docker-image-with-a-distroless-base-image-results-in-no-su
+* https://stackoverflow.com/questions/77175636/building-multi-stage-docker-image-with-a-distroless-base-image-results-in-no-su
