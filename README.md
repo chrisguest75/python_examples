@@ -28,24 +28,8 @@ cz init
 
 ### pyenv
 
-REF: pyenv [here](https://github.com/pyenv/pyenv)
-
-```sh
-# install pyenv version manager
-brew install pyenv
-
-# list versions available to install
-pyenv install --list
-
-# install a version
-pyenv install 3.11.1
-
-# list local versions installed
-pyenv versions
-
-# set my global version
-pyenv global 3.11.1
-```
+We use pyenv to host multiple versions of python.  
+Help configuring it REF: [PYENV.md](./PYENV.md).  
 
 ## pipenv
 
@@ -79,7 +63,7 @@ pipenv --rm
 
 ### Troubleshooting
 
-If you're pip.conf gets overwritten.  
+If your pip.conf gets overwritten.  
 
 ```sh
 # pip input-url
@@ -89,32 +73,14 @@ cat $HOME/.config/pip/pip.conf
 > index-url = https://pypi.org/simple
 ```
 
-If `pyenv` fails to install a version of python with build errors
-
-NOTE: This still seems to fail with the tk libraries.  
+Clean down system pip after installing global packages.  
 
 ```sh
-sudo apt update
-sudo apt install \
-    build-essential \
-    curl \
-    libbz2-dev \
-    libffi-dev \
-    liblzma-dev \
-    libncursesw5-dev \
-    libreadline-dev \
-    libsqlite3-dev \
-    libssl-dev \
-    libxml2-dev \
-    libxmlsec1-dev \
-    llvm \
-    make \
-    tk-dev \
-    wget \
-    xz-utils \
-    zlib1g-dev \
-    python-tk \
-    python3-tk 
+pip3 list 
+
+pip3 freeze > ./requirements.txt
+
+pip3 uninstall -r ./requirements.txt --yes
 ```
 
 ### Maintaining
