@@ -18,10 +18,18 @@
           pkgs.python311Packages.pip 
           pkgs.pipenv 
        ];
-      # ...
-  env = {
-    PIPENV_VENV_IN_PROJECT=1;
-  };
+
+      env = {
+        PIPENV_VENV_IN_PROJECT=1;
+      };
+
+      shellHook = ''
+        echo "***************************************************"
+        echo "*** Welcome to python"
+        echo "***************************************************"
+        echo ""
+        python --version
+      '';       
     };
   };
 }
