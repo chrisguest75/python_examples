@@ -14,14 +14,14 @@ Demonstrates:
 Open a pure shell and install packages
 
 ```sh
+nix flake show templates
+
 nix flake new pipenv_flake
 
-# 
+# enter folder 
 cd ./pipenv_flake
 
 nix build 
-
-nix flake show templates
 
 nix flake metadata
 
@@ -29,6 +29,7 @@ nix flake check
 
 nix develop --impure --command bash -c 'python --version'
 
+# enter the flake
 nix develop
 ```
 
