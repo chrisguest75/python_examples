@@ -1,5 +1,17 @@
 # POETRY
 
+*Dependency Management*: Poetry has a more robust and faster dependency resolver and uses a single pyproject.toml file for both dependencies and package configuration. Pipenv, known for being a bit slower in resolving complex dependencies, manages dependencies through Pipfile and Pipfile.lock.  
+
+*Package Publishing*: Poetry supports package building and publishing directly, making it suitable for developers who distribute packages. Pipenv focuses more on application development without native package publishing capabilities.  
+
+*Performance*: Users generally find Poetry to offer better performance, particularly with dependency resolution, compared to Pipenv, which can be slower, especially for larger projects.  
+
+*Lock Files*: Both use lock files (poetry.lock for Poetry and Pipfile.lock for Pipenv) to ensure dependency consistency across environments.  
+
+*User Experience*: Poetry is praised for its simplicity and unified approach to project management and package publishing. Pipenv is user-friendly, particularly for those accustomed to pip and virtualenv, but some find its dual-file approach less convenient.  
+
+*Community and Adoption*: Poetry is rapidly gaining popularity, especially among package maintainers, for its comprehensive toolset. Pipenv, endorsed by the Python Packaging Authority (PyPA), remains popular for application development, despite facing competition from Poetry.  
+
 Demonstrates:
 
 - flake8 linting
@@ -10,6 +22,9 @@ Demonstrates:
 NOTES:
 
 - Check with pyenv that the version is installed. `pyenv install` 
+- Look in the `poetry.toml` for settings
+- `prefer-active-python` means we can use the current version of python.  
+- With a .python_version pyenv will automatically switch directories.  
 
 TODO:
 
@@ -21,7 +36,13 @@ TODO:
 ## Install
 
 ```sh
-brew install poetry
+# DO NOT INSTALL USING BREW
+# brew install poetry
+
+#https://pipx.pypa.io/stable/installation/
+brew install pipx
+pipx install poetry
+pipx ensurepath
 ```
 
 ## Start
@@ -34,9 +55,10 @@ export POETRY_VIRTUALENVS_CREATE=1
 pyenv install
 poetry install
 
-# lint and test code
-poetry run lint
-poetry run test
+. ./.env
+
+# run without entering venv
+poetry run python main.py --test
 
 # enter venv
 poetry shell
@@ -45,13 +67,21 @@ poetry shell
 cp .env.template .env
 
 # run with arguments
-poetry run start --test
-poetry run start:test
+python ./main.py --test
+
+# run simple test
+pytest
+
+# linting
+flake8
 ```
 
 ## Debugging and Troubleshooting
 
 ```sh
+# print out all the versions
+poetry debug info 
+
 # enter python
 poetry run python
 
@@ -72,12 +102,9 @@ poetry add --group dev flake8 flake8-bugbear flake8-2020 black
 poetry add --group dev pytest
 poetry add pyyaml python-json-logger python-dotenv
 
-
-##
+# set python version
 echo "3.11.1" > .python-version
 poetry env use python3.11
-
-
 ```
 
 ## Resources
@@ -86,3 +113,7 @@ poetry env use python3.11
 - Build Command Line Tools with Python Poetry [here](https://dev.to/bowmanjd/build-command-line-tools-with-python-poetry-4mnc)
 - I move from pipenv to poetry in 2023 - Am I right ? [here](https://dev.to/farcellier/i-migrate-to-poetry-in-2023-am-i-right--115)
 - PyEnv & Poetry - BFFs [here](https://dev.to/mattcale/pyenv-poetry-bffs-20k6)
+
+### Issues
+
+* brew install poetry depends on python@3.10 and not using pyenv python (macOS) [here](https://github.com/python-poetry/poetry/issues/5423)  
