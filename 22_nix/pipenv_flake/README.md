@@ -81,6 +81,6 @@ pipenv install pyyaml python-json-logger python-dotenv
 
 ## Resources
 
-* https://nixos.wiki/wiki/Flakes#Output_schema
-* https://ayats.org/blog/nix-workflow/
-* https://discourse.nixos.org/t/locally-excluding-nix-flakes-when-using-nix-independenly-of-upstream/16480
+* Flakes Output Schema [here](https://nixos.wiki/wiki/Flakes#Output_schema)
+* Development workflow with Nix [here](https://ayats.org/blog/nix-workflow/)
+* Locally excluding nix flakes when using nix independenly of upstream [here](https://discourse.nixos.org/t/locally-excluding-nix-flakes-when-using-nix-independenly-of-upstream/16480)
