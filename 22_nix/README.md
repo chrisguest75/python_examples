@@ -27,7 +27,13 @@ cat /etc/nix/nix.conf
 
 Open a pure shell and install packages
 
+### Pipenv
+
 REF: [pipenv_pure/README.md](./pipenv_pure/README.md)
+
+### Poetry
+
+REF: [poetry_pure/README.md](./poetry_pure/README.md)
 
 ## Development (flake)
 
@@ -38,3 +44,4 @@ REF: [pipenv_flake/README.md](./pipenv_flake/README.md)
 ## Resources
 
 * Nix Manual - Python [here](https://nixos.org/manual/nixpkgs/stable/#python)
+* Search more than 80 000 packages [here](https://search.nixos.org/)

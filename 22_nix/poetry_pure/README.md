@@ -26,28 +26,24 @@ NOTES:
 - `prefer-active-python` means we can use the current version of python.  
 - With a .python_version pyenv will automatically switch directories.  
 
-## Install
+## Development using nix
+
+Open a pure shell and install packages
 
 ```sh
-# DO NOT INSTALL USING BREW
-# brew install poetry
-
-#https://pipx.pypa.io/stable/installation/
-brew install pipx
-pipx install poetry
-pipx ensurepath
+cd ./poetry_pure
+# python311 pure
+nix-shell --pure -p python311Full python311Packages.pip poetry
 ```
 
 ## Start
 
 ```sh
-export POETRY_VIRTUALENVS_IN_PROJECT=1
-export POETRY_VIRTUALENVS_CREATE=1
-
 # install
-pyenv install
 poetry install
 
+# create .env file
+cp .env.template .env
 . ./.env
 
 # run without entering venv
@@ -55,9 +51,6 @@ poetry run python main.py --test
 
 # enter venv
 poetry shell
-
-# create .env file
-cp .env.template .env
 
 # run with arguments
 python ./main.py --test
@@ -107,6 +100,3 @@ poetry env use python3.11
 - I move from pipenv to poetry in 2023 - Am I right ? [here](https://dev.to/farcellier/i-migrate-to-poetry-in-2023-am-i-right--115)
 - PyEnv & Poetry - BFFs [here](https://dev.to/mattcale/pyenv-poetry-bffs-20k6)
 
-### Issues
-
-* brew install poetry depends on python@3.10 and not using pyenv python (macOS) [here](https://github.com/python-poetry/poetry/issues/5423)  
