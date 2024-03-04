@@ -11,7 +11,7 @@ TODO:
 - [PYENV](#pyenv)
   - [Contents](#contents)
   - [pyenv](#pyenv-1)
-  - [Modify .zshrc](#modify-zshrc)
+  - [Modify .zshrc or .bashrc](#modify-zshrc-or-bashrc)
   - [Troubleshooting failed builds](#troubleshooting-failed-builds)
     - [ERROR:root:code for hash blake2b was not found.](#errorrootcode-for-hash-blake2b-was-not-found)
   - [Resources](#resources)
@@ -29,26 +29,30 @@ brew install pyenv
 pyenv install --list
 
 # install a version
-pyenv install 3.11.1
+pyenv install 3.11.7
 
 # list local versions installed
 pyenv versions
 
 # set my global version
-pyenv global 3.11.1
+pyenv global 3.11.7
 ```
 
-## Modify .zshrc
+## Modify .zshrc or .bashrc
 
 ```sh
+# with
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# or
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PIPENV_PYTHON="$PYENV_ROOT/shims/python"
-
 plugin=(
   pyenv
 )
-
 eval "$(pyenv init -)"
 ```
 
