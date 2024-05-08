@@ -1,0 +1,22 @@
+#!/usr/bin/env just --justfile
+# ^ A shebang isn't required, but allows a justfile to be executed
+#   like a script, with `./justfile test`, for example.
+
+set dotenv-load := true
+
+# default lists actions
+default:
+  @just -f justfile --list
+
+install:
+  export PIPENV_VENV_IN_PROJECT=1
+  pipenv install --dev
+
+docker_build:
+  docker build --progress=plain --target PRODUCTION -f Dockerfile --label \"org.opencontainers.image.created=$(date '+%Y-%m-%dT%H:%M:%SZ')\" --label \"org.opencontainers.image.version=\" --label \"org.opencontainers.image.url=$(git remote get-url origin)\" -t 24_lambda_container_python .
+
+docker_run: docker_build
+  docker run --rm -it -p 8080:8080 --name 24_lambda_container_python 24_lambda_container_python
+
+#"docker:rebuild": "docker build --no-cache --target PRODUCTION -f Dockerfile --label \"org.opencontainers.image.created=$(date '+%Y-%m-%dT%H:%M:%SZ')\" --label \"org.opencontainers.image.version=${githubsha}\" --label \"org.opencontainers.image.url=$(git remote get-url origin)\" -t 24_lambda_container_python .",
+#"docker:stop": "docker stop 24_lambda_container_python"
