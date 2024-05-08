@@ -1,0 +1,3 @@
+.venv
+lambda-entrypoint.sh
+bake-metadata.json
