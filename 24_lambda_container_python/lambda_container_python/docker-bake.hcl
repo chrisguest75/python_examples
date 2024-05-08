@@ -9,18 +9,18 @@ variable "REGISTRY" {
 # Build images
 #***********************************************
 
-target "lambda-container" {
-  args = {"baseimage":""}
-  context = "."
+target "lambda-container-python" {
+  args       = { "baseimage" : "" }
+  context    = "."
   dockerfile = "Dockerfile"
   labels = {
-    "org.opencontainers.image.title"= "lambda-container:${TAG}"
+    "org.opencontainers.image.title" = "lambda-container-python:${TAG}"
   }
-  tags = ["${REGISTRY}lambda-container:${TAG}"]
+  tags = ["${REGISTRY}lambda-container-python:${TAG}"]
 }
 
 group "default" {
   targets = [
-    "lambda-container", 
-    ]
+    "lambda-container-python",
+  ]
 }

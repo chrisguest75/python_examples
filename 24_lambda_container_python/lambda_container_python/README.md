@@ -60,20 +60,20 @@ REGISTRY=${AWS_REGISTRY}/ docker buildx bake -f docker-bake.hcl --metadata-file 
 
 ```sh
 # pull the base image
-docker pull public.ecr.aws/lambda/nodejs:16 
+docker pull public.ecr.aws/lambda/python:3.11
 
 # have a look at what is inside
-dive public.ecr.aws/lambda/nodejs:16 
+dive public.ecr.aws/lambda/python:3.11
 
 # copy lambda-entrypoint.sh
-docker create --rm -it --name nodejs16 public.ecr.aws/lambda/nodejs:16
-docker cp nodejs16:/lambda-entrypoint.sh ./
+docker create --rm -it --name python311 public.ecr.aws/lambda/python:3.11
+docker cp python311:/lambda-entrypoint.sh ./
 
 # jump into the container 
-docker exec -it 08_lambda_container_nodejs /bin/bash
+docker exec -it 24_lambda_container_python /bin/bash
 
 # inspect it
-dive 08_lambda_container_nodejs:latest
+dive 24_lambda_container_python:latest
 ```
 
 ## Debugging and Troubleshooting
@@ -90,7 +90,7 @@ pipenv run python
 ## Resources
 
 - Base images for Lambda [here](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-images.html)  
-https://docs.aws.amazon.com/lambda/latest/dg/python-image.html#python-image-instructions
+- Using an AWS base image for Python [here](https://docs.aws.amazon.com/lambda/latest/dg/python-image.html#python-image-instructions)  
 - AWS Lambda NodeJS Runtime Interface Client [here](https://www.npmjs.com/package/aws-lambda-ric)  
 - Lambda Internals: Exploring AWS Lambda [here](https://hackernoon.com/lambda-internals-exploring-aws-lambda-462f05f74076)  
 - AWS Lambda Performance Tuning & Best Practices (2022) [here](https://www.simform.com/blog/aws-lambda-performance/)  
