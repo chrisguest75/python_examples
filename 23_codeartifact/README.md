@@ -4,8 +4,8 @@ Use AWS CodeArtifact for publishing and sourcing packages.
 
 TODO:
 
-* Domain
-* Repository
+* Create Domain
+* Create Repository
 
 ## Create CodeArtifact
 
@@ -22,9 +22,11 @@ aws codeartifact list-repositories
 
 ## Publish Package
 
-Goto [codeartifact_test_package/README.md](./codeartifact_test_package/README.md)
+Goto [codeartifact_test_package/README.md](./codeartifact_test_package/README.md)  
 
 ## Use Package
+
+Goto [codeartifact_use_package/README.md](./codeartifact_use_package/README.md)  
 
 ## Resources
 
