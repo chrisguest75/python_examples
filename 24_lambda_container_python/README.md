@@ -8,7 +8,7 @@ NOTES:
 * Bake the image with push
 
 * terraform [here](./terraform/README.md)  
-* lambda_container [here](./lambda_container/README.md)  
+* lambda_container [here](./lambda_container_python/README.md)  
 
 ## Tests
 
