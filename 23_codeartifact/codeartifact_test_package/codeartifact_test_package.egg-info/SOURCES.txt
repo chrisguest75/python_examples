@@ -1,0 +1,9 @@
+README.md
+setup.py
+codeartifact_test_package/__init__.py
+codeartifact_test_package/metadata.py
+codeartifact_test_package.egg-info/PKG-INFO
+codeartifact_test_package.egg-info/SOURCES.txt
+codeartifact_test_package.egg-info/dependency_links.txt
+codeartifact_test_package.egg-info/top_level.txt
+tests/test_metadata.py

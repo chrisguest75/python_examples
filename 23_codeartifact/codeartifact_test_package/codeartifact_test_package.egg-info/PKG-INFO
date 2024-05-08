@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: codeartifact_test_package
+Version: 0.0.2
+Summary: A simple test for publishing to CodeArtifact
+Home-page: https://github.com/chrisguest75/python_examples/tree/master/23_codeartifact_test_package/codeartifact_test_package
+Author: Chris Guest
+Author-email: chris@chrisguest.dev
+License: LICENSE.txt
+
+# README
+
+REF: Packages example [02_game_of_life_package/README.md](../../02_game_of_life_package/README.md)
+
+NOTES:
+
+* Package names cannot begin with numbers.  
+* `setup.py` is created manually, not yet found a way to build automatically.  
+
+## Start
+
+```sh
+export PIPENV_VENV_IN_PROJECT=1
+pipenv install --dev
+pipenv run test
+```
+
+## Package
+
+```sh
+pipenv run package
+```
+
+## Publish
+
+Install the `twine` package as a dev dependency.  
+
+```sh
+pipenv install twine --dev
+```
+
+Configure profile.  
+
+```sh
+export AWS_PROFILE=my-profile
+export AWS_REGION=us-east-1 
+export PAGER=
+```
+
+Login
+
+```sh
+export CODEARTIFACT_DOMAIN=chris-codeartifact-domain
+export CODEARTIFACT_DOMAIN_OWNER=000000000000
+export CODEARTIFACT_REPOSITORY=codeartifact-python-test
+
+export CODEARTIFACT_AUTHTOKEN=$(aws --profile $AWS_PROFILE codeartifact get-authorization-token --domain $CODEARTIFACT_DOMAIN --domain-owner $CODEARTIFACT_DOMAIN_OWNER --query authorizationToken --output text)
+export CODEARTIFACT_URL="https://aws:${CODEARTIFACT_AUTHTOKEN}@${CODEARTIFACT_DOMAIN}-${CODEARTIFACT_DOMAIN_OWNER}.d.codeartifact.${AWS_REGION}.amazonaws.com/pypi/${CODEARTIFACT_REPOSITORY}/simple/"
+echo $CODEARTIFACT_URL
+```
+
+Configure Twine for publishing.  
+
+```sh
+export TWINE_USERNAME=aws
+export TWINE_PASSWORD=$(aws --profile $AWS_PROFILE codeartifact get-authorization-token --domain $CODEARTIFACT_DOMAIN --domain-owner $CODEARTIFACT_DOMAIN_OWNER --query authorizationToken --output text)
+export TWINE_REPOSITORY_URL=$(aws codeartifact get-repository-endpoint --domain $CODEARTIFACT_DOMAIN --domain-owner $CODEARTIFACT_DOMAIN_OWNER --repository $CODEARTIFACT_REPOSITORY --format pypi --query repositoryEndpoint --output text)
+echo $TWINE_REPOSITORY_URL
+echo $TWINE_PASSWORD
+```
+
+Publish package.  
+
+```sh
+pipenv run twine upload --repository codeartifact ./dist/codeartifact_test_package-0.0.1.tar.gz
+```
+
+## Resources
+
+* Why you shouldn't invoke setup.py directly [here](https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html)  
+* Exporting Modules and Functions from Python __init__.py [here](https://gist.github.com/CMCDragonkai/510ce9456a0429f616baa243d1de3dbf)

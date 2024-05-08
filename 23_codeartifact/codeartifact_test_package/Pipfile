@@ -1,0 +1,16 @@
+[[source]]
+url = "${PYTHON_REPOSITORY_URL}"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+
+[dev-packages]
+twine = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+"test" = "python ./tests/test_metadata.py"
+"package" = "python setup.py sdist bdist_wheel"
