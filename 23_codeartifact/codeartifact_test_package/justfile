@@ -12,10 +12,16 @@ install:
   export PIPENV_VENV_IN_PROJECT=1
   pipenv install --dev
 
+test:
+  pipenv run test
+
 # show dotenv-load
-build:
+build: test
+  #if [ -d "./dist" ]; then
+  #rm ./dist/*
+  #fi
   pipenv run package  
 
-publish:
-  pipenv run twine upload --repository codeartifact ./dist/codeartifact_test_package-0.0.2.tar.gz
+publish: build
+  pipenv run twine upload --repository codeartifact ./dist/codeartifact_test_package-*.tar.gz
 

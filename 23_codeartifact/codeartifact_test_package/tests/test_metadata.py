@@ -1,18 +1,13 @@
-import unittest
 from codeartifact_test_package.metadata import get_metadata
 
-class TestMetadata(unittest.TestCase):
+def test_metadata_contains_values():
+    # Arrange
+    # Act
+    metadata = get_metadata()
 
-    def test_metadata_contains_values(self):
-        # Arrange
-        # Act
-        metadata = get_metadata()
-
-        # Assert
-        self.assertEqual(metadata.get('name'), 'codeartifact-test-package')
-
-if __name__ == '__main__':
-    unittest.main()
+    # Assert
+    assert metadata.get('name') == 'codeartifact-test-package'
+    assert metadata.get('description') == 'A test package for CodeArtifact'
 
 
 

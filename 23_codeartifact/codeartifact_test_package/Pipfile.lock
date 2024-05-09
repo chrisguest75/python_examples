@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1894b611a72219fe7c5e28497eeb7e821889a98cdddd47c9dbd8b95cb522c3ab"
+            "sha256": "b8c16afe1727dd11b70f0bd31ff2a65404fd60f2f9821849fbb0932cf5afc184"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -249,6 +249,14 @@
             "markers": "python_version >= '3.8'",
             "version": "==7.1.0"
         },
+        "iniconfig": {
+            "hashes": [
+                "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3",
+                "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374"
+            ],
+            "markers": "python_version >= '3.7'",
+            "version": "==2.0.0"
+        },
         "jaraco.classes": {
             "hashes": [
                 "sha256:47a024b51d0239c0dd8c8540c6c7f484be3b8fcf0b2d85c13825780d3b3f3acd",
@@ -334,6 +342,14 @@
             ],
             "version": "==0.2.17"
         },
+        "packaging": {
+            "hashes": [
+                "sha256:2ddfb553fdf02fb784c234c7ba6ccc288296ceabec964ad2eae3777778130bc5",
+                "sha256:eb82c5e3e56209074766e6885bb04b8c38a0c015d0a30036ebe7ece34c9989e9"
+            ],
+            "markers": "python_version >= '3.7'",
+            "version": "==24.0"
+        },
         "pkginfo": {
             "hashes": [
                 "sha256:5df73835398d10db79f8eecd5cd86b1f6d29317589ea70796994d49399af6297",
@@ -341,6 +357,14 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==1.10.0"
+        },
+        "pluggy": {
+            "hashes": [
+                "sha256:2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1",
+                "sha256:44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==1.5.0"
         },
         "pycparser": {
             "hashes": [
@@ -357,6 +381,15 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==2.18.0"
+        },
+        "pytest": {
+            "hashes": [
+                "sha256:1733f0620f6cda4095bbf0d9ff8022486e91892245bb9e7d5542c018f612f233",
+                "sha256:d507d4482197eac0ba2bae2e9babf0672eb333017bcedaa5fb1a3d42c1174b3f"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.8'",
+            "version": "==8.2.0"
         },
         "readme-renderer": {
             "hashes": [

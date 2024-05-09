@@ -11,14 +11,22 @@ License: LICENSE.txt
 
 REF: Packages example [02_game_of_life_package/README.md](../../02_game_of_life_package/README.md)
 
+TODO:
+
+* How do I better generate versions and install_requires using pipenv? 
+* Add the version in one place
+
 NOTES:
 
 * Package names cannot begin with numbers.  
 * `setup.py` is created manually, not yet found a way to build automatically.  
+* twine will repot a error if you try to republish the same version.  
 
 ## Start
 
 ```sh
+# it uses an envvar for a repository url
+cp ./.env.template ./.env
 export PIPENV_VENV_IN_PROJECT=1
 pipenv install --dev
 pipenv run test
@@ -71,10 +79,11 @@ echo $TWINE_PASSWORD
 Publish package.  
 
 ```sh
-pipenv run twine upload --repository codeartifact ./dist/codeartifact_test_package-0.0.1.tar.gz
+pipenv run twine upload --repository codeartifact ./dist/codeartifact_test_package-0.0.2.tar.gz --verbose
 ```
 
 ## Resources
 
 * Why you shouldn't invoke setup.py directly [here](https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html)  
 * Exporting Modules and Functions from Python __init__.py [here](https://gist.github.com/CMCDragonkai/510ce9456a0429f616baa243d1de3dbf)
+* https://github.com/Madoshakalaka/pipenv-setup
