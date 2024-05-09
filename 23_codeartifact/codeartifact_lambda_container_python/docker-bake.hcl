@@ -5,12 +5,16 @@ variable "TAG" {
 variable "REGISTRY" {
   default = "hello/"
 }
+
+variable "CODEARTIFACT_URL" {
+}
+
 #***********************************************
 # Build images
 #***********************************************
 
 target "lambda-container-python" {
-  args       = { "baseimage" : "" }
+  args       = { "baseimage" : "", "CODEARTIFACT_URL" : "${CODEARTIFACT_URL}" }
   context    = "."
   dockerfile = "Dockerfile"
   labels = {
