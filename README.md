@@ -24,12 +24,18 @@ cz init
 - Running tests can be done by selecting `Testing` extension
 - To get the formatting on save you need to open in the project folder
 
+## Devcontainers
+
+### Python 3.11
+
+[.devcontainer/python_3_11/README.md](./.devcontainer/python_3_11/README.md)
+
 ## Configuration
 
 ### pyenv
 
 We use pyenv to host multiple versions of python.  
-Help configuring it REF: [PYENV.md](./PYENV.md).  
+Help configuring it REF: [PYENV.md](./PYENV.md).
 
 ## pipenv
 
@@ -63,7 +69,7 @@ pipenv --rm
 
 ### Troubleshooting
 
-If your pip.conf gets overwritten.  
+If your pip.conf gets overwritten.
 
 ```sh
 # pip input-url
@@ -73,10 +79,10 @@ cat $HOME/.config/pip/pip.conf
 > index-url = https://pypi.org/simple
 ```
 
-Clean down system pip after installing global packages.  
+Clean down system pip after installing global packages.
 
 ```sh
-pip3 list 
+pip3 list
 
 pip3 freeze > ./requirements.txt
 
