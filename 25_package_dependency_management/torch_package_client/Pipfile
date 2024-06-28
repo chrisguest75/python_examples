@@ -3,10 +3,16 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[[source]]
+url = "${CODEARTIFACT_URL}"
+verify_ssl = true
+name = "codeartifact"
+
 [packages]
 pyyaml = "*"
 python-json-logger = "*"
 python-dotenv = "*"
+torch_test_package = {version = "==0.0.2", index = "codeartifact"}
 
 [dev-packages]
 flake8 = "*"
