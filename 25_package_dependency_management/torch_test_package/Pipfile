@@ -1,0 +1,28 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pip_conf_index_global"
+
+[[source]]
+url = "https://download.pytorch.org/whl/cpu"
+verify_ssl = true
+name = "pytorch"
+
+[packages]
+torch = { index = "pytorch"}
+torchlibrosa = "*"
+torchaudio = { index = "pytorch"}
+numpy = "==1.26.4"
+
+[dev-packages]
+pytest = "*"
+build = "*"
+twine = "*"
+
+[requires]
+python_version = "3.11"
+python_full_version = "3.11.9"
+
+[scripts]
+test = "pytest -v"
+build = "python -m build"

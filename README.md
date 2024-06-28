@@ -41,6 +41,15 @@ Help configuring it REF: [PYENV.md](./PYENV.md).
 
 REF: Pipenv: Python Dev Workflow for Humans [here](https://pipenv.pypa.io/en/latest/)
 
+Pipenv does not recommend installing using `brew`. Instead use the package.  
+
+```sh
+python -m site    
+pip install pipenv --user     
+export PATH=${HOME}/.local/bin:$PATH
+pipenv
+```
+
 ### Configuring and running
 
 ```sh
