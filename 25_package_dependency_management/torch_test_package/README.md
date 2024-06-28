@@ -11,6 +11,28 @@ pipenv install --dev
 pipenv run build
 ```
 
+## Publish
+
+REF: [23_codeartifact/codeartifact_test_package/README.md](../../23_codeartifact/codeartifact_test_package/README.md)
+
+```sh
+export AWS_PROFILE=my-profile
+export AWS_REGION=us-east-1 
+export PAGER=
+
+aws codeartifact list-repositories       
+
+# copy values
+export CODEARTIFACT_DOMAIN=mydomain
+export CODEARTIFACT_DOMAIN_OWNER=000000000000
+export CODEARTIFACT_REPOSITORY=myrepo
+
+aws codeartifact login --tool twine --repository ${CODEARTIFACT_REPOSITORY}  --domain ${CODEARTIFACT_DOMAIN} --domain-owner ${CODEARTIFACT_DOMAIN_OWNER}
+
+# publish
+pipenv run twine upload --repository codeartifact ./dist/torch_test_package-0.0.1.tar.gz --verbose
+```
+
 ## Created
 
 ```sh
