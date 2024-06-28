@@ -26,3 +26,4 @@ python_full_version = "3.11.9"
 [scripts]
 test = "pytest -v"
 build = "python -m build"
+publish = "twine upload --repository codeartifact ./dist/torch_test_package-0.0.2.tar.gz --verbose"
