@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "torch_test_package"
+version = "0.0.1"
+authors = [
+  { name="Author", email="chris.guest@email.com" },
+]
+description = "A package that imports `pytorch` cpu."
+readme = "PACKAGE_README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/chrisguest75/python_examples"
+Issues = "https://github.com/chrisguest75/python_examples/issues"

@@ -1,9 +1,10 @@
 # TODO
 
+* Add a pipeline to build and test - github actions
 * ffmpeg
-    https://kkroening.github.io/ffmpeg-python/
-    https://pypi.org/project/ffmpeg-python/
-    https://github.com/kkroening/ffmpeg-python
+    <https://kkroening.github.io/ffmpeg-python/>
+    <https://pypi.org/project/ffmpeg-python/>
+    <https://github.com/kkroening/ffmpeg-python>
 * OTEL
 * Flask/fastapi
 * generators and comprehensions
@@ -15,6 +16,5 @@
 * data structures
 * gstreamer
 * wasm
-* aws boto
 * docker compose
-* github actions
+* test containers
