@@ -25,9 +25,9 @@ echo $CODEARTIFACT_URL
 ## Start
 
 ```sh
-export PIPENV_VENV_IN_PROJECT=1
 # install
-pipenv install --dev
+export PIPENV_VENV_IN_PROJECT=1
+pipenv install --dev --verbose
 
 # lint and test code
 pipenv run lint
@@ -56,3 +56,5 @@ pipenv run python
 ```
 
 ## Resources
+
+* Fix the pip error: Couldn't find a version that satisfies the requirement [here](https://bhch.github.io/posts/2017/04/fix-the-pip-error-couldnt-find-a-version-that-satisfies-the-requirement/)

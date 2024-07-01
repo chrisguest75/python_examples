@@ -12,7 +12,8 @@ name = "codeartifact"
 pyyaml = "*"
 python-json-logger = "*"
 python-dotenv = "*"
-torch_test_package = {version = "==0.0.2", index = "codeartifact"}
+empty_test_package = {version = "==0.0.3", index = "codeartifact"}
+torch_test_package = {version = "==0.0.7", index = "codeartifact"}
 
 [dev-packages]
 flake8 = "*"
@@ -29,3 +30,4 @@ python_version = "3.11"
 "start:test" = "python main.py --test"
 test = "pytest"
 lint = "flake8"
+clean = "rm -rf ./.venv && rm Pipfile.lock"
