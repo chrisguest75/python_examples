@@ -1,0 +1,33 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[[source]]
+url = "${CODEARTIFACT_URL}"
+verify_ssl = true
+name = "codeartifact"
+
+[packages]
+pyyaml = "*"
+python-json-logger = "*"
+python-dotenv = "*"
+empty_test_package = {version = "==0.0.3", index = "codeartifact"}
+torch_test_package = {version = "==0.0.7", index = "codeartifact"}
+
+[dev-packages]
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-2020 = "*"
+pytest = "*"
+black = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+"start" = "python main.py"
+"start:test" = "python main.py --test"
+test = "pytest"
+lint = "flake8"
+clean = "rm -rf ./.venv && rm Pipfile.lock"
