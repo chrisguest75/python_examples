@@ -1,8 +1,12 @@
-import main
+from torch_test_package import checks
 
 
 def test_test_function():
-    assert main.test() == 0
+    print(dir(checks))
+    checks.is_cuda()
+    checks.is_working()
+
+    assert False == True
 
     # raise AssertionError
     # assert False

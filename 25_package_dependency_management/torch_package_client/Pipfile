@@ -8,12 +8,19 @@ url = "${CODEARTIFACT_URL}"
 verify_ssl = true
 name = "codeartifact"
 
+[[source]]
+url = "https://download.pytorch.org/whl/cpu"
+verify_ssl = true
+name = "pytorch"
+
 [packages]
+torch = { index = "pytorch"}
+torchaudio = { index = "pytorch"}
 pyyaml = "*"
 python-json-logger = "*"
 python-dotenv = "*"
 empty_test_package = {version = "==0.0.3", index = "codeartifact"}
-torch_test_package = {version = "==0.0.7", index = "codeartifact"}
+torch_test_package = {version = "==0.0.8", index = "codeartifact"}
 
 [dev-packages]
 flake8 = "*"
