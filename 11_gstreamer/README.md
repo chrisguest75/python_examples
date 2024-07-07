@@ -49,3 +49,5 @@ pipenv install pyyaml python-json-logger python-dotenv
 * [google-coral/project-posenet/gstreamer.py](https://github.com/google-coral/project-posenet/blob/master/gstreamer.py)
 * Python GStreamer Tutorial blog [here](https://brettviren.github.io/pygst-tutorial-org/pygst-tutorial.html#sec-5)
 * Gstreamer in Python exits instantly, but is fine on command line [here](https://stackoverflow.com/questions/47879923/gstreamer-in-python-exits-instantly-but-is-fine-on-command-line)  
+* How to install Gstreamer Python Bindings [here](https://lifestyletransfer.com/how-to-install-gstreamer-python-bindings/)
+
