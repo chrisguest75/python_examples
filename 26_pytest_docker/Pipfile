@@ -23,5 +23,5 @@ python_version = "3.11"
 [scripts]
 "start" = "python main.py"
 "start:test" = "python main.py --test"
-test = "pytest"
+test = "pytest -v -rP"
 lint = "flake8"
