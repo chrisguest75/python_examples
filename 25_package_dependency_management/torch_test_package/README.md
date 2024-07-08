@@ -2,6 +2,11 @@
 
 A package that imports `pytorch` cpu.
 
+NOTES:
+
+* Demonstrates the use of `pyproject.toml` to specify the version.  
+* Hints at using `+cpu` imports for `pytorch`
+
 ## Build
 
 ```sh

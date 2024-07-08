@@ -1,10 +1,11 @@
 import pprint
 import torch
+import importlib.metadata
 
 def is_cuda():
     out = []
     out.append(f'cuda.is_available: {torch.cuda.is_available()}')
-    out.append(f'pytorch.__version__: {torch.__version__}')
+    out.append(f'importlib.metadata.version("torch"): {importlib.metadata.version("torch")}')
     pprint.pp(out)
     return out 
 

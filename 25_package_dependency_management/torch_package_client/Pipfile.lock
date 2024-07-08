@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a8a7b80c74c80455f94c3d51d9a70269797ac6414c9f54089c3fa0673ff7ffc7"
+            "sha256": "4a25ff2bacdbb1fdf0dfcc12747a67edf76c433cac570e1dda27246fbfa90e43"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -731,11 +731,11 @@
         },
         "sympy": {
             "hashes": [
-                "sha256:2877b03f998cd8c08f07cd0de5b767119cd3ef40d09f41c30d722f6686b0fb88",
-                "sha256:9b2cbc7f1a640289430e13d2a56f02f867a1da0190f2f99d8968c2f74da0e515"
+                "sha256:3b6af8f4d008b9a1a6a4268b335b984b23835f26d1d60b0526ebc71d48a25f57",
+                "sha256:6b0b32a4673fb91bd3cac3b55406c8e01d53ae22780be467301cc452f6680c92"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==1.12.1"
+            "version": "==1.13.0"
         },
         "threadpoolctl": {
             "hashes": [
@@ -763,10 +763,10 @@
         },
         "torch-test-package": {
             "hashes": [
-                "sha256:1c8c639e270aa24a233d873b20cdf8f2efa9280914733422529cf043e215e931"
+                "sha256:3b218b58ef12b449306ef9eedc9a8b296ed069e6c8d0eceebe56a79f558e36a7"
             ],
             "index": "codeartifact",
-            "version": "==0.0.16"
+            "version": "==0.0.18"
         },
         "torchaudio": {
             "hashes": [
