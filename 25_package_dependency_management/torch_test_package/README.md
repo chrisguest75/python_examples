@@ -6,6 +6,7 @@ NOTES:
 
 * Demonstrates the use of `pyproject.toml` to specify the version.  
 * Hints at using `+cpu` imports for `pytorch`
+* For any packages that are installed from different urls/repositories you need to restate them in your Pipfile (but you can skip the version field)
 
 ## Build
 
