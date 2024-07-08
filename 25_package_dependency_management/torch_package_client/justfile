@@ -1,0 +1,23 @@
+#!/usr/bin/env just --justfile
+# ^ A shebang isn't required, but allows a justfile to be executed
+#   like a script, with `./justfile test`, for example.
+
+set dotenv-load := true
+
+# default lists actions
+default:
+  @just -f justfile --list
+
+install:
+  [ ! -z "${CODEARTIFACT_URL-}" ] || (echo "CODEARTIFACT_URL is not set"; exit 1)
+  export PIPENV_VENV_IN_PROJECT=1
+  pipenv install --dev
+
+test:
+  export PIPENV_VENV_IN_PROJECT=1
+  pipenv run test
+
+clean:
+  rm -rf ./.pytest_cache
+  rm -rf ./.venv
+  rm Pipfile.lock

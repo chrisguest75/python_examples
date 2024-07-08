@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pip_conf_index_global"
+
+
+[packages]
+
+[dev-packages]
+pytest = "*"
+build = "*"
+twine = "*"
+
+[requires]
+python_version = "3.11"
+python_full_version = "3.11.9"
+
+[scripts]
+test = "pytest -v"
+build = "python -m build"
+publish = "twine upload --repository codeartifact ./dist/empty_test_package-0.0.3.tar.gz ./dist/empty_test_package-0.0.3-py3-none-any.whl --verbose"

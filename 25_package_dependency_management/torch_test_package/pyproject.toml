@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "torch_test_package"
+version = "0.0.11"
+authors = [
+  { name="Author", email="chris.guest@email.com" },
+]
+description = "A package that imports `pytorch` cpu."
+readme = "PACKAGE_README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "torch",
+  "torchlibrosa",
+  "torchaudio",
+  "numpy == 1.26.4"
+]
+
+[project.urls]
+Homepage = "https://github.com/chrisguest75/python_examples"
+Issues = "https://github.com/chrisguest75/python_examples/issues"
