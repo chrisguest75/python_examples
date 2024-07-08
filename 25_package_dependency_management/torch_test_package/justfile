@@ -1,0 +1,41 @@
+#!/usr/bin/env just --justfile
+# ^ A shebang isn't required, but allows a justfile to be executed
+#   like a script, with `./justfile test`, for example.
+
+set dotenv-load := true
+
+# default lists actions
+default:
+  @just -f justfile --list
+
+install:
+  export PIPENV_VENV_IN_PROJECT=1
+  pipenv install --dev
+
+test:
+  export PIPENV_VENV_IN_PROJECT=1
+  pipenv run test
+
+build:
+  export PIPENV_VENV_IN_PROJECT=1
+  rm -rf ./dist
+  pipenv run build
+
+codeartifactlogin:
+  [ ! -z "${AWS_PROFILE-}" ] || (echo "AWS_PROFILE is not set"; exit 1)
+  [ ! -z "${AWS_REGION-}" ] || (echo "AWS_REGION is not set"; exit 1)
+  [ ! -z "${CODEARTIFACT_REPOSITORY-}" ] || (echo "CODEARTIFACT_REPOSITORY is not set"; exit 1)
+  [ ! -z "${CODEARTIFACT_DOMAIN-}" ] || (echo "CODEARTIFACT_DOMAIN is not set"; exit 1)  
+  [ ! -z "${CODEARTIFACT_DOMAIN_OWNER-}" ] || (echo "CODEARTIFACT_DOMAIN_OWNER is not set"; exit 1)  
+  aws codeartifact login --tool twine --repository ${CODEARTIFACT_REPOSITORY}  --domain ${CODEARTIFACT_DOMAIN} --domain-owner ${CODEARTIFACT_DOMAIN_OWNER}
+
+publish: codeartifactlogin
+  export PIPENV_VENV_IN_PROJECT=1
+  pipenv run publish
+
+clean:
+  rm -rf ./.pytest_cache
+  rm -rf ./.venv
+  rm -rf ./dist
+  rm -rf ./torch_test_package.egg-info
+  rm Pipfile.lock

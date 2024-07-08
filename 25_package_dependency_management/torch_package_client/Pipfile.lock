@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "617aaca31a87fada4b8bc7cfe8765d8be7abf4fd81cb193fbc5e4dd33bb85d38"
+            "sha256": "972541cbe96d68f6395a796a8ceca47fffc5720a0b3e5c0d69e841a1f89949ea"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -36,11 +36,11 @@
         },
         "certifi": {
             "hashes": [
-                "sha256:3cd43f1c6fa7dedc5899d69d3ad0398fd018ad1a17fba83ddaf78aa46c747516",
-                "sha256:ddc6c8ce995e6987e7faf5e3f1b02b302836a0e5d98ece18392cb1a36c72ad56"
+                "sha256:5a1e7645bc0ec61a09e26c36f6106dd4cf40c6db3a1fb6352b0244e7fb057c7b",
+                "sha256:c198e21b1289c2ab85ee4e67bb4b4ef3ead0892059901a8d5b622f24a1101e90"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==2024.6.2"
+            "version": "==2024.7.4"
         },
         "cffi": {
             "hashes": [
@@ -763,10 +763,10 @@
         },
         "torch-test-package": {
             "hashes": [
-                "sha256:a75dd92da725fd0e12eb2a1e2e4335f2fddc7a980c14f2a460d2ec9ae78b1e7c"
+                "sha256:5d809cec589aa95bbea2931f1bb9076fd345a03e82e54d0fe1afbb50a0999f39"
             ],
             "index": "codeartifact",
-            "version": "==0.0.8"
+            "version": "==0.0.11"
         },
         "torchaudio": {
             "hashes": [

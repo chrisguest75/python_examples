@@ -6,7 +6,3 @@ def test_test_function():
     checks.is_cuda()
     checks.is_working()
 
-    assert False == True
-
-    # raise AssertionError
-    # assert False

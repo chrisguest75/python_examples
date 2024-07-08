@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "torch_test_package"
-version = "0.0.8"
+version = "0.0.11"
 authors = [
   { name="Author", email="chris.guest@email.com" },
 ]
