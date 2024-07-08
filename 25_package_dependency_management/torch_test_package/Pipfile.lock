@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "87519f150e62e323a596b28148caaaeef2ccdd128467bd9fea86fd0b89b5d92b"
+            "sha256": "06f373ca9a034ca1dbdf2b0c2002f02d2171ee52a53ec5fe56e5d9b8f2e0843e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -661,35 +661,35 @@
         },
         "torch": {
             "hashes": [
-                "sha256:2141a6cb7021adf2f92a0fd372cfeac524ba460bd39ce3a641d30a561e41f69a",
-                "sha256:500bf790afc2fd374a15d06213242e517afccc50a46ea5955d321a9a68003335",
-                "sha256:6acdca2530462611095c44fd95af75ecd5b9646eac813452fe0adf31a9bc310a",
-                "sha256:a272defe305dbd944aa28a91cc3db0f0149495b3ebec2e39723a7224fa05dc57",
-                "sha256:a3cb8e61ba311cee1bb7463cbdcf3ebdfd071e2091e74c5785e3687eb02819f9",
-                "sha256:cab92d5101e6db686c5525e04d87cedbcf3a556073d71d07fbe7d1ce09630ffb",
-                "sha256:d2965eb54d3c8818e2280a54bd53e8246a6bb34e4b10bd19c59f35b611dd9f05",
-                "sha256:d679e21d871982b9234444331a26350902cfd2d5ca44ce6f49896af8b3a3087d",
-                "sha256:dbc784569a367fd425158cf4ae82057dd3011185ba5fc68440432ba0562cb5b2",
-                "sha256:df68668056e62c0332e03f43d9da5d4278b39df1ba58d30ec20d34242070955d"
+                "sha256:15a657038eea92ac5db6ab97b30bd4b5345741b49553b2a7e552e80001297124",
+                "sha256:15e05748815545b6eb99196c0219822b210a5eff0dc194997a283534b8c98d7c",
+                "sha256:2a8ff4440c1f024ad7982018c378470d2ae0a72f2bc269a22b1a677e09bdd3b1",
+                "sha256:4ddaf3393f5123da4a83a53f98fb9c9c64c53d0061da3c7243f982cdfe9eb888",
+                "sha256:58194066e594cd8aff27ddb746399d040900cc0e8a331d67ea98499777fa4d31",
+                "sha256:5b40dc66914c02d564365f991ec9a6b18cbaa586610e3b160ef559b2ce18c6c8",
+                "sha256:5f907293f5a58619c1c520380f17641f76400a136474a4b1a66c363d2563fe5e",
+                "sha256:8258824bec0181e01a086aef5809016116a97626af2dcbf932d4e0b192d9c1b8",
+                "sha256:d053976a4f9ca3bace6e4191e0b6e0bcffbc29f70d419b14d01228b371335467",
+                "sha256:f72e7ce8010aa8797665ff6c4c1d259c28f3a51f332762d9de77f8a20277817f"
             ],
             "index": "pytorch",
-            "version": "==2.3.1+cpu"
+            "version": "==2.2.0+cpu"
         },
         "torchaudio": {
             "hashes": [
-                "sha256:004e197b5015ab4c912c9393f1aae05241a549dc895dbf8c5682ba8dd6066665",
-                "sha256:201757a38be7fc4bc95a250003ee868563ee0d3418d9cefccf297ed4c6b46f68",
-                "sha256:35b9de13a630cda5ba1609c0b09fd31d33783474693029d74930f8b3929d98f3",
-                "sha256:362b3859c61175479465360a86409847e27e82b0044b77b036e4155ed5ff1241",
-                "sha256:37cb3d8b003e8fc7bc7a6b0bd1c7a033960d77efb688f4d40464055a07ea6bbe",
-                "sha256:679c0b6c320c274fdb91243fce4f319a24537b9c1ccbe20dca53b40a4ef073ca",
-                "sha256:991648187bea353d8b4c3f09b59f26b1a602a072afd5130982bc1b3ec9630504",
-                "sha256:e156d43a1d48073f4eed943ddf0285b9079fc93ce41371172cd1e94ac766f803",
-                "sha256:f8a3ba91df57fd9229c96188cbb56f9f960e9adee26c4e57e8e5a3fdbe81b2a8",
-                "sha256:fed18fd46c61f3c35912e0d9731b9e512c99d387c4f5f22e0b12f55247d5db2f"
+                "sha256:34fb064f130963e802e0465e13bb5c3a762d7a9340da83200c0255d0ca2ab87d",
+                "sha256:3c0c5c2c8ddc51eab53a6b175b197e32c1b6cbaa586a3a37eff159fea40e7cfa",
+                "sha256:78d23a43cb87d1512f5b609cb509e1ce60e0409d58c1cfbd3b4c35ea2d1e0b13",
+                "sha256:a66a60c3779c11facd8067987dbcbfefcde99eb065af50d511149847bb981364",
+                "sha256:c775e5d3e176161f33eaf4aba2708b39eb474925779ad8f3cf1df6ad10ed5213",
+                "sha256:cefcbbeceb5f4cc7bccfc431c5e6db3c77a0c66991ad388e427e1de78c937505",
+                "sha256:cfa0bfdec41cee584b3ba8ba1352efa65aefb61bccf27bd2b484eb6b440e8de5",
+                "sha256:da25e6bc800aa8436b4d3220ff5c44df5b4250ec86bd20345da36b041a19bfb6",
+                "sha256:e8cf9d0725f1f45845edb7effcd6c248b8db8611f6e0c1895b6faea8542299f7",
+                "sha256:e8f42c996be535589fccc14bbb0f49e3caafc77a4d313210e711d9c1ea14d280"
             ],
             "index": "pytorch",
-            "version": "==2.3.1+cpu"
+            "version": "==2.2.0+cpu"
         },
         "torchlibrosa": {
             "hashes": [

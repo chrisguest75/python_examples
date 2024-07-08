@@ -9,9 +9,9 @@ verify_ssl = true
 name = "pytorch"
 
 [packages]
-torch = { index = "pytorch"}
+torch = { version="==2.2.0", index = "pytorch"}
+torchaudio = { version="==2.2.0", index = "pytorch"}
 torchlibrosa = "*"
-torchaudio = { index = "pytorch"}
 numpy = "==1.26.4"
 
 [dev-packages]

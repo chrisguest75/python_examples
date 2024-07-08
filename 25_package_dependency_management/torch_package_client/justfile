@@ -11,7 +11,7 @@ default:
 install:
   [ ! -z "${CODEARTIFACT_URL-}" ] || (echo "CODEARTIFACT_URL is not set"; exit 1)
   export PIPENV_VENV_IN_PROJECT=1
-  pipenv install --dev
+  pipenv install --dev --verbose
 
 test:
   export PIPENV_VENV_IN_PROJECT=1

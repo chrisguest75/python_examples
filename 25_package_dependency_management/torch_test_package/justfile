@@ -10,7 +10,7 @@ default:
 
 install:
   export PIPENV_VENV_IN_PROJECT=1
-  pipenv install --dev
+  pipenv install --dev --verbose
 
 test:
   export PIPENV_VENV_IN_PROJECT=1
@@ -29,7 +29,7 @@ codeartifactlogin:
   [ ! -z "${CODEARTIFACT_DOMAIN_OWNER-}" ] || (echo "CODEARTIFACT_DOMAIN_OWNER is not set"; exit 1)  
   aws codeartifact login --tool twine --repository ${CODEARTIFACT_REPOSITORY}  --domain ${CODEARTIFACT_DOMAIN} --domain-owner ${CODEARTIFACT_DOMAIN_OWNER}
 
-publish: codeartifactlogin
+publish: codeartifactlogin build
   export PIPENV_VENV_IN_PROJECT=1
   pipenv run publish
 

@@ -1,15 +1,22 @@
+import pprint
 import torch
 
 def is_cuda():
-    print(f'cuda.is_available: {torch.cuda.is_available()}')
+    out = []
+    out.append(f'cuda.is_available: {torch.cuda.is_available()}')
+    out.append(f'pytorch.__version__: {torch.__version__}')
+    pprint.pp(out)
+    return out 
 
 def is_working():
+    out = []
     t = torch.rand(5, 3)
-    print(t)
-    print(f'shape: {t.shape}')
-    print(f'dtype: {t.dtype}')
-    print(f'device: {t.device}')
-
+    out.append(str(t))
+    out.append(f'shape: {t.shape}')
+    out.append(f'dtype: {t.dtype}')
+    out.append(f'device: {t.device}')
+    pprint.pp(out)
+    return out 
 
 if __name__ == '__main__':
     is_cuda()

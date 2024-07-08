@@ -20,7 +20,7 @@ pyyaml = "*"
 python-json-logger = "*"
 python-dotenv = "*"
 empty_test_package = {version = "==0.0.3", index = "codeartifact"}
-torch_test_package = {version = "==0.0.11", index = "codeartifact"}
+torch_test_package = {version = "==0.0.16", index = "codeartifact"}
 
 [dev-packages]
 flake8 = "*"

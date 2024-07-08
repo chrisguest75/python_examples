@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "torch_test_package"
-version = "0.0.11"
+version = "0.0.16"
 authors = [
   { name="Author", email="chris.guest@email.com" },
 ]
@@ -19,9 +19,9 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-  "torch",
-  "torchlibrosa",
-  "torchaudio",
+  "torch==2.2.0+cpu",
+  "torchaudio==2.2.0+cpu",
+  "torchlibrosa==0.1.0",
   "numpy == 1.26.4"
 ]
 
