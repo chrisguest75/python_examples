@@ -31,7 +31,7 @@ def test() -> int:
     """test function"""
     logger = logging.getLogger()
     test_config = os.environ["TEST_CONFIG"]
-    logger.info(f"Invoked test function - TEST_CONFIG='{test_config}'")
+    logger.info(f'Invoked test function - TEST_CONFIG={test_config!r}')
     return 0
 
 
