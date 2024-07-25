@@ -4,7 +4,6 @@ Demonstrate fastapi
 
 TODO:
 
-* dockerise
 * add proper api
 * uvicorn
 * pydantic
@@ -30,6 +29,13 @@ cp .env.template .env
 pipenv run start:fastapi
 ```
 
+## Docker
+
+```sh
+pipenv run build:docker
+pipenv run start:docker
+```
+
 ## Debugging and Troubleshooting
 
 ```sh
@@ -44,3 +50,4 @@ pipenv run python
 ## Resources
 
 * FastAPI framework, high performance, easy to learn, fast to code, ready for production [here](https://fastapi.tiangolo.com/#installation)
+* An ASGI web server, for Python. [here](https://www.uvicorn.org/)
