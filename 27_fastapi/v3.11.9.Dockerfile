@@ -34,6 +34,6 @@ COPY ./main.py /workbench
 COPY ./logging_config.yaml /workbench
 
 USER appuser
-#CMD ["python", "main.py"]
-CMD ["fastapi", "run", "main.py"]
+#CMD ["fastapi", "run", "main.py"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0"]
 

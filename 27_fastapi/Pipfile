@@ -8,6 +8,7 @@ pyyaml = "*"
 python-json-logger = "*"
 python-dotenv = "*"
 fastapi = "*"
+uvicorn = "*"
 
 [dev-packages]
 flake8 = "*"

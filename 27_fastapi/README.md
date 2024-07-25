@@ -34,6 +34,9 @@ pipenv run start:fastapi
 ```sh
 pipenv run build:docker
 pipenv run start:docker
+
+open http://127.0.0.1:8000/
+open http://127.0.0.1:8000/docs
 ```
 
 ## Debugging and Troubleshooting
