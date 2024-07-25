@@ -2,6 +2,10 @@
 
 Demonstrate {{ cookiecutter.project_name }}
 
+## Prepare
+
+If using `vscode` remember to set your interpreter location to `.venv/bin/python`  
+
 ## Start
 
 ```sh
@@ -10,6 +14,7 @@ export PIPENV_VENV_IN_PROJECT=1
 pipenv install --dev
 
 # lint and test code
+pipenv run format
 pipenv run lint
 pipenv run test
 

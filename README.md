@@ -20,7 +20,7 @@ cz init
 ## VSCODE
 
 - If using vscode if you `pipenv --rm` it might be best to reload
-- Select the interpreter to get black code formatting. On a mac use `cmd + shift + .` in the folder select dialog
+- Select the interpreter to get black code formatting. On a mac use `cmd + shift + .` in the folder select dialog or set path to `.venv/bin/python`  
 - Running tests can be done by selecting `Testing` extension
 - To get the formatting on save you need to open in the project folder
 
