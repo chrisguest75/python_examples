@@ -4,8 +4,6 @@ Demonstrate fastapi
 
 TODO:
 
-* add proper api
-* uvicorn
 * pydantic
 
 ## Start

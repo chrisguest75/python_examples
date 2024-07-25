@@ -7,7 +7,10 @@ import yaml
 import os
 from typing import Union
 from fastapi import FastAPI
-
+import random
+import time
+from fastapi import FastAPI, Response, Request
+from fastapi.responses import JSONResponse
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -49,14 +52,87 @@ sys.excepthook = log_uncaught_exceptions
 
 app = FastAPI()
 
+# Define a custom exception handler
+@app.exception_handler(Exception)
+async def custom_exception_handler(request: Request, exc: Exception):
+    logger.info(f"custom_exception_handler", extra={ 'request': request.json(), 'exception': exc})
+    return JSONResponse(
+        status_code=500,
+        content={"error": "Internal Server Error"},
+    )
+
 
 @app.get("/")
-def read_root():
-    logger.info(f"read_root")
-    return {"Hello": "World"}
+def get_root():
+    random_number = random.randint(1, 100)
+    response = {"root": "toor", "random": random_number}
+    logger.info(f"get_root", extra=response)
+    return  JSONResponse(
+        status_code=200,
+        content=response,
+    )
 
 
 @app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    logger.info(f"read_item", extra={"item_id": item_id, "q": q})
-    return {"item_id": item_id, "q": q}
+def get_items(item_id: int, q: Union[str, None] = None):
+    response = {"item_id": item_id, "q": q}
+    logger.info(f"get_items", extra=response)
+    return  JSONResponse(
+        status_code=200,
+        content=response,
+    )    
+
+
+@app.get("/echo")
+def get_echo():
+    random_number = random.randint(1, 100)
+    response = {"ping": "pong", "random": random_number}
+    logger.info(f"get_echo", extra=response)
+    return  JSONResponse(
+        status_code=200,
+        content=response,
+    )
+
+
+@app.get("/sleep/{sleep_time}")
+def get_sleep(sleep_time: int):
+    random_number = random.randint(1, 100)
+    response = {"sleep": sleep_time, "random": random_number}
+    logger.info(f"get_sleep", extra=response)
+
+    time.sleep(sleep_time)
+
+    return  JSONResponse(
+        status_code=200,
+        content=response,
+    )
+
+
+@app.get("/status/{status}")
+def get_status(status: int):
+    random_number = random.randint(1, 100)
+    response = {"status": status, "random": random_number}
+    logger.info(f"get_status", extra=response)
+
+    return  JSONResponse(
+        status_code=status,
+        content=response,
+    )
+
+
+@app.get("/throw")
+def get_throw():
+    random_number = random.randint(1, 10)
+    response = {"random": random_number}
+    logger.info(f"get_throw", extra=response)
+
+    if random_number % 3 == 0: 
+        raise FileNotFoundError("FileNotFoundError")
+    if random_number % 3 == 1: 
+        raise Exception("Exception")
+
+    logger.info(f"get_throw success", extra=response)
+    return  JSONResponse(
+        status_code=200,
+        content=response,
+    )
