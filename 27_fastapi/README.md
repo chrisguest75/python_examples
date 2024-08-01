@@ -37,6 +37,12 @@ open http://127.0.0.1:8000/
 open http://127.0.0.1:8000/docs
 ```
 
+## Testing
+
+```sh
+curl -vvv --parallel --parallel-immediate --parallel-max 10  http://127.0.0.1:8000/sleep/12 http://127.0.0.1:8000/sleep/12 http://127.0.0.1:8000/sleep/12 http://127.0.0.1:8000/sleep/12 http://127.0.0.1:8000/sleep/12 http://127.0.0.1:8000/sleep/12 http://127.0.0.1:8000/status/200 http://127.0.0.1:8000/status/200 http://127.0.0.1:8000/status/200
+```
+
 ## Debugging and Troubleshooting
 
 ```sh

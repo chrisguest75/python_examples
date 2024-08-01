@@ -6,7 +6,6 @@
     <https://pypi.org/project/ffmpeg-python/>
     <https://github.com/kkroening/ffmpeg-python>
 * OTEL
-* Flask/fastapi
 * generators and comprehensions
 * SQL
 * Connect4
