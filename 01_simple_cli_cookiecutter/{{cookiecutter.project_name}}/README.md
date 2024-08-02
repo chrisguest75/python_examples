@@ -2,9 +2,21 @@
 
 Demonstrate {{ cookiecutter.project_name }}
 
+## Contents
+
+- [{{ cookiecutter.project\_name }}](#-cookiecutterproject_name-)
+  - [Contents](#contents)
+  - [Prepare](#prepare)
+  - [Start](#start)
+  - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
+    - [Single step](#single-step)
+      - [Application](#application)
+      - [Tests](#tests)
+  - [Resources](#resources)
+
 ## Prepare
 
-If using `vscode` remember to set your interpreter location to `.venv/bin/python`  
+If using `vscode` remember to set your interpreter location to `.venv/bin/python`
 
 ## Start
 
@@ -40,4 +52,18 @@ pipenv run python
 > main.test.__doc__
 ```
 
+### Single step
+
+#### Application
+
+- Copy the `launch.json` to the root `.vscode`
+- `. ./.env` in the terminal
+
+#### Tests
+
+- Configure pytest using the beaker icon in `vscode`
+- You can run and debug the discovered tests
+
 ## Resources
+
+- Python testing in Visual Studio Code [here](https://code.visualstudio.com/docs/python/testing#_example-test-walkthroughs)

@@ -40,7 +40,20 @@ pipenv run python
 > main.test.__doc__
 ```
 
+### Single step
+
+#### Application
+
+- Copy the `launch.json` to the root `.vscode`
+- `. ./.env` in the terminal
+
+#### Tests
+
+- Configure pytest using the beaker icon in `vscode`
+- You can run and debug the discovered tests
+
 ## Resources
 
 - PyWhy use Pydantic? [here](https://docs.pydantic.dev/latest/why/)
 - Pydantic object has no attribute '**fields_set**' error [here](https://stackoverflow.com/questions/73664830/pydantic-object-has-no-attribute-fields-set-error)
+- Python testing in Visual Studio Code [here](https://code.visualstudio.com/docs/python/testing#_example-test-walkthroughs)

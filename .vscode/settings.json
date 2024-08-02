@@ -4,5 +4,8 @@
   "editor.formatOnSave": true,
   "git.openRepositoryInParentFolders": "always",
 
-  "conventionalCommits.autoCommit": false
+  "conventionalCommits.autoCommit": false,
+  "python.testing.pytestArgs": ["29_pydantic"],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }
