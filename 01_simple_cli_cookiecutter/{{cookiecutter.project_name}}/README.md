@@ -35,6 +35,12 @@ pipenv run start:test
 
 ## Debugging and Troubleshooting
 
+### Interpreter
+
+Set the interpreter path to `./{{ cookiecutter.project_name }}/.venv/bin/python3.11`
+
+### Pipenv Environment
+
 ```sh
 # enter python
 pipenv run python

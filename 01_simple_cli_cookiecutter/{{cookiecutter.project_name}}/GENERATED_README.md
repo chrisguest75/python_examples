@@ -16,6 +16,8 @@ Demonstrates:
   - [Prepare](#prepare)
   - [Start](#start)
   - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
+    - [Interpreter](#interpreter)
+    - [Pipenv Environment](#pipenv-environment)
     - [Single step](#single-step)
       - [Application](#application)
       - [Tests](#tests)
@@ -49,6 +51,12 @@ pipenv run start:test
 ```
 
 ## Debugging and Troubleshooting
+
+### Interpreter
+
+Set the interpreter path to `./{{ cookiecutter.project_name }}/.venv/bin/python3.11`
+
+### Pipenv Environment
 
 ```sh
 # enter python
