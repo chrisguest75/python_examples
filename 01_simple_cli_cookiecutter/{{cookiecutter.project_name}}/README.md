@@ -4,15 +4,7 @@ Demonstrate {{ cookiecutter.project_name }}
 
 ## Contents
 
-- [{{ cookiecutter.project\_name }}](#-cookiecutterproject_name-)
-  - [Contents](#contents)
-  - [Prepare](#prepare)
-  - [Start](#start)
-  - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
-    - [Single step](#single-step)
-      - [Application](#application)
-      - [Tests](#tests)
-  - [Resources](#resources)
+GENERATE CONTENTS HERE
 
 ## Prepare
 

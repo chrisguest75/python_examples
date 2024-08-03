@@ -4,7 +4,8 @@ Demonstrate fastapi
 
 TODO:
 
-* pydantic
+- pydantic
+- add a relay endpoint to invoke other webservices
 
 ## Start
 
@@ -56,5 +57,5 @@ pipenv run python
 
 ## Resources
 
-* FastAPI framework, high performance, easy to learn, fast to code, ready for production [here](https://fastapi.tiangolo.com/#installation)
-* An ASGI web server, for Python. [here](https://www.uvicorn.org/)
+- FastAPI framework, high performance, easy to learn, fast to code, ready for production [here](https://fastapi.tiangolo.com/#installation)
+- An ASGI web server, for Python. [here](https://www.uvicorn.org/)
