@@ -1,4 +1,5 @@
 import main
+import pytest
 
 # run a podinfo/httpbin container at test start
 
