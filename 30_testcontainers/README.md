@@ -2,9 +2,24 @@
 
 Demonstrate 30_testcontainers
 
+TODO:
+
+- This is not working yet. Getting a failure running tests AttributeError: 'PostgresContainer' object has no attribute 'POSTGRES_USER'
+
 ## Contents
 
-GENERATE CONTENTS HERE
+- [30_testcontainers](#30_testcontainers)
+  - [Contents](#contents)
+  - [Prepare](#prepare)
+  - [Start](#start)
+  - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
+    - [Interpreter](#interpreter)
+    - [Pipenv Environment](#pipenv-environment)
+    - [Single step](#single-step)
+      - [Application](#application)
+      - [Tests](#tests)
+  - [Packages](#packages)
+  - [Resources](#resources)
 
 ## Prepare
 
@@ -61,6 +76,13 @@ pipenv run python
 
 - Configure pytest using the beaker icon in `vscode`
 - You can run and debug the discovered tests
+
+## Packages
+
+```sh
+#
+pipenv install "psycopg[binary,pool]" "testcontainers[postgres]"
+```
 
 ## Resources
 

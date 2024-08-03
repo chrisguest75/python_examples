@@ -7,6 +7,8 @@ name = "pypi"
 pyyaml = "*"
 python-json-logger = "*"
 python-dotenv = "*"
+testcontainers = {extras = ["postgres"], version = "*"}
+psycopg = {extras = ["binary", "pool"], version = "*"}
 
 [dev-packages]
 flake8 = "*"
