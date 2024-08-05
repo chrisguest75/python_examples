@@ -4,11 +4,12 @@ Demonstrate 30_testcontainers
 
 TODO:
 
-- This is not working yet. Getting a failure running tests AttributeError: 'PostgresContainer' object has no attribute 'POSTGRES_USER'
+- The tests are not working yet.
+- Setups are being called twice - do some tests examples.
 
 ## Contents
 
-- [30_testcontainers](#30_testcontainers)
+- [30\_testcontainers](#30_testcontainers)
   - [Contents](#contents)
   - [Prepare](#prepare)
   - [Start](#start)
@@ -80,7 +81,7 @@ pipenv run python
 ## Packages
 
 ```sh
-#
+# install packages
 pipenv install "psycopg[binary,pool]" "testcontainers[postgres]"
 ```
 
@@ -88,6 +89,6 @@ pipenv install "psycopg[binary,pool]" "testcontainers[postgres]"
 
 - Python testing in Visual Studio Code [here](https://code.visualstudio.com/docs/python/testing#_example-test-walkthroughs)
 - What is Testcontainers? [here](https://testcontainers.com/getting-started/)
-- https://testcontainers.com/guides/getting-started-with-testcontainers-for-python/
-  https://testcontainers-python.readthedocs.io/en/latest/
+- Getting started with Testcontainers for Python [here](https://testcontainers.com/guides/getting-started-with-testcontainers-for-python/)
+- testcontainers-python facilitates the use of Docker containers for functional and integration testing [here](https://testcontainers-python.readthedocs.io/en/latest/)
 - testcontainers/testcontainers-python repo [here](https://github.com/testcontainers/testcontainers-python)
