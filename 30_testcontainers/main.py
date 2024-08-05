@@ -6,7 +6,9 @@ import sys
 import traceback
 import yaml
 import os
-
+from testcontainers.postgres import PostgresContainer
+import psycopg
+from customers import customers
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -32,6 +34,31 @@ def test() -> int:
     logger = logging.getLogger()
     test_config = os.environ["TEST_CONFIG"]
     logger.info(f"Invoked test function - TEST_CONFIG={test_config!r}")
+
+    with PostgresContainer("postgres:16", driver=None) as postgres:
+        psql_url = postgres.get_connection_url()
+        with psycopg.connect(psql_url) as connection:
+            with connection.cursor() as cursor:
+                version = cursor.execute("SELECT version()").fetchone()
+                logger.info(version)
+
+        os.environ["DB_CONN"] = postgres.get_connection_url()
+        os.environ["DB_HOST"] = postgres.get_container_host_ip()
+        os.environ["DB_PORT"] = postgres.get_exposed_port(5432)
+        os.environ["DB_USERNAME"] = postgres.env['POSTGRES_USER']
+        os.environ["DB_PASSWORD"] = postgres.env['POSTGRES_PASSWORD']
+        os.environ["DB_NAME"] = postgres.env['POSTGRES_DB']
+
+        customers.create_table()
+        customers.create_customer("Siva", "siva@gmail.com")
+        customers.create_customer("James", "james@gmail.com")
+        customers_list = customers.get_all_customers()
+        logger.info(len(customers_list))
+
+        customers.create_customer("John", "john@gmail.com")
+        customer = customers.get_customer_by_email("john@gmail.com")
+        logger.info({'name': customer.name, 'email': customer.email})
+
     return 0
 
 
