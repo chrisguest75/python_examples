@@ -51,6 +51,8 @@ pipenv run start:test
 
 ## pytest
 
+Pytest specifics.
+
 ```sh
 pipenv run test --help
 
