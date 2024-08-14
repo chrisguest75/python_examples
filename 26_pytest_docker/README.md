@@ -1,6 +1,6 @@
 # PYTEST DOCKER
 
-Demonstrate pytest docker
+Demonstrate pytest docker and how it allows containers to be started within tests.  
 
 ## Start
 

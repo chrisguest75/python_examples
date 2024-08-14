@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyyaml = "*"
+python-json-logger = "*"
+python-dotenv = "*"
+
+[dev-packages]
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-2020 = "*"
+pytest = "*"
+black = "*"
+pdoc = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+"start" = "python main.py"
+"start:test" = "python main.py --test"
+test = "pytest"
+lint = "flake8"
+format = "black ."
+docs = "pdoc ./main.py --include-undocumented --output-directory ./docs"
+"docs:serve" = "docker run -v ./docs:/usr/share/nginx/html -it --rm -p 8080:80 nginx:1.27.0"
