@@ -14,6 +14,7 @@ flake8-bugbear = "*"
 flake8-2020 = "*"
 pytest = "*"
 black = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.11"
@@ -22,5 +23,8 @@ python_version = "3.11"
 "start" = "python main.py"
 "start:test" = "python main.py --test"
 test = "pytest"
+"test:coverage" = "pytest --cov=. --cov-report html:coverage"
+"test:serve" = "docker run -v ./coverage:/usr/share/nginx/html -it --rm -p 8080:80 nginx:1.27.0"
+
 lint = "flake8"
 format = "black ."

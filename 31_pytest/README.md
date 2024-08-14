@@ -1,6 +1,8 @@
-# 31_pytest
+# PYTEST
 
-Demonstrate 31_pytest
+Demonstrate `pytest` features.  
+
+REF: [github.com/chrisguest75/py_coverage_example/README.md](https://github.com/chrisguest75/py_coverage_example/blob/master/README.md)  
 
 TODO:
 
@@ -10,11 +12,12 @@ TODO:
 
 ## Contents
 
-- [31\_pytest](#31_pytest)
+- [PYTEST](#pytest)
   - [Contents](#contents)
   - [Prepare](#prepare)
   - [Start](#start)
-  - [pytest](#pytest)
+  - [pytest](#pytest-1)
+  - [coverage](#coverage)
   - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
     - [Interpreter](#interpreter)
     - [Pipenv Environment](#pipenv-environment)
@@ -64,6 +67,16 @@ pipenv run test -vvvv --no-header
 
 # show print() messages
 pipenv run test -vvvv --capture=no
+```
+
+## coverage
+
+```sh
+# create coverage report
+pipenv run test:coverage
+
+# serve up the coverage report
+pipenv run test:serve   
 ```
 
 ## Debugging and Troubleshooting

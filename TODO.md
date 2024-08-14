@@ -19,3 +19,4 @@
 - test containers
 - dis https://docs.python.org/2/library/dis.html#dis.dis
 - add a python package built from cpp
+- testing performance of algorithms (flame graph, memory)
