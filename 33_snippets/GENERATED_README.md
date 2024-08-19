@@ -4,8 +4,6 @@ Demonstrate a simple skeleton that other projects can be based on.
 
 Demonstrates:
 
-- pipenv
-- pytest
 - flake8 linting
 - logging
 - argument parsing
@@ -56,7 +54,7 @@ pipenv run start:test
 
 ### Interpreter
 
-Set the interpreter path to `./{{ cookiecutter.project_name }}/.venv/bin/python3.11`
+Set the interpreter path to `./33_snippets/.venv/bin/python3.11`
 
 ### Pipenv Environment
 

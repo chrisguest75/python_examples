@@ -2,6 +2,10 @@
 
 Demonstrate fastapi
 
+NOTES:
+
+- Use `pipenv install "fastapi[standard]"`
+
 TODO:
 
 - pydantic
@@ -41,7 +45,8 @@ open http://127.0.0.1:8000/docs
 ## Testing
 
 ```sh
-curl -vvv --parallel --parallel-immediate --parallel-max 10  http://127.0.0.1:8000/sleep/12 http://127.0.0.1:8000/sleep/12 http://127.0.0.1:8000/sleep/12 http://127.0.0.1:8000/sleep/12 http://127.0.0.1:8000/sleep/12 http://127.0.0.1:8000/sleep/12 http://127.0.0.1:8000/status/200 http://127.0.0.1:8000/status/200 http://127.0.0.1:8000/status/200
+ENDPOINT=http://127.0.0.1:8000
+curl -vvv --parallel --parallel-immediate --parallel-max 10  ${ENDPOINT}/sleep/12 ${ENDPOINT}/sleep/12 ${ENDPOINT}/sleep/12 ${ENDPOINT}/sleep/12 ${ENDPOINT}/sleep/12 ${ENDPOINT}/sleep/12 ${ENDPOINT}/status/200 ${ENDPOINT}/status/200 ${ENDPOINT}/status/200
 ```
 
 ## Debugging and Troubleshooting

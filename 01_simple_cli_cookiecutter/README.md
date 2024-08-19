@@ -2,6 +2,19 @@
 
 A cli cookiecutter for quickly spinning up new projects.
 
+TODO:
+
+* Add a dockerfile (multistage linting,running tests, etc)
+* Add pdoc
+
+## Contains
+
+* Pipenv
+* Logging
+* Linting
+* Argument parsing
+* Pytest
+
 ## Install
 
 ```sh
