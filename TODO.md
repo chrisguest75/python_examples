@@ -22,6 +22,7 @@
 - python versions
 - pdm
 - ruff
+- mypy
 - docker file in cookiecutter
 - chainguard
 - Astral https://astral.sh/blog/uv-unified-python-packaging
