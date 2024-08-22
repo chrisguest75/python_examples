@@ -1,8 +1,8 @@
 # PYTEST
 
-Demonstrate `pytest` features.  
+Demonstrate `pytest` features.
 
-REF: [github.com/chrisguest75/py_coverage_example/README.md](https://github.com/chrisguest75/py_coverage_example/blob/master/README.md)  
+REF: [github.com/chrisguest75/py_coverage_example/README.md](https://github.com/chrisguest75/py_coverage_example/blob/master/README.md)
 
 TODO:
 
@@ -58,15 +58,20 @@ pipenv run start:test
 Pytest specifics.
 
 ```sh
+# show options
 pipenv run test --help
 
 # show available fixtures
 pipenv run test -vvvv --fixtures
 
+# breaks down into individual tests
 pipenv run test -vvvv --no-header
 
 # show print() messages
 pipenv run test -vvvv --capture=no
+
+# run a single file
+pipenv run test tests/test_bubble_sort.py
 ```
 
 ## coverage
@@ -76,7 +81,7 @@ pipenv run test -vvvv --capture=no
 pipenv run test:coverage
 
 # serve up the coverage report
-pipenv run test:serve   
+pipenv run test:serve
 ```
 
 ## Debugging and Troubleshooting
