@@ -24,3 +24,7 @@
 - ruff
 - docker file in cookiecutter
 - chainguard
+- Astral https://astral.sh/blog/uv-unified-python-packaging
+- NX
+- https://moyix.blogspot.com/2022/09/someones-been-messing-with-my-subnormals.html
+- https://towardsdatascience.com/how-to-shrink-numpy-scipy-pandas-and-matplotlib-for-your-data-product-4ec8d7e86ee4
