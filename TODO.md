@@ -10,13 +10,17 @@
 - SQL
 - Connect4
 - pandas
-- debugging
 - quokka style environment
 - data structures
 - gstreamer
 - wasm
 - docker compose
-- test containers
 - dis https://docs.python.org/2/library/dis.html#dis.dis
 - add a python package built from cpp
 - testing performance of algorithms (flame graph, memory)
+- more pytest fixtures and pymock
+- python versions
+- pdm
+- ruff
+- docker file in cookiecutter
+- chainguard

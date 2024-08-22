@@ -1,8 +1,31 @@
 # CHEATSHEET
 
+## Contents
+
+- [CHEATSHEET](#cheatsheet)
+  - [Contents](#contents)
+  - [sleeping](#sleeping)
+  - [conditional args](#conditional-args)
+  - [args](#args)
+  - [kwargs](#kwargs)
+  - [Ternary](#ternary)
+  - [Switch](#switch)
+  - [Generators](#generators)
+    - [Arrays](#arrays)
+  - [Lambdas](#lambdas)
+  - [Resources](#resources)
+
+## sleeping
+
+```sh
+import time
+
+time.sleep(3) # Sleep for 3 seconds
+```
+
 ## conditional args
 
-args is for lists of positional arguments.  
+args is for lists of positional arguments.
 
 ```python
 def test_function(value1, value2, value3):
@@ -19,7 +42,7 @@ test_function(**config)
 
 ## args
 
-args is for lists of positional arguments.  
+args is for lists of positional arguments.
 
 ```python
 def sum_function(*args):
@@ -33,7 +56,7 @@ sum_function(1,2,3,4,5)
 
 ## kwargs
 
-kwargs is for named arguments.  
+kwargs is for named arguments.
 
 ```python
 def named_args_function(**args):
@@ -52,7 +75,7 @@ a = 0 if a > 200 else a + 1
 
 ## Switch
 
-Version 3.10 upwards required.  
+Version 3.10 upwards required.
 
 ```python
 def transform(value: str):
@@ -103,8 +126,7 @@ next(g)
 
 ## Lambdas
 
-
 ## Resources
 
-* How to Use Generators and yield in Python [here](https://realpython.com/introduction-to-python-generators/)  
-* Python args and kwargs: Demystified [here](https://realpython.com/python-kwargs-and-args/)  
+- How to Use Generators and yield in Python [here](https://realpython.com/introduction-to-python-generators/)
+- Python args and kwargs: Demystified [here](https://realpython.com/python-kwargs-and-args/)
