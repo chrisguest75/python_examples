@@ -25,6 +25,6 @@ python_version = "3.11"
 test = "pytest"
 "test:coverage" = "pytest --cov=. --cov-report html:coverage"
 "test:serve" = "docker run -v ./coverage:/usr/share/nginx/html -it --rm -p 8080:80 nginx:1.27.0"
-
 lint = "flake8"
-format = "black ."
+"lint:fix" = "black ."
+"docker:build" = "docker buildx build --progress=plain ."

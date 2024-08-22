@@ -1,6 +1,7 @@
 import pytest
 import sqlite3
 
+
 @pytest.fixture(scope="module")
 def db_connection(request):
     """Create a SQLite database connection for testing."""
@@ -21,6 +22,7 @@ def db_connection(request):
 
     request.addfinalizer(teardown)
     return conn
+
 
 @pytest.fixture(scope="function")
 def per_function(request):

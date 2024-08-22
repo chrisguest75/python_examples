@@ -6,6 +6,7 @@ REF: [github.com/chrisguest75/py_coverage_example/README.md](https://github.com/
 
 TODO:
 
+- Finish off the dockerfile to remove dev packages in another stage
 - pytest --fixtures
 - pymock
 - coverage

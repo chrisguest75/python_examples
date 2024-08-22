@@ -1,5 +1,6 @@
 from typing import List
 
+
 def sort(values: List[int]) -> List[int]:
     if len(values) <= 1:
         return values
