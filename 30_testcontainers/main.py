@@ -48,6 +48,7 @@ def test() -> int:
         os.environ["DB_USERNAME"] = postgres.env['POSTGRES_USER']
         os.environ["DB_PASSWORD"] = postgres.env['POSTGRES_PASSWORD']
         os.environ["DB_NAME"] = postgres.env['POSTGRES_DB']
+        logger.info(os.environ)
 
         customers.create_table()
         customers.create_customer("Siva", "siva@gmail.com")

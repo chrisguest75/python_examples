@@ -7,4 +7,5 @@ def get_connection():
     username = os.getenv("DB_USERNAME", "postgres")
     password = os.getenv("DB_PASSWORD", "postgres")
     database = os.getenv("DB_NAME", "postgres")
+    print(f"get_connection(): host={host} dbname={database} user={username} password={password} port={port}")
     return psycopg.connect(f"host={host} dbname={database} user={username} password={password} port={port}")

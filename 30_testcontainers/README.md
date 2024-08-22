@@ -9,10 +9,11 @@ TODO:
 
 ## Contents
 
-- [30\_testcontainers](#30_testcontainers)
+- [30_testcontainers](#30_testcontainers)
   - [Contents](#contents)
   - [Prepare](#prepare)
   - [Start](#start)
+  - [pytest](#pytest)
   - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
     - [Interpreter](#interpreter)
     - [Pipenv Environment](#pipenv-environment)
@@ -47,6 +48,18 @@ cp .env.template .env
 # run with arguments
 pipenv run start --test
 pipenv run start:test
+```
+
+## pytest
+
+REF: [31_pytest/README.md](../31_pytest/README.md)
+
+```sh
+# show options
+pipenv run test --help
+
+# breaks down into individual tests
+pipenv run test -vvvv --no-header --capture=no tests/test_customers.py
 ```
 
 ## Debugging and Troubleshooting
