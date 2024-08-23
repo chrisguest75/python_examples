@@ -19,6 +19,7 @@ TODO:
   - [Start](#start)
   - [pytest](#pytest-1)
   - [coverage](#coverage)
+  - [docker build](#docker-build)
   - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
     - [Interpreter](#interpreter)
     - [Pipenv Environment](#pipenv-environment)
@@ -83,6 +84,15 @@ pipenv run test:coverage
 
 # serve up the coverage report
 pipenv run test:serve
+```
+
+## docker build
+
+The docker build will run `flake8` linting, `pytest` and `pipenv check`  
+
+```sh
+# build and run the container
+pipenv run docker:build && pipenv run docker:run 
 ```
 
 ## Debugging and Troubleshooting
