@@ -2,8 +2,10 @@ import argparse
 import io
 import logging
 import logging.config
+import logging.handlers
 import sys
 import traceback
+from typing import List
 import yaml
 import os
 
@@ -34,7 +36,23 @@ def test() -> int:
     logger.info(f'Invoked test function - TEST_CONFIG={test_config!r}')
     return 0
 
+class ContextFilter(logging.Filter):
+    """
+    This is a filter which injects contextual information into the log.
+    """
+    def __init__(self, attributes: List[str]):
+        super().__init__()
+        self.attributes = attributes
 
+    def filter(self, record):
+        for a in self.attributes:
+            setattr(record, a,  os.environ.get(a, 'NOTSET'))
+    
+        print(f"record: {record}")
+        return True
+    
+
+    
 def main() -> int:
     """
     main function
@@ -49,8 +67,25 @@ def main() -> int:
         logging_config = yaml.load(f, Loader=yaml.FullLoader)
 
     logging.config.dictConfig(logging_config)
-
     sys.excepthook = log_uncaught_exceptions
+
+    logger = logging.getLogger()
+    logger.addFilter(ContextFilter(['TEST_CONFIG', 'CORRELATION_ID', 'BUILD_ID', 'DOES_NOT_EXIST']))
+
+    logging.info(logging.handlers)
+    attached_handlers = logger.handlers
+
+    # Loop through the attached handlers and print them
+    for h in attached_handlers:
+        logger.info(f"Handler: {h}")
+
+    # You can also access the first handler directly if you know there's only one
+    #first_handler = logger.handlers[0]
+    #print(f"First attached handler: {first_handler}")
+
+    #
+
+
 
     parser = argparse.ArgumentParser(description="CLI Skeleton")
     parser.add_argument("--test", dest="test", action="store_true")
