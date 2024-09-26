@@ -9,6 +9,7 @@ python-json-logger = "*"
 python-dotenv = "*"
 openai-whisper = {git = "git+https://github.com/openai/whisper.git"}
 numpy = "1.26.4"
+opentelemetry-distro = "*"
 
 [dev-packages]
 flake8 = "*"
@@ -26,3 +27,5 @@ python_version = "3.11"
 test = "pytest"
 lint = "flake8"
 format = "black ."
+"build:docker" = "docker buildx build --load -f v3.11.9.Dockerfile -t 34_whisper:latest ."
+"start:docker" = "docker run --rm -it -p 8000:8000 --name 34_whisper --network 34_whisper_service_bridge 34_whisper:latest"

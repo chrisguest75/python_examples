@@ -1,10 +1,24 @@
-# 34_whisper
+# Whisper
 
-Demonstrate 34_whisper
+Demonstrate whisper build and tracing with OTEL
 
 ## Contents
 
-GENERATE CONTENTS HERE
+- [Whisper](#whisper)
+  - [Contents](#contents)
+  - [Prepare](#prepare)
+  - [Start](#start)
+  - [Just](#just)
+  - [Configuration](#configuration)
+  - [Audio](#audio)
+  - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
+    - [Container](#container)
+    - [Interpreter](#interpreter)
+    - [Pipenv Environment](#pipenv-environment)
+    - [Single step](#single-step)
+      - [Application](#application)
+      - [Tests](#tests)
+  - [Resources](#resources)
 
 ## Prepare
 
@@ -33,6 +47,31 @@ pipenv run start --test
 pipenv run start:test
 ```
 
+## Just
+
+```sh
+# terminal 1
+just collector-restart
+# you can check collector metrics here.
+curl 0.0.0.0:8888/metrics
+
+# terminal 2
+just service-run
+```
+
+## Configuration
+
+```sh
+pipenv  install opentelemetry-distro
+pipenv run -- opentelemetry-bootstrap -a install
+
+
+pipenv run -- opentelemetry-instrument --help
+pipenv run -- opentelemetry-instrument --traces_exporter console --metrics_exporter console --logs_exporter console --service_name 34_whisper --disabled_instrumentations aws-lambda --log_level TRACE python main.py --test
+
+pipenv run -- opentelemetry-instrument --traces_exporter console --metrics_exporter console --logs_exporter console --service_name 34_whisper --log_level TRACE python main.py --test
+```
+
 ## Audio
 
 ```sh
@@ -47,6 +86,14 @@ curl -s -L -o ./sources/${PODCASTFILE} $FEED_URL
 ```
 
 ## Debugging and Troubleshooting
+
+### Container
+
+```sh
+dive 34_whisper:latest
+
+docker exec -it 34_whisper /bin/bash
+```
 
 ### Interpreter
 
@@ -80,3 +127,5 @@ pipenv run python
 - Python testing in Visual Studio Code [here](https://code.visualstudio.com/docs/python/testing#_example-test-walkthroughs)
 - https://pypi.org/project/numpy/
 - https://christophergs.com/blog/ai-podcast-transcription-whisper
+- https://opentelemetry.io/docs/languages/python/
+- https://opentelemetry.io/docs/languages/python/getting-started/
