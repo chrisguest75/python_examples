@@ -33,6 +33,16 @@ pipenv run start --test
 pipenv run start:test
 ```
 
+## Docker
+
+```sh
+pipenv run docker:build       
+pipenv run docker:start   
+
+# troubleshooting    
+docker run -it --entrypoint /bin/bash {{ cookiecutter.project_name }}
+```
+
 ## Debugging and Troubleshooting
 
 ### Interpreter
