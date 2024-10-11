@@ -1,0 +1,33 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyyaml = "*"
+python-json-logger = "*"
+python-dotenv = "*"
+
+[dev-packages]
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-2020 = "*"
+pytest = "*"
+black = "*"
+gprof2dot = "*"
+snakeviz = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+"start" = "python main.py"
+"start:test" = "python main.py --test"
+"profile" = "python -m cProfile main.py"
+"profile:save" = "python -m cProfile -o main.pstats main.py"
+"profile:dot" = "gprof2dot -f pstats main.pstats -o main.dot"
+"profile:render" = "dot main.dot -Tpng -o output.png"
+"profile:snakeviz" = "snakeviz main.pstats"
+test = "pytest"
+lint = "flake8"
+format = "black ."
