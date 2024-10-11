@@ -7,7 +7,7 @@ import traceback
 import yaml
 import os
 from faster_whisper import WhisperModel
-
+from pynvml import *
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -39,6 +39,14 @@ def test(gpu: bool) -> int:
     # Run on GPU with FP16
     logger.info(f'GPU={gpu!r}')
     if gpu:
+        nvmlInit()
+        print(f"Driver Version: {nvmlSystemGetDriverVersion()}")
+        deviceCount = nvmlDeviceGetCount()
+
+        for i in range(deviceCount):
+            handle = nvmlDeviceGetHandleByIndex(i)
+            print(f"Device {i} : {nvmlDeviceGetName(handle)}")
+            
         model = WhisperModel(model_size, device="cuda", compute_type="int8_float16")
     else:
         model = WhisperModel(model_size, device="cpu", compute_type="float32")

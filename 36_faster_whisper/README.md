@@ -2,6 +2,13 @@
 
 Demonstrate faster_whisper
 
+Ref: [docker_examples/A2_gpu](https://github.com/chrisguest75/shell_examples/tree/master/A2_gpu)  
+Ref: [shell_examples/81_gpu](https://github.com/chrisguest75/shell_examples/tree/master/81_gpu)  
+
+TODO:
+
+* Get cuda working https://medium.com/@albertqueralto/enabling-cuda-capabilities-in-docker-containers-51a3566ad014
+
 ## Contents
 
 - [FASTER WHISPER](#faster-whisper)
@@ -26,6 +33,9 @@ If using `vscode` remember to set your interpreter location to `.venv/bin/python
 ## Start
 
 ```sh
+# in vscode terminal
+export PIPENV_IGNORE_VIRTUALENVS=1
+
 export PIPENV_VENV_IN_PROJECT=1
 # install
 pipenv install --dev
@@ -48,14 +58,19 @@ pipenv run start:test
 
 ## Docker
 
+Build either `gpu|cpu`  
+
 ```sh
-pipenv run docker:build       
+pipenv run docker:build:gpu|cpu      
 
 mkdir -p ./.model-cache
 
-pipenv run docker:start   
+pipenv run docker:start:gpu|cpu     
 # share volume into profile  
-pipenv run docker:profile
+pipenv run docker:profile:gpu|cpu     
+
+# gui
+pipenv run profile:snakeviz:gpu|cpu     
 
 # troubleshooting    
 docker run -it --entrypoint /bin/bash 36_faster_whisper
@@ -80,6 +95,8 @@ ffmpeg -hide_banner -i ./sources/${PODCASTFILE} -ss 00:02:00 -t 00:01:00 ./sourc
 
 ## Profiling
 
+Local  
+
 ```sh
 # install dot
 sudo apt install graphviz
@@ -97,7 +114,7 @@ pipenv run profile:dot
 pipenv run profile:render
 
 # gui
-pipenv run profile:snakeviz
+pipenv run profile:snakeviz:gpu|cpu
 ```
 
 ## Debugging and Troubleshooting
@@ -132,3 +149,7 @@ pipenv run python
 ## Resources
 
 - Python testing in Visual Studio Code [here](https://code.visualstudio.com/docs/python/testing#_example-test-walkthroughs)
+- CUDA Toolkit 12.6 Update 2 Downloads [here](https://developer.nvidia.com/cuda-downloads)
+- Installing cuDNN on Linux [here](https://docs.nvidia.com/deeplearning/cudnn/latest/installation/linux.html)
+- CUDA and cuDNN images from gitlab.com/nvidia/cuda [here](https://hub.docker.com/r/nvidia/cuda/)
+- https://github.com/SYSTRAN/faster-whisper/issues/516

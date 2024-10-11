@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cd9623af04c08775893ed1a74ba8d3e227915ee31879a05e0891b46b7c350de1"
+            "sha256": "7e3bced4ae27d2d65d8b769098172e3c1e03606ad1cff9526b70a64676ea68f3"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -345,6 +345,14 @@
             ],
             "markers": "python_version >= '3.10'",
             "version": "==2.1.2"
+        },
+        "nvidia-ml-py": {
+            "hashes": [
+                "sha256:f0254dc7400647680a072ee02509bfd46102b60bdfeca321576d4d4817e7fe97",
+                "sha256:fea371c94d63e38a611c17bbb85fe400e9c8ddb9e8684a9cd0e47786a4bc3c73"
+            ],
+            "index": "pypi",
+            "version": "==12.560.30"
         },
         "onnxruntime": {
             "hashes": [

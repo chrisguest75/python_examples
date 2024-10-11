@@ -1,23 +1,11 @@
 # syntax=docker/dockerfile:1.4
-FROM python:3.11.3-slim-bullseye AS build-env
+#FROM docker.io/nvidia/cuda:12.5.0-runtime-ubuntu22.04 AS build-env
+#FROM docker.io/nvidia/cuda:12.6.1-cudnn-devel-ubuntu22.04 AS build-env
+#FROM docker.io/nvidia/cuda:12.6.1-cudnn-runtime-ubuntu22.04 AS build-env
+FROM docker.io/nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04 AS build-env
 
-# COPY --chmod=755 <<EOF /bin/configure_container.sh
-# #!/bin/bash
-# apt-get update 
-# apt-get --no-install-recommends install cpuinfo curl ca-certificates gpg -y 
 
-# curl -o cuda-repo-debian11-12-6-local_12.6.2-560.35.03-1_amd64.deb https://developer.download.nvidia.com/compute/cuda/12.6.2/local_installers/cuda-repo-debian11-12-6-local_12.6.2-560.35.03-1_amd64.deb
-# dpkg -i cuda-repo-debian11-12-6-local_12.6.2-560.35.03-1_amd64.deb
-# cp /var/cuda-repo-debian11-12-6-local/cuda-*-keyring.gpg /usr/share/keyrings/
-# add-apt-repository contrib
-
-# apt-get --allow-releaseinfo-change update 
-# apt-get install -fy -qq --no-install-recommends cuda-toolkit cudnn-cuda-12
-
-# EOF
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-#     /bin/configure_container.sh
+RUN apt-get update && apt-get install curl python3 python3-pip -y 
 
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -60,7 +48,7 @@ COPY --chmod=755 <<EOF /workbench/start.sh
 . ./.env
 env
 pip list
-python -m cProfile -o /workbench/out/main_cpu.pstats main.py --test
+python3 -m cProfile -o /workbench/out/main_gpu.pstats main.py --test --gpu
 EOF
 
 CMD ["./start.sh"]
