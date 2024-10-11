@@ -68,6 +68,9 @@ pipenv run profile:save --test
 
 pipenv run profile:dot
 pipenv run profile:render
+
+# gui
+pipenv run profile:snakeviz
 ```
 
 ## Docker

@@ -28,7 +28,7 @@ def str2bool(value: str) -> bool:
     return value.lower() in ("yes", "true", "t", "1")
 
 
-def test() -> int:
+def test(gpu: bool) -> int:
     """test function"""
     logger = logging.getLogger()
     test_config = os.environ["TEST_CONFIG"]
@@ -37,7 +37,11 @@ def test() -> int:
     model_size = "large-v3"
 
     # Run on GPU with FP16
-    model = WhisperModel(model_size, device="cpu", compute_type="float32")
+    logger.info(f'GPU={gpu!r}')
+    if gpu:
+        model = WhisperModel(model_size, device="cuda", compute_type="int8_float16")
+    else:
+        model = WhisperModel(model_size, device="cpu", compute_type="float32")
 
     # or run on GPU with INT8
     # model = WhisperModel(model_size, device="cuda", compute_type="int8_float16")
@@ -75,11 +79,12 @@ def main() -> int:
 
     parser = argparse.ArgumentParser(description="CLI Skeleton")
     parser.add_argument("--test", dest="test", action="store_true")
+    parser.add_argument("--gpu", dest="gpu", action="store_true")
     args = parser.parse_args()
 
     success = 0
     if args.test:
-        success = test()
+        success = test(args.gpu)
     else:
         parser.print_help()
 
