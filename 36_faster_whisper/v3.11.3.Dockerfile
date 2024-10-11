@@ -32,7 +32,7 @@ export TEST_CONFIG="This is a test value from .env"
 EOF
 
 RUN chown -R appuser:appuser /workbench
-COPY ./sources/LNL301_2mins.mp3 /workbench/sources/
+COPY ./sources/LNL301_1mins.mp3 /workbench/sources/
 COPY ./tests /workbench/tests
 COPY ./logging_config.yaml /workbench
 COPY ./main.py /workbench
