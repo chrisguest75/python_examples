@@ -1,0 +1,49 @@
+#!/usr/bin/env just --justfile
+# ^ A shebang isn't required, but allows a justfile to be executed
+#   like a script, with `./justfile test`, for example.
+
+set dotenv-load := true
+
+# default lists actions
+default:
+  @just -f justfile --list
+
+service-run:
+  #!/usr/bin/env bash
+  set -eufo pipefail
+
+  echo "*************************************"
+  echo "** SERVICE-RUN"
+  echo "*************************************"
+  pipenv run build:docker
+  pipenv run start:docker
+
+collector-run:
+  #!/usr/bin/env bash
+  set -eufo pipefail
+
+  echo "*************************************"
+  echo "** COLLECTOR-RUN"
+  echo "*************************************"
+  docker compose --env-file ./.env up -d --build --force-recreate
+
+collector-stop:
+  #!/usr/bin/env bash
+  set -eufo pipefail
+
+  echo "*************************************"
+  echo "** COLLECTOR-STOP"
+  echo "*************************************"
+  docker compose --env-file ./.env down
+
+collector-logs:
+  #!/usr/bin/env bash
+  set -eufo pipefail
+
+  echo "*************************************"
+  echo "** COLLECTOR-LOGS"
+  echo "*************************************"
+  #lnav docker://01_python_fastapi_tracing-collector-1          
+  docker compose --env-file ./.env logs --follow
+
+collector-restart: collector-stop collector-run collector-logs
