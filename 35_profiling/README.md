@@ -1,14 +1,15 @@
-# Profiling
+# Profiling Python
 
 Demonstrate profiling tools  
 
 ## Contents
 
-- [Profiling](#profiling)
+- [Profiling Python](#profiling-python)
   - [Contents](#contents)
   - [Prepare](#prepare)
   - [Start](#start)
-  - [Profiling](#profiling-1)
+  - [Profiling](#profiling)
+  - [Docker](#docker)
   - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
     - [Interpreter](#interpreter)
     - [Pipenv Environment](#pipenv-environment)
@@ -52,6 +53,8 @@ sudo apt install graphviz
 ```
 
 ```sh
+mkdir -p ./out
+
 # profiling 
 pipenv run profile --test
 # save out stats
@@ -61,6 +64,22 @@ pipenv run profile:dot
 pipenv run profile:render
 ```
 
+## Docker
+
+Profile in docker.  
+
+```sh
+mkdir -p ./out
+pipenv run docker:build       
+pipenv run docker:start   
+
+# now render locally
+pipenv run profile:dot
+pipenv run profile:render
+
+# troubleshooting    
+docker run -it --entrypoint /bin/bash 35_profiling 
+```
 
 ## Debugging and Troubleshooting
 
@@ -94,5 +113,5 @@ pipenv run python
 ## Resources
 
 
-https://medium.com/@narenandu/profiling-and-visualization-tools-in-python-89a46f578989
+- Profiling and visualization tools in Python [here](https://medium.com/@narenandu/profiling-and-visualization-tools-in-python-89a46f578989)
 - Python testing in Visual Studio Code [here](https://code.visualstudio.com/docs/python/testing#_example-test-walkthroughs)
