@@ -7,7 +7,7 @@ import traceback
 import yaml
 import os
 import platform
-
+import timeit
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -23,25 +23,34 @@ def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     )
 
 def details() -> str:
-    """ return details about python version and platform as a dict """
+    """ return details aout python version and platform as a dict """
     return {
         "python_version": sys.version,
         "platform": sys.platform,
         "platform_details": platform.platform(),
     }
 
-
 def str2bool(value: str) -> bool:
     """ converts strings representing truth to bool """ ""
     return value.lower() in ("yes", "true", "t", "1")
 
+# Function to sum numbers using a loop
+def sum_numbers(n):
+    total = 0
+    for i in range(n):
+        total += i
+    return total
 
 def test() -> int:
     """test function"""
     logger = logging.getLogger()
     test_config = os.environ["TEST_CONFIG"]
-    logger.info(f'Invoked test function - TEST_CONFIG={test_config!r}')
+    logger.info(f"Invoked test function - TEST_CONFIG={test_config!r}")
     logger.info(f"details={details()}")
+
+    execution_time = timeit.timeit('sum_numbers(1000000)', globals=globals(), number=100)
+    logger.info(f"Execution time: {execution_time:.4f} seconds")
+    
     return 0
 
 
