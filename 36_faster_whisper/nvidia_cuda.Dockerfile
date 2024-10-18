@@ -48,7 +48,7 @@ COPY --chmod=755 <<EOF /workbench/start.sh
 . ./.env
 env
 pip list
-python3 -m cProfile -o /workbench/out/main_gpu.pstats main.py --test --gpu
+python3 -m cProfile -o /workbench/out/main_gpu.pstats main.py --test --gpu \$@
 EOF
 
 CMD ["./start.sh"]

@@ -65,9 +65,9 @@ pipenv run docker:build:gpu|cpu
 
 mkdir -p ./.model-cache
 
-pipenv run docker:start:gpu|cpu     
+pipenv run docker:start:gpu|cpu --compute_type float32     
 # share volume into profile  
-pipenv run docker:profile:gpu|cpu     
+pipenv run docker:profile:gpu|cpu --compute_type float32    
 
 # gui
 pipenv run profile:snakeviz:gpu|cpu     

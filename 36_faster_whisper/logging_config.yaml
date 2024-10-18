@@ -2,6 +2,7 @@ version: 1
 root:
   level: DEBUG
   handlers: ["console"]
+  propagate: yes
 formatters:
   json:
     format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -15,3 +16,6 @@ handlers:
 loggers:
   main:
     level: DEBUG
+  ctranslate2:
+    level: DEBUG
+
