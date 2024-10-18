@@ -24,9 +24,14 @@ If using `vscode` remember to set your interpreter location to `.venv/bin/python
 ## Start
 
 ```sh
+pyenv install pypy3.10-7.3.17
+# write .python-version
+pyenv local pypy3.10-7.3.17
+pyenv which python
+
 export PIPENV_VENV_IN_PROJECT=1
 # install
-pipenv install --dev
+pipenv install --dev --python=$(pyenv which python)
 
 # lint and test code
 pipenv run format
