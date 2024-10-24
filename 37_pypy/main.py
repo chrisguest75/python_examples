@@ -8,6 +8,7 @@ import yaml
 import os
 import platform
 import timeit
+import numpy as np
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -51,6 +52,11 @@ def test() -> int:
     execution_time = timeit.timeit('sum_numbers(1000000)', globals=globals(), number=100)
     logger.info(f"Execution time: {execution_time:.4f} seconds")
     
+    print(np.__version__)
+    print(np.__config__)
+    a = np.arange(15).reshape(3, 5)
+    print(a)
+
     return 0
 
 

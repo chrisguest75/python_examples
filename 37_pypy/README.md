@@ -1,6 +1,14 @@
 # pypy
 
-Demonstrate using pypy to run with a docker container.  
+Demonstrate using pypy to run with a docker container.
+
+TODO:
+
+- Add timing to a complex numpy operation.
+
+NOTES:
+
+- `numpy` is available but `ctranslate2` is not.
 
 ## Contents
 
@@ -54,10 +62,10 @@ pipenv run start:test
 ```sh
 pipenv run docker:build
 # or
-pipenv run docker:build:pypy       
-pipenv run docker:start   
+pipenv run docker:build:pypy
+pipenv run docker:start
 
-# troubleshooting    
+# troubleshooting
 docker run -it --entrypoint /bin/bash 37_pypy
 ```
 
@@ -93,3 +101,6 @@ pipenv run python
 ## Resources
 
 - Python testing in Visual Studio Code [here](https://code.visualstudio.com/docs/python/testing#_example-test-walkthroughs)
+- https://pythonwheels.com/
+- https://github.com/numpy/numpy
+- https://numpy.org/
