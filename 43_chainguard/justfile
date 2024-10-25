@@ -1,0 +1,27 @@
+set dotenv-load := true
+
+# default lists actions
+default:
+  @just -f justfile --list
+
+clean:
+  rm -rf ./.venv
+  rm Pipfile.lock
+
+install:
+  export PIPENV_IGNORE_VIRTUALENVS=1
+  export PIPENV_VENV_IN_PROJECT=1
+  pipenv install --dev --python=$(pyenv which python) --verbose
+
+build:
+  pipenv run docker:build
+
+start: build
+  pipenv run docker:start
+
+build_chainguard:
+  pipenv run docker:build:chainguard
+
+start_chainguard: build_chainguard
+  pipenv run docker:start:chainguard
+
