@@ -70,6 +70,9 @@ FROM prebuild AS builder
 
 RUN git clone --recursive https://github.com/OpenNMT/ctranslate2.git
 
+
+### BUILD
+
 COPY --chmod=755 <<EOF /scratch/build.sh
 #!/usr/bin/env bash
 
@@ -80,13 +83,30 @@ make -j4
 make install
 ldconfig
 cd ..
-
-
-cd python
-pip install -r install_requirements.txt
-python setup.py bdist_wheel
-pip install dist/*.whl
-
 EOF
 
 RUN /scratch/build.sh
+
+### PACKAGE
+
+COPY --chmod=755 <<EOF /scratch/package.sh
+#!/usr/bin/env bash
+cd ctranslate2/python
+export PATH=/opt/pypy/bin:$PATH
+pypy -m ensurepip
+pip3 install -r install_requirements.txt
+python setup.py bdist_wheel
+pip3 install dist/*.whl
+
+EOF
+
+RUN /scratch/package.sh
+
+COPY --chmod=755 <<EOF /scratch/drop.sh
+#!/usr/bin/env bash
+mkdir -p /out/dist
+cp ctranslate2/python/dist/*.whl /out/dist
+
+EOF
+
+ENTRYPOINT [ "/scratch/drop.sh" ]

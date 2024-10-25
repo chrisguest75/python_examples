@@ -8,5 +8,15 @@ NOTES:
 
 ## Builds
 
+
+## Troubleshooting
+
+```sh
+# print out egg details for the packages.
+pip inspect
+
+pipenv graph 
+```
+
 ## Resources
 
