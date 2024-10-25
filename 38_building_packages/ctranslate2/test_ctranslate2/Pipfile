@@ -7,9 +7,11 @@ name = "pypi"
 pyyaml = "*"
 python-json-logger = "*"
 python-dotenv = "*"
-opennmt-py = "==2.*"
+#opennmt-py = "==2.*"
 sentencepiece = "*"
-ctranslate2 = "*"
+
+ctranslate2 = {file = "packages/dist/ctranslate2-4.4.0-pp310-pypy310_pp73-linux_x86_64.whl"}
+#ctranslate2 = "*"
 
 [dev-packages]
 flake8 = "*"

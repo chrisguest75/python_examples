@@ -2,6 +2,16 @@
 
 Demonstrate test_ctranslate2
 
+NOTES:
+
+* To switch over to pypy
+* For pypy the model needs to be downloaded first outside the container. openmnt is not included and it needs torch.  
+* `just clean`
+* Switch the lib to the locally built one in pipfile
+* Set pyenv python version pypy3.10-7.3.17
+* `just install` to generate new lock file.
+* `just start_pypy`
+
 ## Contents
 
 - [test\_ctranslate2](#test_ctranslate2)
