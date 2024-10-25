@@ -1,0 +1,33 @@
+set dotenv-load := true
+
+# default lists actions
+default:
+  @just -f example.justfile --list
+
+clean:
+  rm -rf ./.venv
+  rm Pipfile.lock
+
+install:
+  export PIPENV_IGNORE_VIRTUALENVS=1
+  export PIPENV_VENV_IN_PROJECT=1
+  pipenv install --dev --python=$(pyenv which python) --verbose
+
+build:
+  pipenv run docker:build
+
+build_pypy:
+  pipenv run docker:build:pypy
+
+start: build
+  pipenv run docker:start
+
+start_pypy: build_pypy
+  pipenv run docker:start
+
+dive_pypy:
+  dive test_ctranslate2:latest 
+
+shell_pypy:
+  docker run -it --rm --entrypoint /bin/bash test_ctranslate2:latest 
+  

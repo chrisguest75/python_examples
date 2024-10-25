@@ -8,6 +8,7 @@ import yaml
 import os
 import platform
 import timeit
+from timeit import default_timer as timer
 import ctranslate2
 import sentencepiece as spm
 
@@ -58,11 +59,15 @@ def test() -> int:
     test_config = os.environ["TEST_CONFIG"]
     logger.info(f'Invoked test function - TEST_CONFIG={test_config!r}')
     logger.info(f"details={details()}")
+    ctranslate2.set_log_level(logging.INFO)
 
-    execution_time = timeit.timeit('translate()', globals=globals(), number=100)
-    logger.info(f"Execution time: {execution_time:.4f} seconds")
-
-
+    start_translate = timer()
+    #execution_time = timeit.timeit('translate()', globals=globals(), number=100)
+    #logger.info(f"Execution time: {execution_time:.4f} seconds")
+    for i in range(10):
+        translate()
+    end_translate = timer()
+    logger.info(f"Total time: {end_translate - start_translate:.4f} seconds")
     return 0
 
 

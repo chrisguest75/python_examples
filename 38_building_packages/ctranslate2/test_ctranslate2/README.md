@@ -99,3 +99,4 @@ pipenv run python
 ## Resources
 
 - Python testing in Visual Studio Code [here](https://code.visualstudio.com/docs/python/testing#_example-test-walkthroughs)
+- SentencePiece is an unsupervised text tokenizer and detokenizer [here](https://github.com/google/sentencepiece)
