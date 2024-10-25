@@ -13,6 +13,9 @@ If using `vscode` remember to set your interpreter location to `.venv/bin/python
 ## Start
 
 ```sh
+# for vscode
+export PIPENV_IGNORE_VIRTUALENVS=1
+
 export PIPENV_VENV_IN_PROJECT=1
 # install
 pipenv install --dev
