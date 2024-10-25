@@ -1,0 +1,112 @@
+# syntax=docker/dockerfile:1.4
+FROM ubuntu:22.04 AS prebuild
+
+ARG DEBIAN_FRONTEND=noninteractive
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+
+RUN rm -f /etc/apt/apt.conf.d/docker-clean; \
+    echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' \
+    > /etc/apt/apt.conf.d/keep-cache
+
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install zsh curl git nano locales -y 
+RUN locale-gen en_US.UTF-8  
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8  
+
+WORKDIR /scratch
+
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    buildDeps="autoconf \
+    automake \
+    cmake \
+    curl \
+    bzip2 \
+    libexpat1-dev \
+    g++ \
+    gcc \
+    git \
+    gperf \
+    libtool \
+    make \
+    meson \
+    nasm \
+    perl \
+    pkg-config \
+    python3 \
+    libssl-dev \
+    yasm \
+    libomp-dev \
+    gnupg2 \
+    zlib1g-dev" && \
+    apt-get -yqq update && \
+    apt-get install -yq --no-install-recommends ${buildDeps}
+
+# install pypy
+RUN curl -O https://downloads.python.org/pypy/pypy3.10-v7.3.17-linux64.tar.bz2 \
+    && tar -xvf pypy3.10-v7.3.17-linux64.tar.bz2 \
+    && mv pypy3.10-v7.3.17-linux64 /opt/pypy \
+    && rm pypy3.10-v7.3.17-linux64.tar.bz2 
+
+# MKL
+ENV CT2_USE_MKL=1
+ENV MKL_VERSION=2023.0.0
+ENV DNNL_VERSION=2023.0.0-25399
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    curl -O https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
+    && apt-key add *.PUB \
+    && echo "deb https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list \
+    && apt-get update
+
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get install -y intel-oneapi-mkl-devel-$MKL_VERSION intel-oneapi-dnnl-devel=$DNNL_VERSION intel-oneapi-dnnl=$DNNL_VERSION
+
+FROM prebuild AS builder
+
+RUN git clone --recursive https://github.com/OpenNMT/ctranslate2.git
+
+
+### BUILD
+
+COPY --chmod=755 <<EOF /scratch/build.sh
+#!/usr/bin/env bash
+
+cd ctranslate2
+mkdir build && cd build
+cmake ..
+make -j4
+make install
+ldconfig
+cd ..
+EOF
+
+RUN /scratch/build.sh
+
+### PACKAGE
+
+COPY --chmod=755 <<EOF /scratch/package.sh
+#!/usr/bin/env bash
+cd ctranslate2/python
+export PATH=/opt/pypy/bin:$PATH
+pypy -m ensurepip
+pip3 install -r install_requirements.txt
+python setup.py bdist_wheel
+pip3 install dist/*.whl
+
+EOF
+
+RUN /scratch/package.sh
+
+COPY --chmod=755 <<EOF /scratch/drop.sh
+#!/usr/bin/env bash
+mkdir -p /out/dist
+cp ctranslate2/python/dist/*.whl /out/dist
+
+EOF
+
+ENTRYPOINT [ "/scratch/drop.sh" ]
