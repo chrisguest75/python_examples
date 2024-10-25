@@ -1,8 +1,25 @@
+FROM cgr.dev/chainguard/python:latest-dev as builder
+
+ENV LANG=C.UTF-8
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PATH="/linky/venv/bin:$PATH"
+
+WORKDIR /linky
+
+RUN python -m venv /linky/venv
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
 FROM cgr.dev/chainguard/python:latest
 
-WORKDIR /octo-facts
+WORKDIR /linky
 
-COPY main.py facts.txt ./
+ENV PYTHONUNBUFFERED=1
+ENV PATH="/venv/bin:$PATH"
 
-ENTRYPOINT [ "python", "/octo-facts/main.py" ]
+COPY main.py linky.png facts.txt ./
+COPY --from=builder /linky/venv /venv
 
+ENTRYPOINT [ "python", "/linky/main.py" ]
