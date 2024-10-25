@@ -1,0 +1,32 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyyaml = "*"
+python-json-logger = "*"
+python-dotenv = "*"
+opennmt-py = "==2.*"
+sentencepiece = "*"
+ctranslate2 = "*"
+
+[dev-packages]
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-2020 = "*"
+pytest = "*"
+black = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+"start" = "python main.py"
+"start:test" = "python main.py --test"
+test = "pytest"
+lint = "flake8"
+format = "black ."
+"docker:build" = "docker buildx build --load -f v3.11.3.Dockerfile -t test_ctranslate2:latest ."
+"docker:build:pypy" = "docker buildx build --load -f v3.11.3.Dockerfile --build-arg BASE_IMAGE=pypy:3.10-7.3.17-bookworm -t test_ctranslate2:latest ."
+"docker:start" = "docker run test_ctranslate2:latest"
