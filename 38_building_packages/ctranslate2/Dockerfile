@@ -70,13 +70,15 @@ FROM prebuild AS builder
 
 RUN git clone --recursive https://github.com/OpenNMT/ctranslate2.git
 
-
 ### BUILD
 
 COPY --chmod=755 <<EOF /scratch/build.sh
 #!/usr/bin/env bash
 
 cd ctranslate2
+# 4.4.0
+git checkout 8f4d134b5a71f452a5d0f86fd1fa134a355e2547
+
 mkdir build && cd build
 cmake ..
 make -j4
@@ -106,6 +108,10 @@ COPY --chmod=755 <<EOF /scratch/drop.sh
 #!/usr/bin/env bash
 mkdir -p /out/dist
 cp ctranslate2/python/dist/*.whl /out/dist
+cp -r ctranslate2/python/ctranslate2.egg-info /out
+mkdir -p /out/build
+cp ctranslate2/build/*.so /out/build/
+
 
 EOF
 

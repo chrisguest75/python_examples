@@ -1,0 +1,16 @@
+set dotenv-load := true
+
+# default lists actions
+default:
+  @just -f example.justfile --list
+
+clean:
+  rm -rf ./out
+  mkdir -p ./out
+
+build:
+  docker build --progress=plain -t 38_build_ctranslate2 .
+
+start: build
+  docker run -it --rm -v ./out:/out 38_build_ctranslate2 
+
