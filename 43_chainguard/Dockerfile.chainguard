@@ -1,64 +1,35 @@
 # syntax=docker/dockerfile:1.4
 FROM cgr.dev/chainguard/python:latest-dev as build-env
 
-#RUN apt-get update \
-#    && apt-get install -fy -qq --no-install-recommends ca-certificates \
-#    && apt-get clean 
-
 ENV LANG=C.UTF-8
-
-# Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1
-
-# Keeps Python from buffering stdout and stderr to avoid situations where
-# the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
 
 RUN pip install --user pipenv
-
-#ARG USERID=1000
-#ARG GROUPID=1000
-#RUN addgroup --system --gid $GROUPID appuser
-#RUN adduser --system --uid $USERID --gid $GROUPID appuser
 
 WORKDIR /workbench
 COPY ./Pipfile /workbench/Pipfile
 COPY ./Pipfile.lock /workbench/Pipfile.lock 
 
-#RUN set -ex && pipenv install --deploy --system
-RUN pipenv requirements 
+RUN /home/nonroot/.local/bin/pipenv requirements > ./requirements.txt
+RUN python -m venv /workbench/venv
+ENV PATH="/workbench/venv/bin:$PATH"
+RUN pip install --no-cache-dir -r ./requirements.txt 
 
-#install --deploy --system --dev
+FROM cgr.dev/chainguard/python:latest
 
-# RUN PIPENV_VENV_IN_PROJECT=1 pipenv run test
-COPY --chmod=755 <<EOF /workbench/.env
-export TEST_CONFIG="This is a test value from .env"
-EOF
+WORKDIR /workbench
+ENV LANG=C.UTF-8
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+ENV PATH="/workbench/venv/bin:$PATH"
+ENV TEST_CONFIG="This is a test value from .env"
 
 COPY ./tests /workbench/tests
-COPY ./logging_config.yaml /workbench
-COPY ./main.py /workbench
+COPY ./data /workbench/data
+COPY ./main.py ./logging_config.yaml /workbench/
 
-#USER appuser
-COPY --chmod=755 <<EOF /workbench/start.sh
-#!/usr/bin/env bash
-. ./.env
-env
-pip list
-python main.py --test
-EOF
+COPY --from=build-env /workbench/venv /workbench/venv
 
-CMD ["./start.sh"]
-
-
-# FROM cgr.dev/chainguard/python:latest-dev
-
-# WORKDIR /linky
-
-# ENV PYTHONUNBUFFERED=1
-# ENV PATH="/venv/bin:$PATH"
-
-# COPY main.py linky.png facts.txt ./
-# COPY --from=builder /linky/venv /venv
-
-# ENTRYPOINT [ "python", "/linky/main.py" ]
+ENTRYPOINT [ "python", "/workbench/main.py", "--test" ]

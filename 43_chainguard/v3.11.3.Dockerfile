@@ -31,11 +31,10 @@ COPY --chmod=755 <<EOF /workbench/.env
 export TEST_CONFIG="This is a test value from .env"
 EOF
 
+COPY ./data /workbench/data
 COPY ./tests /workbench/tests
 COPY ./logging_config.yaml /workbench
 COPY ./main.py /workbench
-COPY ./facts.txt /workbench/
-COPY ./linky.png /workbench/
 
 USER appuser
 COPY --chmod=755 <<EOF /workbench/start.sh

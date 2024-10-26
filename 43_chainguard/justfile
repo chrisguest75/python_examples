@@ -13,6 +13,9 @@ install:
   export PIPENV_VENV_IN_PROJECT=1
   pipenv install --dev --python=$(pyenv which python) --verbose
 
+start_local:
+  pipenv run start:test
+
 build:
   pipenv run docker:build
 
@@ -25,3 +28,5 @@ build_chainguard:
 start_chainguard: build_chainguard
   pipenv run docker:start:chainguard
 
+dive:
+  dive 43_chainguard:latest

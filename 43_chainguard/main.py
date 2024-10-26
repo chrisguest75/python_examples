@@ -54,9 +54,9 @@ def test() -> int:
     logger.info(f'Invoked test function - TEST_CONFIG={test_config!r}')
     logger.info(f"details={details()}")
 
-    print(random_line('facts.txt'))
+    print(random_line('./data/facts.txt'))
     '''Take in PNG and output as ANSI to terminal'''
-    output = convert('linky.png', is_unicode=True)
+    output = convert('./data/linky.png', is_unicode=True)
     print(output)
     return 0
 

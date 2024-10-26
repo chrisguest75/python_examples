@@ -1,19 +1,29 @@
-Use chainguard to build images.  
+# CHAINGUARD
 
-REF: Dockerexamples
+Use chainguard to build images.
 
-TODO:
-
-* Use pipenv to install
+REF: [github.com/chrisguest75/docker_examples/A0_chainguard/README.md](https://github.com/chrisguest75/docker_examples/blob/master/A0_chainguard/README.md)
 
 NOTES:
 
-* Distroless images
-* Use the `-dev` images to include shell `/bin/sh`
+- Distroless images
+- Use the `-dev` images to include shell `/bin/sh`
+- The image is 50% smaller.
 
 ## Contents
 
-GENERATE CONTENTS HERE
+- [CHAINGUARD](#chainguard)
+  - [Contents](#contents)
+  - [Prepare](#prepare)
+  - [Start](#start)
+  - [Build \& Run](#build--run)
+  - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
+    - [Interpreter](#interpreter)
+    - [Pipenv Environment](#pipenv-environment)
+    - [Single step](#single-step)
+      - [Application](#application)
+      - [Tests](#tests)
+  - [Resources](#resources)
 
 ## Prepare
 
@@ -45,25 +55,12 @@ pipenv run start --test
 pipenv run start:test
 ```
 
-## Build
+## Build & Run
 
 ```sh
-just build
-docker build -f Dockerfile.chainguard . -t octo-facts
+just start
 
-docker run --rm octo-facts
-
-docker run -it --rm --entrypoint /bin/sh octo-facts
-```
-
-## Docker
-
-```sh
-pipenv run docker:build       
-pipenv run docker:start   
-
-# troubleshooting    
-docker run -it --entrypoint /bin/bash 43_chainguard
+just start_chainguard
 ```
 
 ## Debugging and Troubleshooting
@@ -87,16 +84,16 @@ pipenv run python
 
 #### Application
 
-* Copy the `launch.json` to the root `.vscode`
-* `. ./.env` in the terminal
+- Copy the `launch.json` to the root `.vscode`
+- `. ./.env` in the terminal
 
 #### Tests
 
-* Configure pytest using the beaker icon in `vscode`
-* You can run and debug the discovered tests
+- Configure pytest using the beaker icon in `vscode`
+- You can run and debug the discovered tests
 
 ## Resources
 
-* Python testing in Visual Studio Code [here](https://code.visualstudio.com/docs/python/testing#_example-test-walkthroughs)
-* <https://edu.chainguard.dev/chainguard/chainguard-images/getting-started/python/>
-* <https://edu.chainguard.dev/chainguard/chainguard-images/how-to-use-chainguard-images/>
+- Python testing in Visual Studio Code [here](https://code.visualstudio.com/docs/python/testing#_example-test-walkthroughs)
+- Getting Started with the Python Chainguard Image [here](https://edu.chainguard.dev/chainguard/chainguard-images/getting-started/python/)
+- How to Use Chainguard Images [here](https://edu.chainguard.dev/chainguard/chainguard-images/how-to-use-chainguard-images/)
