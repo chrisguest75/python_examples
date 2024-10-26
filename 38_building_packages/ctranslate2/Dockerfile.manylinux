@@ -96,11 +96,15 @@ echo "***************************"
 echo "** save"
 echo "***************************"
 
+echo $$SHELL
+pwd 
+ls -Rla python/dist
+
 mkdir -p /out/dist
-cp python/dist/*.whl /out/dist
+cp -r python/dist/ /out/dist
 cp -r python/ctranslate2.egg-info /out
 mkdir -p /out/build
-cp build/*.so /out/build/
+cp -r build/ /out/build/
 EOF
 
 CMD ["/scratch/package.sh"]
