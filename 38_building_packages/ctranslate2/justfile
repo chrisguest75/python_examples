@@ -2,7 +2,7 @@ set dotenv-load := true
 
 # default lists actions
 default:
-  @just -f example.justfile --list
+  @just -f justfile --list
 
 clean:
   rm -rf ./out

@@ -1,0 +1,46 @@
+FROM quay.io/pypa/manylinux2014_x86_64 AS builder
+
+WORKDIR /scratch
+RUN git clone --recursive https://github.com/SYSTRAN/faster-whisper
+
+ARG PYVERSION=cp311-cp311
+ENV PYBIN=/opt/python/${PYVERSION}/bin/
+COPY --chmod=755 <<EOF /scratch/build.sh
+#!/usr/bin/env bash
+set -eufx
+
+echo ""
+echo "***************************"
+echo "** env"
+echo "***************************"
+env
+
+echo ""
+echo "***************************"
+echo "** interpreters"
+echo "***************************"
+
+manylinux-interpreters list
+
+echo ""
+echo "***************************"
+echo "** build"
+echo "***************************"
+
+cd faster-whisper
+export PYBIN=/opt/python/${PYVERSION}/bin/
+echo ${PYBIN}
+${PYBIN}/python --version
+
+${PYBIN}/python setup.py sdist bdist_wheel
+
+echo ""
+echo "***************************"
+echo "** save"
+echo "***************************"
+
+cp dist /out/ -r
+cp faster_whisper.egg-info /out/ -r
+EOF
+
+CMD ["/scratch/build.sh"]
