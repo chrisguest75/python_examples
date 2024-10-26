@@ -1,5 +1,8 @@
 set dotenv-load := true
 
+#export PYVERSION := "cp311-cp311"
+export PYVERSION := "pp310-pypy310_pp73"
+
 # default lists actions
 default:
   @just -f justfile --list
@@ -8,9 +11,15 @@ clean:
   rm -rf ./out
   mkdir -p ./out
 
-build:
-  docker build --progress=plain -t 38_build_ctranslate2 .
+build_image:
+  docker build --progress=plain --build-arg PYVERSION=${PYVERSION} -f Dockerfile.manylinux -t 38_build_ctranslate2 .
 
-start: build
-  docker run -it --rm -v ./out:/out 38_build_ctranslate2 
+build: build_image
+  docker run -it --rm -e PYVERSION=${PYVERSION} -v ./out:/out 38_build_ctranslate2 
 
+debug: build_image
+  docker run -it --rm -e PYVERSION=${PYVERSION} -v ./out:/out --entrypoint /bin/bash 38_build_ctranslate2 
+
+debug_manylinux: 
+  docker run -it --rm --entrypoint /bin/bash quay.io/pypa/manylinux2014_x86_64
+ 
