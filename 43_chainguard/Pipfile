@@ -1,0 +1,31 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyyaml = "*"
+python-json-logger = "*"
+python-dotenv = "*"
+climage = "*"
+
+[dev-packages]
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-2020 = "*"
+pytest = "*"
+black = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+"start" = "python main.py"
+"start:test" = "python main.py --test"
+test = "pytest"
+lint = "flake8"
+format = "black ."
+"docker:build" = "docker buildx build --load -f v3.11.3.Dockerfile -t 43_chainguard:latest ."
+"docker:start" = "docker run 43_chainguard:latest"
+"docker:build:chainguard" = "docker buildx build --load --progress=plain -f Dockerfile.chainguard -t 43_chainguard:latest ."
+"docker:start:chainguard" = "docker run 43_chainguard:latest"
