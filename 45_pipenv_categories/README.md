@@ -53,8 +53,18 @@ pipenv run start:test
 ## Local
 
 ```sh
+just lock
+
+just requirements
+just requirements dev-packages
+just requirements version-pypy
+just requirements version-cpython
+
 # start - will also build
 just start
+
+
+
 ```
 
 ## Docker

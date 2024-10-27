@@ -15,10 +15,11 @@ flake8-2020 = "*"
 pytest = "*"
 black = "*"
 
-[pypy]
+[version-pypy]
+requests = "*"
 
-[cpython]
-
+[version-cpython]
+faker = "*"
 
 [requires]
 python_version = "3.11"

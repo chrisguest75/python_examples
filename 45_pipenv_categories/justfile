@@ -14,6 +14,19 @@ install:
   export PIPENV_VENV_IN_PROJECT=1
   pipenv install --dev --python=$(pyenv which python) --verbose
 
+lock:
+  #!/usr/bin/env bash
+  export PIPENV_IGNORE_VIRTUALENVS=1
+  export PIPENV_VENV_IN_PROJECT=1
+  pipenv lock 
+
+requirements category="":
+  #!/usr/bin/env bash
+  export PIPENV_IGNORE_VIRTUALENVS=1
+  export PIPENV_VENV_IN_PROJECT=1
+  pipenv requirements --dev --categories "default {{ category }}"
+
+
 start:
   pipenv run start:test
 
