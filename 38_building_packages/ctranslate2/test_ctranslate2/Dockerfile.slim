@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.10.0
-ARG BASE_IMAGE=python:3.11.3-slim-buster
+ARG BASE_IMAGE=python:3.10.15-slim-bookworm
 FROM ${BASE_IMAGE} AS build-env
 
 RUN apt-get update \
@@ -14,8 +14,9 @@ COPY ./packages/ /workbench/packages/
 
 COPY --chmod=755 <<EOF /workbench/check-lock.sh
 #!/usr/bin/env bash
-ls -laR ./packages/custom/dist
-ls -laR ./packages/manylinux/dist
+
+#ls -laR ./packages/custom/dist
+#ls -laR ./packages/manylinux/dist
 
 python --version
 if [ ! -f ./Pipfile.lock ]; then
@@ -38,16 +39,42 @@ RUN apt-get update \
     && apt-get install -fy -qq --no-install-recommends curl ca-certificates \
     && apt-get clean 
 
+RUN pip install pipenv
+
 WORKDIR /workbench
+COPY ./Pipfile ./Pipfile.* /workbench/
+COPY ./packages/ /workbench/packages/
+
+COPY --chmod=755 <<EOF /workbench/check-lock.sh
+#!/usr/bin/env bash
+
+#ls -laR ./packages/custom/dist
+#ls -laR ./packages/manylinux/dist
+
+python --version
+if [ ! -f ./Pipfile.lock ]; then
+    pipenv lock --verbose
+fi
+EOF
+
+RUN /workbench/check-lock.sh
+RUN pipenv requirements > ./requirements.txt
+RUN python -m venv /workbench/venv
 ENV PATH="/workbench/venv/bin:$PATH"
+RUN pip install --no-cache-dir -r ./requirements.txt 
 RUN pip install "OpenNMT-py==2.*"
 
-RUN mkdir -p ./model && curl -o ./model/transformer-ende-wmt-pyOnmt.tar.gz https://s3.amazonaws.com/opennmt-models/transformer-ende-wmt-pyOnmt.tar.gz
-RUN tar xf ./model/transformer-ende-wmt-pyOnmt.tar.gz --directory=./model
+RUN mkdir -p ./model && \
+    curl -o ./model/transformer-ende-wmt-pyOnmt.tar.gz https://s3.amazonaws.com/opennmt-models/transformer-ende-wmt-pyOnmt.tar.gz && \
+    tar xf ./model/transformer-ende-wmt-pyOnmt.tar.gz --directory=./model && \
+    rm ./model/transformer-ende-wmt-pyOnmt.tar.gz
+
 COPY --chmod=755 <<EOF /workbench/process-model.sh
 #!/usr/bin/env bash
 pwd
 ls -laR ./model
+ls -laR ./venv
+export PATH="/workbench/venv/bin:$PATH"
 ct2-opennmt-py-converter --model_path ./model/averaged-10-epoch.pt --output_dir ./model/ende_ctranslate2
 EOF
 RUN /workbench/process-model.sh

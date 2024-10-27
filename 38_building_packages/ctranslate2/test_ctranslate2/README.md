@@ -1,6 +1,6 @@
-# test_ctranslate2
+# TEST CTRANSLATE
 
-Demonstrate test_ctranslate2
+Test custom ctranslate2 build
 
 NOTES:
 
@@ -13,7 +13,7 @@ NOTES:
 
 ## Contents
 
-- [test_ctranslate2](#test_ctranslate2)
+- [TEST CTRANSLATE](#test-ctranslate)
   - [Contents](#contents)
   - [Prepare](#prepare)
   - [Start](#start)
