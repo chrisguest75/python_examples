@@ -19,9 +19,21 @@ git clone git@github.com:wolfi-dev/os.git wolfios
 docker pull ghcr.io/wolfi-dev/sdk:latest
 ```
 
+NOTES: When grabbing the configs you need to add the following block otherwise the builds will fail.  
+
+```yaml
+    repositories:
+      - https://packages.wolfi.dev/bootstrap/stage3
+      - https://packages.wolfi.dev/os
+      - '@local /work/out'
+    keyring:
+      - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub  
+```
+
 ## Build custom image
 
-This builds a custom distroless image with node20 and ffmpeg.  
+This builds a custom distroless image with ffmpeg.  
 
 ```sh
 # pull required images
@@ -71,11 +83,11 @@ docker run --rm -v ./out:/work cgr.dev/chainguard/melange keygen
 
 # build packages (python)
 docker run --privileged --rm -v $(pwd):/work -- \
-  cgr.dev/chainguard/melange build /work/python-3.11.yaml --out-dir /work/out \
+  cgr.dev/chainguard/melange build --log-level debug /work/python-3.11.yaml --out-dir /work/out \
   --arch x86_64 --signing-key /work/out/melange.rsa --keyring-append /work/out/melange.rsa.pub
 
 # build image (python)
-docker run --rm -v $(pwd):/work cgr.dev/chainguard/apko build /work/python-3.11.yaml chainguard-python-3-11:latest /work/out/chainguard-python-3-11.tar -k /work/out/melange.rsa.pub 
+docker run --rm -v $(pwd):/work cgr.dev/chainguard/apko build /work/image-python-3.11.yaml chainguard-python-3-11:latest /work/out/chainguard-python-3-11.tar -k /work/out/melange.rsa.pub 
 
 # load image
 docker load < ./out/chainguard-python-3-11.tar
