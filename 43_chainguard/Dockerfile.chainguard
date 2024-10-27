@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM cgr.dev/chainguard/python:latest-dev as build-env
+FROM cgr.dev/chainguard/python:latest-dev AS build-env
 
 ENV LANG=C.UTF-8
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -9,14 +9,21 @@ RUN pip install --user pipenv
 
 WORKDIR /workbench
 COPY ./Pipfile /workbench/Pipfile
+
+# TODO: If no lock file is present, create one
+# Need to make these two lines dynamic. 
 COPY ./Pipfile.lock /workbench/Pipfile.lock 
+#RUN /home/nonroot/.local/bin/pipenv lock 
 
 RUN /home/nonroot/.local/bin/pipenv requirements > ./requirements.txt
 RUN python -m venv /workbench/venv
 ENV PATH="/workbench/venv/bin:$PATH"
 RUN pip install --no-cache-dir -r ./requirements.txt 
 
-FROM cgr.dev/chainguard/python:latest
+# **************************
+# * Final stage
+# **************************
+FROM cgr.dev/chainguard/python:latest AS final
 
 WORKDIR /workbench
 ENV LANG=C.UTF-8

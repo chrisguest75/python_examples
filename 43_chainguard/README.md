@@ -4,6 +4,11 @@ Use chainguard to build images.
 
 REF: [github.com/chrisguest75/docker_examples/A0_chainguard/README.md](https://github.com/chrisguest75/docker_examples/blob/master/A0_chainguard/README.md)
 
+TODO:
+
+- Get the correct version of chainguard python - this pulls latest
+- Work out how to switch to generating lock in the container if one does not exist.
+
 NOTES:
 
 - Distroless images
@@ -58,9 +63,14 @@ pipenv run start:test
 ## Build & Run
 
 ```sh
-just start
+# start - will also build
+just start [chainguard|slim]
 
-just start_chainguard
+# print out size and labels
+just details [chainguard|slim]
+
+# look at contents
+just dive [chainguard|slim]
 ```
 
 ## Debugging and Troubleshooting

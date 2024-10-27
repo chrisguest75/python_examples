@@ -16,17 +16,25 @@ install:
 start_local:
   pipenv run start:test
 
-build:
-  pipenv run docker:build
+build_image distro:
+  docker buildx build --progress=plain --load -f Dockerfile.{{ distro }} -t 43_chainguard_{{ distro }}:latest .
 
-start: build
-  pipenv run docker:start
+start distro: (build_image distro)
+  docker run 43_chainguard_{{ distro }}:latest
 
-build_chainguard:
-  pipenv run docker:build:chainguard
+dive distro: (build_image distro)
+  dive 43_chainguard_{{ distro }}:latest
 
-start_chainguard: build_chainguard
-  pipenv run docker:start:chainguard
-
-dive:
-  dive 43_chainguard:latest
+details distro: (build_image distro)
+  @echo "******************************"
+  @echo "** Labels"
+  @echo "******************************"
+  docker inspect -f '{{{{.Config.Labels}}}}' 43_chainguard_{{ distro }}:latest
+  @echo "******************************"
+  @echo "** Dive CI"
+  @echo "******************************"
+  dive 43_chainguard_{{ distro }}:latest --ci || true
+  @echo "******************************"
+  @echo "** Size"
+  @echo "******************************"
+  container-diff analyze --json daemon://43_chainguard_{{ distro }}:latest | jq .
