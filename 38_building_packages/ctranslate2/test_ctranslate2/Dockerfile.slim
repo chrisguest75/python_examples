@@ -3,7 +3,7 @@ ARG BASE_IMAGE=python:3.11.3-slim-buster
 FROM ${BASE_IMAGE} AS build-env
 
 RUN apt-get update \
-    && apt-get install -fy -qq --no-install-recommends curl ca-certificates \
+    && apt-get install -fy -qq --no-install-recommends curl cmake ca-certificates \
     && apt-get clean 
 
 RUN pip install pipenv
@@ -14,8 +14,10 @@ COPY ./packages/ /workbench/packages/
 
 COPY --chmod=755 <<EOF /workbench/check-lock.sh
 #!/usr/bin/env bash
-ls -laR ./packages/dist
+ls -laR ./packages/custom/dist
+ls -laR ./packages/manylinux/dist
 
+python --version
 if [ ! -f ./Pipfile.lock ]; then
     pipenv lock --verbose
 fi
@@ -28,9 +30,13 @@ ENV PATH="/workbench/venv/bin:$PATH"
 RUN pip install --no-cache-dir -r ./requirements.txt 
 
 # **************************
-# * Model
+# * Model (lock this to cpython to convert the model)
 # **************************
-FROM build-env AS model
+FROM python:3.10.15-slim-bookworm AS model
+
+RUN apt-get update \
+    && apt-get install -fy -qq --no-install-recommends curl ca-certificates \
+    && apt-get clean 
 
 WORKDIR /workbench
 ENV PATH="/workbench/venv/bin:$PATH"

@@ -10,21 +10,22 @@ TODO:
 NOTES:
 
 - This builds a `pypy` bound package.
+- You must be careful that the `python_version` in `Pipfile` must match the python version of the custom package.
 
 ## Manylinux
 
 Build using `manylinux` for different versions of python.
 
 ```sh
-just build
+just build manylinux
 
-just start
+just start manylinux
 ```
 
 ### Troubleshoot
 
 ```sh
-just debug
+just debug manylinux
 
 # inside container
 manylinux-interpreters list
@@ -37,18 +38,15 @@ manylinux-interpreters ensure-all
 Building without manylinux
 
 ```sh
-# build container and build the code
-docker build --progress=plain -t 38_build_ctranslate2 .
+just build custom
 
-# generate the package
-mkdir -p ./out
-docker run -it --rm -v ./out:/out 38_build_ctranslate2
+just start custom
 ```
 
 ## Troubleshooting
 
 ```sh
-docker run -it --rm --entrypoint /bin/bash 38_build_ctranslate2
+just debug custom
 ```
 
 ## Resources

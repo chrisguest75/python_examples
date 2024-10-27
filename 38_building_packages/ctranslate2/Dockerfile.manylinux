@@ -100,11 +100,11 @@ echo $$SHELL
 pwd 
 ls -Rla python/dist
 
-mkdir -p /out/dist
-cp -r python/dist/ /out/dist
-cp -r python/ctranslate2.egg-info /out
-mkdir -p /out/build
-cp -r build/ /out/build/
+mkdir -p /out/manylinux/dist
+cp -r python/dist /out/manylinux
+cp -r python/ctranslate2.egg-info /out/manylinux
+mkdir -p /out/manylinux/build
+cp -r build /out/manylinux
 EOF
 
 CMD ["/scratch/package.sh"]
