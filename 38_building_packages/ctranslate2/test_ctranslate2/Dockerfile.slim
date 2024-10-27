@@ -10,9 +10,12 @@ RUN pip install pipenv
 
 WORKDIR /workbench
 COPY ./Pipfile ./Pipfile.* /workbench/
+COPY ./packages/ /workbench/packages/
 
 COPY --chmod=755 <<EOF /workbench/check-lock.sh
 #!/usr/bin/env bash
+ls -laR ./packages/dist
+
 if [ ! -f ./Pipfile.lock ]; then
     pipenv lock --verbose
 fi
