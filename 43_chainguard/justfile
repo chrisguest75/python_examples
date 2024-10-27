@@ -5,8 +5,8 @@ default:
   @just -f justfile --list
 
 clean:
-  rm -rf ./.venv
-  rm Pipfile.lock
+  rm -rf ./.venv || true
+  rm Pipfile.lock || true
 
 install:
   export PIPENV_IGNORE_VIRTUALENVS=1

@@ -1,16 +1,19 @@
 # syntax=docker/dockerfile:1.10.0
-FROM python:3.11.3-slim-buster AS build-env
+FROM python:3.12.7-slim-bookworm AS build-env
 
 RUN pip install pipenv
 
 WORKDIR /workbench
-COPY ./Pipfile /workbench/Pipfile
+COPY ./Pipfile ./Pipfile.* /workbench/
 
-# TODO: If no lock file is present, create one
-# Need to make these two lines dynamic. 
-#COPY ./Pipfile.lock /workbench/Pipfile.lock 
-RUN pipenv lock 
+COPY --chmod=755 <<EOF /workbench/check-lock.sh
+#!/usr/bin/env bash
+if [ ! -f ./Pipfile.lock ]; then
+    pipenv lock
+fi
+EOF
 
+RUN /workbench/check-lock.sh
 RUN pipenv requirements > ./requirements.txt
 RUN python -m venv /workbench/venv
 ENV PATH="/workbench/venv/bin:$PATH"
@@ -19,7 +22,7 @@ RUN pip install --no-cache-dir -r ./requirements.txt
 # **************************
 # * Final stage
 # **************************
-FROM python:3.11.3-slim-buster AS final
+FROM python:3.12.7-slim-bookworm AS final
 
 RUN apt-get update \
     && apt-get install -fy -qq --no-install-recommends ca-certificates \

@@ -8,13 +8,16 @@ ENV PYTHONUNBUFFERED=1
 RUN pip install --user pipenv
 
 WORKDIR /workbench
-COPY ./Pipfile /workbench/Pipfile
+COPY ./Pipfile ./Pipfile.* /workbench/
 
-# TODO: If no lock file is present, create one
-# Need to make these two lines dynamic. 
-COPY ./Pipfile.lock /workbench/Pipfile.lock 
-#RUN /home/nonroot/.local/bin/pipenv lock 
+COPY --chmod=755 <<EOF /workbench/check-lock.sh
+#!/bin/bash
+if [ ! -f ./Pipfile.lock ]; then
+    /home/nonroot/.local/bin/pipenv lock
+fi
+EOF
 
+RUN /workbench/check-lock.sh
 RUN /home/nonroot/.local/bin/pipenv requirements > ./requirements.txt
 RUN python -m venv /workbench/venv
 ENV PATH="/workbench/venv/bin:$PATH"

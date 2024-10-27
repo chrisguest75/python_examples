@@ -6,14 +6,15 @@ REF: [github.com/chrisguest75/docker_examples/A0_chainguard/README.md](https://g
 
 TODO:
 
-- Get the correct version of chainguard python - this pulls latest
-- Work out how to switch to generating lock in the container if one does not exist.
+- Build an elective version of chainguard python.
 
 NOTES:
 
-- Distroless images
+- Distroless images using chainguard
 - Use the `-dev` images to include shell `/bin/sh`
 - The image is 50% smaller.
+- Because chainguard pulls latest python both images have been upgraded to 3.12.
+- If the `Pipfile.lock` does not exist it will generate a new one in the image.
 
 ## Contents
 
