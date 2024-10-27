@@ -1,0 +1,43 @@
+set dotenv-load := true
+
+# default lists actions
+default:
+  @just -f justfile --list
+
+clean:
+  rm -rf ./.venv || true
+  rm Pipfile.lock || true
+
+install:
+  #!/usr/bin/env bash
+  export PIPENV_IGNORE_VIRTUALENVS=1
+  export PIPENV_VENV_IN_PROJECT=1
+  pipenv install --dev --python=$(pyenv which python) --verbose
+
+start:
+  pipenv run start:test
+
+
+build_image distro:
+  docker buildx build --progress=plain --load -f Dockerfile.{{ distro }} -t 45_pipenv_categories{{ distro }}:latest .
+
+start_image distro: (build_image distro)
+  docker run 45_pipenv_categories{{ distro }}:latest
+
+dive distro: (build_image distro)
+  dive 45_pipenv_categories{{ distro }}:latest
+
+details distro: (build_image distro)
+  @echo "******************************"
+  @echo "** Labels"
+  @echo "******************************"
+  docker inspect -f '{{{{ .Config.Labels }}}}' 45_pipenv_categories{{ distro }}:latest
+  @echo "******************************"
+  @echo "** Dive CI"
+  @echo "******************************"
+  dive 45_pipenv_categories{{ distro }}:latest --ci || true
+  @echo "******************************"
+  @echo "** Size"
+  @echo "******************************"
+  container-diff analyze --json daemon://45_pipenv_categories{{ distro }}:latest | jq .
+
