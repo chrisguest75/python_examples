@@ -34,9 +34,11 @@ ENV PATH="/workbench/venv/bin:$PATH"
 RUN pip install "OpenNMT-py==2.*"
 
 RUN mkdir -p ./model && curl -o ./model/transformer-ende-wmt-pyOnmt.tar.gz https://s3.amazonaws.com/opennmt-models/transformer-ende-wmt-pyOnmt.tar.gz
-
+RUN tar xf ./model/transformer-ende-wmt-pyOnmt.tar.gz --directory=./model
 COPY --chmod=755 <<EOF /workbench/process-model.sh
 #!/usr/bin/env bash
+pwd
+ls -laR ./model
 ct2-opennmt-py-converter --model_path ./model/averaged-10-epoch.pt --output_dir ./model/ende_ctranslate2
 EOF
 RUN /workbench/process-model.sh
