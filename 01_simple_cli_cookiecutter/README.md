@@ -6,6 +6,7 @@ TODO:
 
 - Add pdoc
 - Get hooks working to remove files
+- Add context logger filter
 
 ## Contains
 

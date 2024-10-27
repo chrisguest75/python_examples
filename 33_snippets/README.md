@@ -1,15 +1,16 @@
 # SNIPPETS
 
-A place for testing little snippets of python code.  
+A place for testing little snippets of python code.
 
 TODO:
 
-* Is there an equivalent to quokka?  
+- Is there an equivalent to quokka?
 
 ## Contents
 
 - [SNIPPETS](#snippets)
   - [Contents](#contents)
+  - [Example Snippets](#example-snippets)
   - [Prepare](#prepare)
   - [Start](#start)
   - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
@@ -19,6 +20,11 @@ TODO:
       - [Application](#application)
       - [Tests](#tests)
   - [Resources](#resources)
+
+## Example Snippets
+
+- Logging Filter
+- Test Indenting Behaviour
 
 ## Prepare
 
