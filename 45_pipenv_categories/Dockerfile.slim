@@ -13,8 +13,9 @@ if [ ! -f ./Pipfile.lock ]; then
 fi
 EOF
 
+ARG REQUIREMENTS_CATEGORY=""
 RUN /workbench/check-lock.sh
-RUN pipenv requirements > ./requirements.txt
+RUN pipenv requirements --categories "default ${REQUIREMENTS_CATEGORY}" > ./requirements.txt
 RUN python -m venv /workbench/venv
 ENV PATH="/workbench/venv/bin:$PATH"
 RUN pip install --no-cache-dir -r ./requirements.txt 

@@ -3,6 +3,11 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[[source]]
+url = "https://download.pytorch.org/whl/cpu"
+verify_ssl = true
+name = "pytorch"
+
 [packages]
 pyyaml = "*"
 python-json-logger = "*"
@@ -20,6 +25,14 @@ requests = "*"
 
 [version-cpython]
 faker = "*"
+
+[cpu]
+torch = { version="==2.2.0", index = "pytorch"}
+torchaudio = { version="==2.2.0", index = "pytorch"}
+
+[gpu]
+torch = { version="==2.2.0", index = "pypi"}
+torchaudio = { version="==2.2.0", index = "pypi"}
 
 [requires]
 python_version = "3.11"

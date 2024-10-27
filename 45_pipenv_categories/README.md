@@ -2,6 +2,16 @@
 
 Demonstrate `pipenv` categories.
 
+NOTES:
+
+- You can use `pipenv` categories to switch packages that get installed.
+- BE CAREFUL: You have to rebuild the `Pipfile.lock` as it is this that determines the packages to be used.
+
+TODO:
+
+- Test if you can use it to override packages to instead install a local build.
+- Switching CPU and GPU is not working at the moment
+
 ## Contents
 
 - [PIPENV CATEGORIES](#pipenv-categories)
@@ -55,16 +65,18 @@ pipenv run start:test
 ```sh
 just lock
 
+# output the requirements.txt
 just requirements
 just requirements dev-packages
 just requirements version-pypy
 just requirements version-cpython
 
+
 # start - will also build
 just start
 
-
-
+# look at packages listed (switch cpu to gpu in the justfile REQUIREMENTS_CATEGORY)
+just start_image slim
 ```
 
 ## Docker

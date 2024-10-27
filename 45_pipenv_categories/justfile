@@ -1,5 +1,7 @@
 set dotenv-load := true
 
+export REQUIREMENTS_CATEGORY := "gpu version-pypy version-cpython"
+
 # default lists actions
 default:
   @just -f justfile --list
@@ -26,13 +28,11 @@ requirements category="":
   export PIPENV_VENV_IN_PROJECT=1
   pipenv requirements --dev --categories "default {{ category }}"
 
-
 start:
   pipenv run start:test
 
-
 build_image distro:
-  docker buildx build --progress=plain --load -f Dockerfile.{{ distro }} -t 45_pipenv_categories{{ distro }}:latest .
+  docker buildx build --progress=plain --load -f Dockerfile.{{ distro }} --build-arg "REQUIREMENTS_CATEGORY=${REQUIREMENTS_CATEGORY}" -t 45_pipenv_categories{{ distro }}:latest .
 
 start_image distro: (build_image distro)
   docker run 45_pipenv_categories{{ distro }}:latest
