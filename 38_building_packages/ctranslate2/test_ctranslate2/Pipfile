@@ -10,7 +10,7 @@ python-dotenv = "*"
 #opennmt-py = "==2.*"
 sentencepiece = "*"
 
-ctranslate2 = {file = "packages/dist/ctranslate2-4.4.0-pp310-pypy310_pp73-linux_x86_64.whl"}
+ctranslate2 = {file = "./test_ctranslate2/packages/dist/dist/wheelhouse/ctranslate2-4.4.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"}
 #ctranslate2 = "*"
 
 [dev-packages]

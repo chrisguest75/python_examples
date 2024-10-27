@@ -8,17 +8,17 @@ default:
   @just -f justfile --list
 
 clean:
-  rm -rf ./out
-  mkdir -p ./out
+  rm -rf ./test_ctranslate2/packages
+  mkdir -p ./test_ctranslate2/packages
 
 build_image:
   docker build --progress=plain --build-arg PYVERSION=${PYVERSION} -f Dockerfile.manylinux -t 38_build_ctranslate2 .
 
 build: build_image
-  docker run -it --rm -e PYVERSION=${PYVERSION} -v ./out:/out 38_build_ctranslate2 
+  docker run -it --rm -e PYVERSION=${PYVERSION} -v ./test_ctranslate2/packages:/out 38_build_ctranslate2 
 
 debug: build_image
-  docker run -it --rm -e PYVERSION=${PYVERSION} -v ./out:/out --entrypoint /bin/bash 38_build_ctranslate2 
+  docker run -it --rm -e PYVERSION=${PYVERSION} -v ./test_ctranslate2/packages:/out --entrypoint /bin/bash 38_build_ctranslate2 
 
 debug_manylinux: 
   docker run -it --rm --entrypoint /bin/bash quay.io/pypa/manylinux2014_x86_64

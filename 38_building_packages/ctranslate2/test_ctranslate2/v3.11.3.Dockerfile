@@ -49,7 +49,7 @@ EOF
 COPY ./tests /workbench/tests
 COPY ./logging_config.yaml /workbench
 COPY ./main.py /workbench
-RUN cp /workbench/packages/build/libctranslate2.so /usr/local/lib/libctranslate2.so.4
+#RUN cp /workbench/packages/build/libctranslate2.so /usr/local/lib/libctranslate2.so.4
 
 #USER appuser
 
