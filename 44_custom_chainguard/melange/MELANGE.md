@@ -93,9 +93,9 @@ docker run --rm -v $(pwd):/work cgr.dev/chainguard/apko build /work/image-python
 docker load < ./out/chainguard-python-3-11.tar
 
 # run built image (ffmpeg)
-docker run --rm chainguard-python-3-11:latest-amd64 -version
+docker run --rm chainguard-python-3-11:latest-amd64 --version
 
-docker run --rm --entrypoint /usr/bin/python chainguard-python-3-11:latest-amd64 -version
+docker run --rm --entrypoint /usr/bin/python chainguard-python-3-11:latest-amd64 --version
 
 # analyse
 dive chainguard-python-3-11:latest-amd64
