@@ -1,0 +1,43 @@
+set dotenv-load := true
+
+# default lists actions
+default:
+  @just -f justfile --list
+
+clean:
+  rm -rf ./.venv || true
+  rm Pipfile.lock || true
+
+install:
+  #!/usr/bin/env bash
+  export PIPENV_IGNORE_VIRTUALENVS=1
+  export PIPENV_VENV_IN_PROJECT=1
+  pipenv install --dev --python=$(pyenv which python) --verbose
+
+start:
+  pipenv run start:test
+
+{% if cookiecutter.create_dockerfile == 'y' %}
+build_image distro:
+  docker buildx build --progress=plain --load -f Dockerfile.{{ '{{' }} distro {{ '}}' }} -t {{ cookiecutter.project_name }}{{ '{{' }} distro {{ '}}' }}:latest .
+
+start_image distro: (build_image distro)
+  docker run {{ cookiecutter.project_name }}{{ '{{' }} distro {{ '}}' }}:latest
+
+dive distro: (build_image distro)
+  dive {{ cookiecutter.project_name }}{{ '{{' }} distro {{ '}}' }}:latest
+
+details distro: (build_image distro)
+  @echo "******************************"
+  @echo "** Labels"
+  @echo "******************************"
+  docker inspect -f '{{ '{{{{' }} .Config.Labels {{ '}}}}' }}' {{ cookiecutter.project_name }}{{ '{{' }} distro {{ '}}' }}:latest
+  @echo "******************************"
+  @echo "** Dive CI"
+  @echo "******************************"
+  dive {{ cookiecutter.project_name }}{{ '{{' }} distro {{ '}}' }}:latest --ci || true
+  @echo "******************************"
+  @echo "** Size"
+  @echo "******************************"
+  container-diff analyze --json daemon://{{ cookiecutter.project_name }}{{ '{{' }} distro {{ '}}' }}:latest | jq .
+{% endif %}

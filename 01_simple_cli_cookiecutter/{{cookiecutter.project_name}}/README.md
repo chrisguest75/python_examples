@@ -13,12 +13,14 @@ If using `vscode` remember to set your interpreter location to `.venv/bin/python
 ## Start
 
 ```sh
+# required in terminal if using pipenv
 # for vscode
 export PIPENV_IGNORE_VIRTUALENVS=1
-
 export PIPENV_VENV_IN_PROJECT=1
+
 # install
 pipenv install --dev
+just install
 
 # lint and test code
 pipenv run format
@@ -36,15 +38,29 @@ pipenv run start --test
 pipenv run start:test
 ```
 
+## Local
+
+```sh
+# start - will also build
+just start
+```
+
+{% if cookiecutter.create_dockerfile == 'y' %}
+
 ## Docker
 
 ```sh
-pipenv run docker:build       
-pipenv run docker:start   
+# start - will also build
+just start_image slim
 
-# troubleshooting    
-docker run -it --entrypoint /bin/bash {{ cookiecutter.project_name }}
+# print out size and labels
+just details slim
+
+# look at contents
+just dive slim
 ```
+
+{% endif %}
 
 ## Debugging and Troubleshooting
 

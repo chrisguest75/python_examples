@@ -4,16 +4,16 @@ A cli cookiecutter for quickly spinning up new projects.
 
 TODO:
 
-* Add a dockerfile (multistage linting,running tests, etc)
-* Add pdoc
+- Add pdoc
+- Get hooks working to remove files
 
 ## Contains
 
-* Pipenv
-* Logging
-* Linting
-* Argument parsing
-* Pytest
+- Pipenv
+- Logging
+- Linting
+- Argument parsing
+- Pytest
 
 ## Install
 
@@ -32,10 +32,14 @@ cd $(git root)
 
 # it will create directory of project name
 cookiecutter $(pwd)/01_simple_cli_cookiecutter
+
+# force overwrite if recreating
+cookiecutter $(pwd)/01_simple_cli_cookiecutter -f
 ```
 
 ## Resources
 
+- Cookiecutter: Better Project Templates [here](https://cookiecutter.readthedocs.io/en/stable/)
 - cookiecutter/cookiecutter [here](https://github.com/cookiecutter/cookiecutter)
 - cookiecutter installation [here](https://cookiecutter.readthedocs.io/en/stable/installation.html)
 - cookiecutter/cookiecutter-django [here](https://github.com/cookiecutter/cookiecutter-django/tree/master)
