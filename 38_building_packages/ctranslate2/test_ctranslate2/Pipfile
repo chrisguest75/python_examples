@@ -10,8 +10,8 @@ python-dotenv = "*"
 #opennmt-py = "==2.*"
 sentencepiece = "*"
 
-ctranslate2 = {file = "./test_ctranslate2/packages/dist/dist/wheelhouse/ctranslate2-4.4.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"}
-#ctranslate2 = "*"
+#ctranslate2 = {file = "./test_ctranslate2/packages/dist/dist/wheelhouse/ctranslate2-4.4.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"}
+ctranslate2 = "*"
 
 [dev-packages]
 flake8 = "*"
@@ -29,6 +29,4 @@ python_version = "3.11"
 test = "pytest"
 lint = "flake8"
 format = "black ."
-"docker:build" = "docker buildx build --load -f v3.11.3.Dockerfile -t test_ctranslate2:latest ."
-"docker:build:pypy" = "docker buildx build --load -f v3.11.3.Dockerfile --build-arg BASE_IMAGE=pypy:3.10-7.3.17-bookworm -t test_ctranslate2:latest ."
-"docker:start" = "docker run test_ctranslate2:latest"
+

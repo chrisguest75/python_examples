@@ -1,33 +1,51 @@
 set dotenv-load := true
 
+#export BASE_IMAGE := "pypy:3.10-7.3.17-bookworm"
+export BASE_IMAGE := "python:3.11.3-slim-buster"
+
 # default lists actions
 default:
-  @just -f example.justfile --list
+  @just -f justfile --list
 
 clean:
-  rm -rf ./.venv
-  rm Pipfile.lock
+  rm -rf ./.venv || true
+  rm Pipfile.lock || true
 
 install:
   export PIPENV_IGNORE_VIRTUALENVS=1
   export PIPENV_VENV_IN_PROJECT=1
   pipenv install --dev --python=$(pyenv which python) --verbose
 
-build:
-  pipenv run docker:build
+start_local:
+  pipenv run start:test
 
-build_pypy:
-  pipenv run docker:build:pypy
+build_image:
+  docker buildx build --progress=plain --load -f Dockerfile.slim --build-arg BASE_IMAGE=${BASE_IMAGE} -t test_ctranslate2:latest .
 
-start: build
-  pipenv run docker:start
+start: build_image
+  docker run test_ctranslate2:latest
 
-start_pypy: build_pypy
-  pipenv run docker:start
+dive: build_image
+  dive test_ctranslate2:latest
 
-dive_pypy:
-  dive test_ctranslate2:latest 
-
-shell_pypy:
+debug: build_image
   docker run -it --rm --entrypoint /bin/bash test_ctranslate2:latest 
-  
+
+details: build_image
+  @echo "******************************"
+  @echo "** Labels"
+  @echo "******************************"
+  docker inspect -f '{{{{.Config.Labels}}}}' test_ctranslate2:latest
+  @echo "******************************"
+  @echo "** Dive CI"
+  @echo "******************************"
+  dive test_ctranslate2:latest --ci || true
+  @echo "******************************"
+  @echo "** Size"
+  @echo "******************************"
+  container-diff analyze --json daemon://test_ctranslate2:latest | jq .
+
+model_download:
+  mkdir -p ./model
+  curl -o ./model/transformer-ende-wmt-pyOnmt.tar.gz https://s3.amazonaws.com/opennmt-models/transformer-ende-wmt-pyOnmt.tar.gz
+  tar xf ./model/transformer-ende-wmt-pyOnmt.tar.gz --directory=./model

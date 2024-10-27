@@ -6,7 +6,6 @@ TODO:
 
 - The generated wheel does not contain the native libs (investigate manylinux).
 - libomp does not exist for the manylinux distro
-- Copy packages directly into the test folder.
 
 NOTES:
 

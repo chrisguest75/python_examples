@@ -1,0 +1,85 @@
+# syntax=docker/dockerfile:1.10.0
+ARG BASE_IMAGE=python:3.11.3-slim-buster
+FROM ${BASE_IMAGE} AS build-env
+
+RUN apt-get update \
+    && apt-get install -fy -qq --no-install-recommends curl ca-certificates \
+    && apt-get clean 
+
+RUN pip install pipenv
+
+WORKDIR /workbench
+COPY ./Pipfile ./Pipfile.* /workbench/
+
+COPY --chmod=755 <<EOF /workbench/check-lock.sh
+#!/usr/bin/env bash
+if [ ! -f ./Pipfile.lock ]; then
+    pipenv lock --verbose
+fi
+EOF
+
+RUN /workbench/check-lock.sh
+RUN pipenv requirements > ./requirements.txt
+RUN python -m venv /workbench/venv
+ENV PATH="/workbench/venv/bin:$PATH"
+RUN pip install --no-cache-dir -r ./requirements.txt 
+
+# **************************
+# * Model
+# **************************
+FROM build-env AS model
+
+WORKDIR /workbench
+ENV PATH="/workbench/venv/bin:$PATH"
+RUN pip install "OpenNMT-py==2.*"
+
+RUN mkdir -p ./model && curl -o ./model/transformer-ende-wmt-pyOnmt.tar.gz https://s3.amazonaws.com/opennmt-models/transformer-ende-wmt-pyOnmt.tar.gz
+
+COPY --chmod=755 <<EOF /workbench/process-model.sh
+#!/usr/bin/env bash
+ct2-opennmt-py-converter --model_path ./model/averaged-10-epoch.pt --output_dir ./model/ende_ctranslate2
+EOF
+RUN /workbench/process-model.sh
+
+# **************************
+# * Final stage
+# **************************
+FROM ${BASE_IMAGE} AS final
+
+RUN apt-get update \
+    && apt-get install -fy -qq --no-install-recommends libomp5 ca-certificates \
+    && apt-get clean 
+
+WORKDIR /workbench
+
+COPY --from=model /workbench/model /workbench/model
+
+ARG USERID=1000
+ARG GROUPID=1000
+RUN addgroup --system --gid $GROUPID appuser
+RUN adduser --system --uid $USERID --gid $GROUPID appuser
+
+COPY --chmod=755 <<EOF /workbench/.env
+export TEST_CONFIG="This is a test value from .env"
+export PATH="/workbench/venv/bin:$PATH"
+export LANG=C.UTF-8
+export PYTHONDONTWRITEBYTECODE=1
+export PYTHONUNBUFFERED=1
+EOF
+
+COPY --from=build-env /workbench/venv /workbench/venv
+COPY ./tests /workbench/tests
+COPY ./main.py ./logging_config.yaml /workbench/
+
+COPY --chmod=755 <<EOF /workbench/start.sh
+#!/usr/bin/env bash
+. ./.env
+export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/usr/local/lib
+env
+pip list
+python main.py --test
+EOF
+
+USER appuser
+CMD ["./start.sh"]
+
