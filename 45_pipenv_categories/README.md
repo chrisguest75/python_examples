@@ -6,11 +6,11 @@ NOTES:
 
 - You can use `pipenv` categories to switch packages that get installed.
 - BE CAREFUL: You have to rebuild the `Pipfile.lock` as it is this that determines the packages to be used.
+- BE CAREFUL: You should be exporting the hashes into the requirements file. Otherwise when installing the GPU category it would get very confused installing the nvidia libs but `pytorch+cpu` package  
 
 TODO:
 
 - Test if you can use it to override packages to instead install a local build.
-- Switching CPU and GPU is not working at the moment - it installs the nvidia drivers but then fails to use them in torch.
 
 ## Contents
 
