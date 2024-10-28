@@ -27,12 +27,12 @@ requests = "*"
 faker = "*"
 
 [cpu]
-torch = { version="==2.2.0", index = "pytorch"}
-torchaudio = { version="==2.2.0", index = "pytorch"}
+torch = { version="*", index = "pytorch"}
+torchaudio = { version="*", index = "pytorch"}
 
 [gpu]
-torch = { version="==2.2.0", index = "pypi"}
-torchaudio = { version="==2.2.0", index = "pypi"}
+torch = { version="*", index = "pypi"}
+torchaudio = { version="*", index = "pypi"}
 
 [requires]
 python_version = "3.11"

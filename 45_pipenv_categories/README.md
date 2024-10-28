@@ -10,7 +10,7 @@ NOTES:
 TODO:
 
 - Test if you can use it to override packages to instead install a local build.
-- Switching CPU and GPU is not working at the moment
+- Switching CPU and GPU is not working at the moment - it installs the nvidia drivers but then fails to use them in torch.
 
 ## Contents
 
@@ -66,17 +66,17 @@ pipenv run start:test
 just lock
 
 # output the requirements.txt
-just requirements
-just requirements dev-packages
-just requirements version-pypy
-just requirements version-cpython
+just REQUIREMENTS_CATEGORY="dev-packages" requirements
+just REQUIREMENTS_CATEGORY="packages cpu" requirements
 
+# look at packages listed in output (switch cpu to gpu in the justfile REQUIREMENTS_CATEGORY)
+just REQUIREMENTS_CATEGORY="dev-packages cpu version-pypy version-cpython" start_image slim
 
-# start - will also build
-just start
+# --no-cache
+just DOCKER_BUILD_ARGUMENTS="--no-cache" REQUIREMENTS_CATEGORY="dev-packages cpu version-pypy version-cpython" start_image slim
 
-# look at packages listed (switch cpu to gpu in the justfile REQUIREMENTS_CATEGORY)
-just start_image slim
+# gpu
+just REQUIREMENTS_CATEGORY="dev-packages gpu version-pypy version-cpython" start_image slim
 ```
 
 ## Docker

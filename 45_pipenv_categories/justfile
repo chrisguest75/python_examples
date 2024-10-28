@@ -1,6 +1,9 @@
 set dotenv-load := true
 
-export REQUIREMENTS_CATEGORY := "gpu version-pypy version-cpython"
+export REQUIREMENTS_CATEGORY := ""
+export PIPENV_IGNORE_VIRTUALENVS := "1"
+export PIPENV_VENV_IN_PROJECT := "1"
+export DOCKER_BUILD_ARGUMENTS := ""
 
 # default lists actions
 default:
@@ -12,30 +15,26 @@ clean:
 
 install:
   #!/usr/bin/env bash
-  export PIPENV_IGNORE_VIRTUALENVS=1
-  export PIPENV_VENV_IN_PROJECT=1
   pipenv install --dev --python=$(pyenv which python) --verbose
 
 lock:
   #!/usr/bin/env bash
-  export PIPENV_IGNORE_VIRTUALENVS=1
-  export PIPENV_VENV_IN_PROJECT=1
-  pipenv lock 
+  pipenv lock --verbose
 
-requirements category="":
+requirements:
   #!/usr/bin/env bash
-  export PIPENV_IGNORE_VIRTUALENVS=1
-  export PIPENV_VENV_IN_PROJECT=1
-  pipenv requirements --dev --categories "default {{ category }}"
+  echo "REQUIREMENTS_CATEGORY: '${REQUIREMENTS_CATEGORY}'"
+  pipenv requirements --dev --categories "${REQUIREMENTS_CATEGORY}"
 
 start:
   pipenv run start:test
 
 build_image distro:
-  docker buildx build --progress=plain --load -f Dockerfile.{{ distro }} --build-arg "REQUIREMENTS_CATEGORY=${REQUIREMENTS_CATEGORY}" -t 45_pipenv_categories{{ distro }}:latest .
+  echo "REQUIREMENTS_CATEGORY: '${REQUIREMENTS_CATEGORY}'"
+  docker buildx build --progress=plain --load -f Dockerfile.{{ distro }} ${DOCKER_BUILD_ARGUMENTS} --build-arg "REQUIREMENTS_CATEGORY=${REQUIREMENTS_CATEGORY}" -t 45_pipenv_categories{{ distro }}:latest .
 
 start_image distro: (build_image distro)
-  docker run 45_pipenv_categories{{ distro }}:latest
+  docker run --gpus all 45_pipenv_categories{{ distro }}:latest
 
 dive distro: (build_image distro)
   dive 45_pipenv_categories{{ distro }}:latest

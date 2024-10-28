@@ -7,7 +7,9 @@ import traceback
 import yaml
 import os
 import platform
-
+import pprint
+import torch
+import importlib.metadata
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -36,12 +38,31 @@ def str2bool(value: str) -> bool:
     return value.lower() in ("yes", "true", "t", "1")
 
 
+def is_cuda():
+    out = []
+    out.append(f'cuda.is_available: {torch.cuda.is_available()}')
+    out.append(f'importlib.metadata.version("torch"): {importlib.metadata.version("torch")}')
+    pprint.pp(out)
+    return out 
+
+def is_working():
+    out = []
+    t = torch.rand(5, 3)
+    out.append(str(t))
+    out.append(f'shape: {t.shape}')
+    out.append(f'dtype: {t.dtype}')
+    out.append(f'device: {t.device}')
+    pprint.pp(out)
+    return out 
+
 def test() -> int:
     """test function"""
     logger = logging.getLogger()
     test_config = os.environ["TEST_CONFIG"]
     logger.info(f'Invoked test function - TEST_CONFIG={test_config!r}')
     logger.info(f"details={details()}")
+    is_cuda()
+    is_working()
     return 0
 
 
