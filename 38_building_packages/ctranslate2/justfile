@@ -21,5 +21,8 @@ start distro: (build distro)
 debug distro: (build distro)
   docker run -it --rm -e PYVERSION=${PYVERSION} -v ./test_ctranslate2/packages:/out --entrypoint /bin/bash ${IMAGE_NAME}
 
+dive distro: (build distro)
+  dive ${IMAGE_NAME}
+
 debug_manylinux: 
   docker run -it --rm --entrypoint /bin/bash quay.io/pypa/manylinux2014_x86_64

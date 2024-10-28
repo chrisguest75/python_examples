@@ -88,7 +88,10 @@ ${PYBIN}/python setup.py bdist_wheel
 
 cd dist
 auditwheel show ctranslate2-4.4.0-${PYVERSION}-linux_x86_64.whl
-auditwheel repair --exclude libomp5.so --exclude libiomp5.so ctranslate2-4.4.0-${PYVERSION}-linux_x86_64.whl
+#auditwheel repair --exclude libomp5.so --exclude libiomp5.so ctranslate2-4.4.0-${PYVERSION}-linux_x86_64.whl
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/oneapi/compiler/2025.0/lib/
+auditwheel -vvv repair ctranslate2-4.4.0-${PYVERSION}-linux_x86_64.whl
 cd ../..
 
 echo ""
@@ -103,8 +106,8 @@ ls -Rla python/dist
 mkdir -p /out/manylinux/dist
 cp -r python/dist /out/manylinux
 cp -r python/ctranslate2.egg-info /out/manylinux
-mkdir -p /out/manylinux/build
-cp -r build /out/manylinux
+#mkdir -p /out/manylinux/build
+#cp -r build /out/manylinux
 EOF
 
 CMD ["/scratch/package.sh"]

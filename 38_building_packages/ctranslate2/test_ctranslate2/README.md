@@ -96,10 +96,10 @@ just clean
 
 just REQUIREMENTS_CATEGORY="dev-packages packages pypy" install
 
-# pypy local (missing libiomp5.so)
+# pypy local 
 just start_local
 
-# not working (missing libiomp5.so)
+# pypy docker 
 just BASE_IMAGE="pypy:3.10-7.3.17-bookworm" REQUIREMENTS_CATEGORY="packages pypy" start
 
 # add no-cache
