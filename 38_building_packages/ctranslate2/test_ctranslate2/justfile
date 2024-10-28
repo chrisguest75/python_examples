@@ -1,33 +1,65 @@
 set dotenv-load := true
 
+export PIPENV_IGNORE_VIRTUALENVS := "1"
+export PIPENV_VENV_IN_PROJECT := "1"
+
+#export BASE_IMAGE := "pypy:3.10-7.3.17-bookworm"
+export BASE_IMAGE := "python:3.10.15-slim-bookworm"
+export REQUIREMENTS_CATEGORY := ""
+export DOCKER_BUILD_ARGUMENTS := ""
+
 # default lists actions
 default:
-  @just -f example.justfile --list
+  @just -f justfile --list
 
 clean:
-  rm -rf ./.venv
-  rm Pipfile.lock
+  rm -rf ./.venv || true
+  rm Pipfile.lock || true
 
 install:
-  export PIPENV_IGNORE_VIRTUALENVS=1
-  export PIPENV_VENV_IN_PROJECT=1
-  pipenv install --dev --python=$(pyenv which python) --verbose
+  #!/usr/bin/env bash
+  pipenv install --categories "${REQUIREMENTS_CATEGORY}" --python=$(pyenv which python) --verbose
 
-build:
-  pipenv run docker:build
+lock:
+  #!/usr/bin/env bash
+  pipenv lock --verbose
 
-build_pypy:
-  pipenv run docker:build:pypy
+requirements:
+  #!/usr/bin/env bash
+  echo "REQUIREMENTS_CATEGORY: '${REQUIREMENTS_CATEGORY}'"
+  pipenv requirements --dev --categories "${REQUIREMENTS_CATEGORY}"
 
-start: build
-  pipenv run docker:start
+start_local:
+  pipenv run start:test
 
-start_pypy: build_pypy
-  pipenv run docker:start
+build_image:
+  echo "REQUIREMENTS_CATEGORY: '${REQUIREMENTS_CATEGORY}'"
+  docker buildx build --progress=plain --load ${DOCKER_BUILD_ARGUMENTS} --build-arg "REQUIREMENTS_CATEGORY=${REQUIREMENTS_CATEGORY}" -f Dockerfile.slim --build-arg BASE_IMAGE=${BASE_IMAGE} -t test_ctranslate2:latest .
 
-dive_pypy:
-  dive test_ctranslate2:latest 
+start: build_image
+  docker run test_ctranslate2:latest
 
-shell_pypy:
+dive: build_image
+  dive test_ctranslate2:latest
+
+debug: build_image
+  echo "REQUIREMENTS_CATEGORY: '${REQUIREMENTS_CATEGORY}'"
   docker run -it --rm --entrypoint /bin/bash test_ctranslate2:latest 
-  
+
+details: build_image
+  @echo "******************************"
+  @echo "** Labels"
+  @echo "******************************"
+  docker inspect -f '{{{{.Config.Labels}}}}' test_ctranslate2:latest
+  @echo "******************************"
+  @echo "** Dive CI"
+  @echo "******************************"
+  dive test_ctranslate2:latest --ci || true
+  @echo "******************************"
+  @echo "** Size"
+  @echo "******************************"
+  container-diff analyze --json daemon://test_ctranslate2:latest | jq .
+
+model:
+  docker buildx build --progress=plain --load ${DOCKER_BUILD_ARGUMENTS}  -f Dockerfile.prepmodel  -t test_ctranslate2_prepmodel:latest .
+  docker run -it --rm -v ./model:/out test_ctranslate2_prepmodel:latest 

@@ -1,16 +1,28 @@
 set dotenv-load := true
 
+#export PYVERSION := "cp311-cp311"
+export PYVERSION := "pp310-pypy310_pp73"
+export IMAGE_NAME := "38_build_ctranslate2:latest"
+
 # default lists actions
 default:
   @just -f justfile --list
 
 clean:
-  rm -rf ./out
-  mkdir -p ./out
+  rm -rf ./test_ctranslate2/packages
+  mkdir -p ./test_ctranslate2/packages
 
-build:
-  docker build --progress=plain -t 38_build_ctranslate2 .
+build distro:
+  docker buildx build --progress=plain --build-arg PYVERSION=${PYVERSION} --load -f Dockerfile.{{ distro }} -t ${IMAGE_NAME} .
 
-start: build
-  docker run -it --rm -v ./out:/out 38_build_ctranslate2 
+start distro: (build distro)
+  docker run --rm -e PYVERSION=${PYVERSION} -v ./test_ctranslate2/packages:/out ${IMAGE_NAME}
 
+debug distro: (build distro)
+  docker run -it --rm -e PYVERSION=${PYVERSION} -v ./test_ctranslate2/packages:/out --entrypoint /bin/bash ${IMAGE_NAME}
+
+dive distro: (build distro)
+  dive ${IMAGE_NAME}
+
+debug_manylinux: 
+  docker run -it --rm --entrypoint /bin/bash quay.io/pypa/manylinux2014_x86_64

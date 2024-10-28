@@ -1,0 +1,113 @@
+FROM quay.io/pypa/manylinux2014_x86_64 AS builder
+
+#RUN yum update -y
+#RUN yum install -y libomp
+
+# MKL
+ENV CT2_USE_MKL=1
+ENV MKL_VERSION=2023.0.0
+ENV DNNL_VERSION=2023.0.0-25399
+
+COPY --chmod=777 <<EOF /etc/yum.repos.d/oneAPI.repo
+[oneAPI]
+name=Intel® oneAPI repository
+baseurl=https://yum.repos.intel.com/oneapi
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+EOF
+RUN yum update -y
+RUN yum install -y intel-oneapi-mkl-devel
+RUN yum install -y intel-oneapi-dnnl-devel
+
+#RUN yum install -y intel-oneapi-mkl-devel=$MKL_VERSION 
+#RUN yum install -y intel-oneapi-dnnl-devel=$DNNL_VERSION 
+
+#RUN yum install -y intel-oneapi-mkl-$MKL_VERSION 
+#RUN yum install -y intel-oneapi-dnnl=$DNNL_VERSION
+
+WORKDIR /scratch
+RUN git clone --recursive https://github.com/OpenNMT/ctranslate2.git
+
+ARG PYVERSION=cp311-cp311
+ENV PYBIN=/opt/python/${PYVERSION}/bin/
+
+COPY --chmod=755 <<EOF /scratch/build.sh
+#!/usr/bin/env bash
+set -eufx
+
+echo ""
+echo "***************************"
+echo "** env"
+echo "***************************"
+env
+
+echo ""
+echo "***************************"
+echo "** interpreters"
+echo "***************************"
+
+manylinux-interpreters list
+
+echo ""
+echo "***************************"
+echo "** build"
+echo "***************************"
+
+cd ctranslate2
+# 4.4.0
+git checkout 8f4d134b5a71f452a5d0f86fd1fa134a355e2547
+
+mkdir build && cd build
+cmake ..
+make -j4
+make install
+ldconfig
+cd ..
+EOF
+
+RUN /scratch/build.sh
+
+COPY --chmod=755 <<EOF /scratch/package.sh
+#!/usr/bin/env bash
+set -eufx
+cd ctranslate2
+
+export PYBIN=/opt/python/${PYVERSION}/bin/
+echo ${PYBIN}
+${PYBIN}/python --version
+
+pwd 
+ls -la
+
+cd python
+${PYBIN}/pip install -r install_requirements.txt
+${PYBIN}/python setup.py bdist_wheel
+#${PYBIN}/pip install "dist/*.whl"
+
+cd dist
+auditwheel show ctranslate2-4.4.0-${PYVERSION}-linux_x86_64.whl
+#auditwheel repair --exclude libomp5.so --exclude libiomp5.so ctranslate2-4.4.0-${PYVERSION}-linux_x86_64.whl
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/oneapi/compiler/2025.0/lib/
+auditwheel -vvv repair ctranslate2-4.4.0-${PYVERSION}-linux_x86_64.whl
+cd ../..
+
+echo ""
+echo "***************************"
+echo "** save"
+echo "***************************"
+
+echo $$SHELL
+pwd 
+ls -Rla python/dist
+
+mkdir -p /out/manylinux/dist
+cp -r python/dist /out/manylinux
+cp -r python/ctranslate2.egg-info /out/manylinux
+#mkdir -p /out/manylinux/build
+#cp -r build /out/manylinux
+EOF
+
+CMD ["/scratch/package.sh"]

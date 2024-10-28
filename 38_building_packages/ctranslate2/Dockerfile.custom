@@ -97,6 +97,7 @@ cd ctranslate2/python
 export PATH=/opt/pypy/bin:$PATH
 pypy -m ensurepip
 pip3 install -r install_requirements.txt
+pip3 install auditwheel
 python setup.py bdist_wheel
 pip3 install dist/*.whl
 
@@ -106,11 +107,19 @@ RUN /scratch/package.sh
 
 COPY --chmod=755 <<EOF /scratch/drop.sh
 #!/usr/bin/env bash
-mkdir -p /out/dist
-cp ctranslate2/python/dist/*.whl /out/dist
-cp -r ctranslate2/python/ctranslate2.egg-info /out
-mkdir -p /out/build
-cp ctranslate2/build/*.so /out/build/
+ls -la ctranslate2/python/dist
+
+export PATH=/opt/pypy/bin:$PATH
+cd ctranslate2/python/dist
+auditwheel show ./ctranslate2-4.4.0-pp310-pypy310_pp73-linux_x86_64.whl
+auditwheel repair --exclude libomp5.so --exclude libiomp5.so ./ctranslate2-4.4.0-pp310-pypy310_pp73-linux_x86_64.whl
+ls -la ctranslate2/python/dist
+
+mkdir -p /out/custom/dist
+cp -r ./ /out/custom/dist
+cp -r ../python/ctranslate2.egg-info /out/custom
+#mkdir -p /out/custom/build
+#cp ctranslate2/build/*.so /out/build/
 
 
 EOF

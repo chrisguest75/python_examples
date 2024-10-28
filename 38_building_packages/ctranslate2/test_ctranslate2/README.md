@@ -1,25 +1,21 @@
-# test_ctranslate2
+# TEST CTRANSLATE
 
-Demonstrate test_ctranslate2
+Test custom ctranslate2 build
 
 NOTES:
 
-* To switch over to pypy
-* For pypy the model needs to be downloaded first outside the container. openmnt is not included and it needs torch.  
-* `just clean`
-* Switch the lib to the locally built one in pipfile
-* Set pyenv python version pypy3.10-7.3.17
-* `just install` to generate new lock file.
-* `just start_pypy`
+- Follow the instructions to switch between `cpython` and `pypy`
 
 ## Contents
 
-- [test\_ctranslate2](#test_ctranslate2)
+- [TEST CTRANSLATE](#test-ctranslate)
   - [Contents](#contents)
   - [Prepare](#prepare)
   - [Start](#start)
-  - [Building](#building)
-  - [Docker](#docker)
+  - [Process model](#process-model)
+  - [Builds](#builds)
+    - [CPYTHON](#cpython)
+    - [PYPY](#pypy)
   - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
     - [Interpreter](#interpreter)
     - [Pipenv Environment](#pipenv-environment)
@@ -58,23 +54,51 @@ pipenv run start --test
 pipenv run start:test
 ```
 
-## Building
+## Process model
 
 ```sh
-curl -o model/transformer-ende-wmt-pyOnmt.tar.gz https://s3.amazonaws.com/opennmt-models/transformer-ende-wmt-pyOnmt.tar.gz
-tar xf transformer-ende-wmt-pyOnmt.tar.gz
-
-pipenv run ct2-opennmt-py-converter --model_path ./model/averaged-10-epoch.pt --output_dir ./model/ende_ctranslate2
+# process the model
+just model
 ```
 
-## Docker
+## Builds
+
+### CPYTHON
 
 ```sh
-pipenv run docker:build       
-pipenv run docker:start   
+# CPYTHON
+pyenv local 3.11.9
+python --version
+just clean 
 
-# troubleshooting    
-docker run -it --entrypoint /bin/bash test_ctranslate2
+# install cypthon locally
+just REQUIREMENTS_CATEGORY="dev-packages packages cpython" install
+
+# CPYTHON local
+just start_local
+
+# works
+just BASE_IMAGE="python:3.10.15-slim-bookworm" REQUIREMENTS_CATEGORY="packages cpython" start
+```
+
+### PYPY
+
+```sh
+# pypy
+pyenv local pypy3.10-7.3.17
+python --version
+just clean 
+
+just REQUIREMENTS_CATEGORY="dev-packages packages pypy" install
+
+# pypy local 
+just start_local
+
+# pypy docker 
+just BASE_IMAGE="pypy:3.10-7.3.17-bookworm" REQUIREMENTS_CATEGORY="packages pypy" start
+
+# add no-cache
+just DOCKER_BUILD_ARGUMENTS="--no-cache" REQUIREMENTS_CATEGORY="packages pypy" start
 ```
 
 ## Debugging and Troubleshooting
