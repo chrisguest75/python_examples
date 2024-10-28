@@ -1,0 +1,33 @@
+# **************************
+# * Model (lock this to cpython to convert the model)
+# **************************
+FROM python:3.11.9-slim-bookworm AS model
+
+RUN apt-get update \
+    && apt-get install -fy -qq --no-install-recommends curl ca-certificates \
+    && apt-get clean 
+
+WORKDIR /workbench
+
+RUN mkdir -p ./model && \
+    curl -o ./model/transformer-ende-wmt-pyOnmt.tar.gz https://s3.amazonaws.com/opennmt-models/transformer-ende-wmt-pyOnmt.tar.gz && \
+    tar xf ./model/transformer-ende-wmt-pyOnmt.tar.gz --directory=./model && \
+    rm ./model/transformer-ende-wmt-pyOnmt.tar.gz
+
+RUN python -m venv /workbench/venv
+ENV PATH="/workbench/venv/bin:$PATH"
+RUN pip install "OpenNMT-py==2.*" ctranslate2
+
+COPY --chmod=755 <<EOF /workbench/process-model.sh
+#!/usr/bin/env bash
+pwd
+#ls -laR ./model
+#ls -laR ./venv
+export PATH="/workbench/venv/bin:$PATH"
+ct2-opennmt-py-converter --model_path ./model/averaged-10-epoch.pt --output_dir ./model/ende_ctranslate2
+
+cp -r ./model/* /out
+EOF
+
+CMD ["/workbench/process-model.sh"]
+

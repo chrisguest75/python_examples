@@ -1,7 +1,12 @@
 set dotenv-load := true
 
+export PIPENV_IGNORE_VIRTUALENVS := "1"
+export PIPENV_VENV_IN_PROJECT := "1"
+
 #export BASE_IMAGE := "pypy:3.10-7.3.17-bookworm"
 export BASE_IMAGE := "python:3.10.15-slim-bookworm"
+export REQUIREMENTS_CATEGORY := ""
+export DOCKER_BUILD_ARGUMENTS := ""
 
 # default lists actions
 default:
@@ -12,15 +17,24 @@ clean:
   rm Pipfile.lock || true
 
 install:
-  export PIPENV_IGNORE_VIRTUALENVS=1
-  export PIPENV_VENV_IN_PROJECT=1
-  pipenv install --dev --python=$(pyenv which python) --verbose
+  #!/usr/bin/env bash
+  pipenv install --categories "${REQUIREMENTS_CATEGORY}" --python=$(pyenv which python) --verbose
+
+lock:
+  #!/usr/bin/env bash
+  pipenv lock --verbose
+
+requirements:
+  #!/usr/bin/env bash
+  echo "REQUIREMENTS_CATEGORY: '${REQUIREMENTS_CATEGORY}'"
+  pipenv requirements --dev --categories "${REQUIREMENTS_CATEGORY}"
 
 start_local:
   pipenv run start:test
 
 build_image:
-  docker buildx build --progress=plain --load -f Dockerfile.slim --build-arg BASE_IMAGE=${BASE_IMAGE} -t test_ctranslate2:latest .
+  echo "REQUIREMENTS_CATEGORY: '${REQUIREMENTS_CATEGORY}'"
+  docker buildx build --progress=plain --load ${DOCKER_BUILD_ARGUMENTS} --build-arg "REQUIREMENTS_CATEGORY=${REQUIREMENTS_CATEGORY}" -f Dockerfile.slim --build-arg BASE_IMAGE=${BASE_IMAGE} -t test_ctranslate2:latest .
 
 start: build_image
   docker run test_ctranslate2:latest
@@ -29,6 +43,7 @@ dive: build_image
   dive test_ctranslate2:latest
 
 debug: build_image
+  echo "REQUIREMENTS_CATEGORY: '${REQUIREMENTS_CATEGORY}'"
   docker run -it --rm --entrypoint /bin/bash test_ctranslate2:latest 
 
 details: build_image
@@ -45,7 +60,6 @@ details: build_image
   @echo "******************************"
   container-diff analyze --json daemon://test_ctranslate2:latest | jq .
 
-model_download:
-  mkdir -p ./model
-  curl -o ./model/transformer-ende-wmt-pyOnmt.tar.gz https://s3.amazonaws.com/opennmt-models/transformer-ende-wmt-pyOnmt.tar.gz
-  tar xf ./model/transformer-ende-wmt-pyOnmt.tar.gz --directory=./model
+model:
+  docker buildx build --progress=plain --load ${DOCKER_BUILD_ARGUMENTS}  -f Dockerfile.prepmodel  -t test_ctranslate2_prepmodel:latest .
+  docker run -it --rm -v ./model:/out test_ctranslate2_prepmodel:latest 

@@ -19,6 +19,8 @@ NOTES:
   - [Start](#start)
   - [Process model](#process-model)
   - [Builds](#builds)
+    - [CPYTHON](#cpython)
+    - [PYPY](#pypy)
   - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
     - [Interpreter](#interpreter)
     - [Pipenv Environment](#pipenv-environment)
@@ -60,16 +62,48 @@ pipenv run start:test
 ## Process model
 
 ```sh
-just model_download
-
-# needs opennmt-py package installed
-pipenv run ct2-opennmt-py-converter --model_path ./model/averaged-10-epoch.pt --output_dir ./model/ende_ctranslate2
+# process the model
+just model
 ```
 
 ## Builds
 
+### CPYTHON
+
 ```sh
-just start
+# CPYTHON
+pyenv local 3.11.9
+python --version
+just clean 
+
+# install cypthon locally
+just REQUIREMENTS_CATEGORY="dev-packages packages cpython" install
+
+# CPYTHON local
+just start_local
+
+# works
+just BASE_IMAGE="python:3.10.15-slim-bookworm" REQUIREMENTS_CATEGORY="packages cpython" start
+```
+
+### PYPY
+
+```sh
+# pypy
+pyenv local pypy3.10-7.3.17
+python --version
+just clean 
+
+just REQUIREMENTS_CATEGORY="dev-packages packages pypy" install
+
+# pypy local (missing libiomp5.so)
+just start_local
+
+# not working (missing libiomp5.so)
+just BASE_IMAGE="pypy:3.10-7.3.17-bookworm" REQUIREMENTS_CATEGORY="packages pypy" start
+
+# add no-cache
+just DOCKER_BUILD_ARGUMENTS="--no-cache" REQUIREMENTS_CATEGORY="packages pypy" start
 ```
 
 ## Debugging and Troubleshooting
