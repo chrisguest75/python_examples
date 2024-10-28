@@ -2,15 +2,12 @@
 
 Build the CTranslate2 package from source.
 
-TODO:
-
-- The generated wheel does not contain the native libs (investigate manylinux).
-- libomp does not exist for the manylinux distro
-
 NOTES:
 
+- Use manylinux to build the packages
 - This builds a `pypy` bound package.
 - You must be careful that the `python_version` in `Pipfile` must match the python version of the custom package.
+- The native dependencies such as `libomp.so` are package with the wheel
 
 ## Manylinux
 

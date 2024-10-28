@@ -4,12 +4,7 @@ Test custom ctranslate2 build
 
 NOTES:
 
-- For pypy the model needs to be downloaded first outside the container. openmnt is not included and it needs torch.
-- To switch over to pypy
-- Run `just clean`
-- Switch the lib to the locally built one in pipfile
-- Set python version pypy3.10-7.3.17 in the justfile
-- Run `just start`
+- Follow the instructions to switch between `cpython` and `pypy`
 
 ## Contents
 
