@@ -12,6 +12,7 @@ name = "pytorch"
 pyyaml = "*"
 python-json-logger = "*"
 python-dotenv = "*"
+nvidia-ml-py = "*"
 
 [dev-packages]
 flake8 = "*"

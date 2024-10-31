@@ -37,6 +37,9 @@ build_image distro:
 start_image distro: (build_image distro)
   docker run --gpus all 45_pipenv_categories{{ distro }}:latest
 
+start_image_no_gpu distro: (build_image distro)
+  docker run 45_pipenv_categories{{ distro }}:latest
+
 dive distro: (build_image distro)
   dive 45_pipenv_categories{{ distro }}:latest
 

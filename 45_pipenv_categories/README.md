@@ -5,8 +5,9 @@ Demonstrate `pipenv` categories.
 NOTES:
 
 - You can use `pipenv` categories to switch packages that get installed.
-- BE CAREFUL: You have to rebuild the `Pipfile.lock` as it is this that determines the packages to be used.
-- BE CAREFUL: You should be exporting the hashes into the requirements file. Otherwise when installing the GPU category it would get very confused installing the nvidia libs but `pytorch+cpu` package  
+- WARNING: You have to rebuild the `Pipfile.lock` as it is this that determines the packages to be used.
+- WARNING: You should be exporting the hashes into the requirements file. Otherwise when installing the GPU category it would get very confused installing the nvidia libs but `pytorch+cpu` package  
+- `dev-packages` and `packages` are individually installable. If you're missing some packages it might be because you haven't installed `packages` category.  
 
 TODO:
 
@@ -62,24 +63,33 @@ pipenv run start:test
 
 ## Local
 
+NOTE: The lock file is required to build the requirements correctly.  
+
 ```sh
-just lock
+# create the lock file
+just REQUIREMENTS_CATEGORY="packages cpu version-pypy version-cpython" lock
 
 # output the requirements.txt
-just REQUIREMENTS_CATEGORY="dev-packages" requirements
 just REQUIREMENTS_CATEGORY="packages cpu" requirements
-
-# look at packages listed in output (switch cpu to gpu in the justfile REQUIREMENTS_CATEGORY)
-just REQUIREMENTS_CATEGORY="dev-packages cpu version-pypy version-cpython" start_image slim
-
-# --no-cache
-just DOCKER_BUILD_ARGUMENTS="--no-cache" REQUIREMENTS_CATEGORY="dev-packages cpu version-pypy version-cpython" start_image slim
-
-# gpu
-just REQUIREMENTS_CATEGORY="dev-packages gpu version-pypy version-cpython" start_image slim
+# we didn't lock dev-packages
+just REQUIREMENTS_CATEGORY="dev-packages" requirements
 ```
 
 ## Docker
+
+If you delete the `Pipfile.lock` it will rebuild it in the container.  
+You have to select category `packages` as well.  
+
+```sh
+# look at packages listed in output (switch cpu to gpu in the justfile REQUIREMENTS_CATEGORY)
+just REQUIREMENTS_CATEGORY="packages cpu version-pypy version-cpython" start_image slim
+
+# --no-cache
+just DOCKER_BUILD_ARGUMENTS="--no-cache" REQUIREMENTS_CATEGORY="packages cpu version-pypy version-cpython" start_image slim
+
+# gpu
+just REQUIREMENTS_CATEGORY="packages gpu version-pypy version-cpython" start_image slim
+```
 
 ```sh
 # start - will also build

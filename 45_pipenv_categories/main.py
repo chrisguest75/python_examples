@@ -9,7 +9,9 @@ import os
 import platform
 import pprint
 import torch
+from pynvml import nvmlInit, nvmlSystemGetDriverVersion, nvmlDeviceGetCount, nvmlDeviceGetHandleByIndex, nvmlDeviceGetName
 import importlib.metadata
+from importlib.metadata import distributions
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -47,7 +49,8 @@ def is_cuda():
 
 def is_working():
     out = []
-    t = torch.rand(5, 3)
+    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    t = torch.rand(5, 3).to(device)
     out.append(str(t))
     out.append(f'shape: {t.shape}')
     out.append(f'dtype: {t.dtype}')
@@ -61,6 +64,23 @@ def test() -> int:
     test_config = os.environ["TEST_CONFIG"]
     logger.info(f'Invoked test function - TEST_CONFIG={test_config!r}')
     logger.info(f"details={details()}")
+
+    installed_packages = [(dist.metadata['Name'], dist.version) for dist in distributions()]
+    logger.info(f"installed_packages={installed_packages}")
+   
+    try:
+        nvmlInit()
+        print(f"Driver Version: {nvmlSystemGetDriverVersion()}")
+        deviceCount = nvmlDeviceGetCount()
+
+        for i in range(deviceCount):
+            handle = nvmlDeviceGetHandleByIndex(i)
+            print(f"Device {i} : {nvmlDeviceGetName(handle)}")
+    
+    except Exception as e:
+        print(f"Nvidia GPU not found")
+        print(f"Error: {e}")
+
     is_cuda()
     is_working()
     return 0
