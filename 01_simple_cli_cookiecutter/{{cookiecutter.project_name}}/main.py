@@ -7,7 +7,8 @@ import traceback
 import yaml
 import os
 import platform
-
+import importlib.metadata
+from importlib.metadata import distributions
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -23,12 +24,19 @@ def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     )
 
 def details() -> str:
-    """ return details about python version and platform as a dict """
-    return {
+    """return details about python version and platform as a dict"""
+
+    platform_details = {
         "python_version": sys.version,
         "platform": sys.platform,
         "platform_details": platform.platform(),
     }
+
+    installed_packages = [(dist.metadata["Name"], dist.version) for dist in distributions()]
+    for package in installed_packages:
+        platform_details[package[0]] = package[1]
+
+    return platform_details
 
 
 def str2bool(value: str) -> bool:
@@ -42,6 +50,11 @@ def test() -> int:
     test_config = os.environ["TEST_CONFIG"]
     logger.info(f'Invoked test function - TEST_CONFIG={test_config!r}')
     logger.info(f"details={details()}")
+
+    platform_details = details()
+    for key in platform_details.keys():
+        logger.info(f"{key}: {platform_details[key]}")
+    
     return 0
 
 

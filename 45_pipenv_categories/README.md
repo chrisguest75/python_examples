@@ -69,6 +69,8 @@ NOTE: The lock file is required to build the requirements correctly.
 # create the lock file
 just REQUIREMENTS_CATEGORY="packages cpu version-pypy version-cpython" lock
 
+just REQUIREMENTS_CATEGORY="dev-packages packages cpu version-pypy version-cpython" lock
+
 # output the requirements.txt
 just REQUIREMENTS_CATEGORY="packages cpu" requirements
 # we didn't lock dev-packages

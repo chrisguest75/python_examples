@@ -9,9 +9,16 @@ import os
 import platform
 import pprint
 import torch
-from pynvml import nvmlInit, nvmlSystemGetDriverVersion, nvmlDeviceGetCount, nvmlDeviceGetHandleByIndex, nvmlDeviceGetName
+from pynvml import (
+    nvmlInit,
+    nvmlSystemGetDriverVersion,
+    nvmlDeviceGetCount,
+    nvmlDeviceGetHandleByIndex,
+    nvmlDeviceGetName,
+)
 import importlib.metadata
 from importlib.metadata import distributions
+
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -26,13 +33,35 @@ def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
         extra={"exception": "".join(traceback.format_tb(exc_traceback))},
     )
 
+
 def details() -> str:
-    """ return details about python version and platform as a dict """
-    return {
+    """return details about python version and platform as a dict"""
+
+    platform_details = {
         "python_version": sys.version,
         "platform": sys.platform,
         "platform_details": platform.platform(),
+        "cuda_is_available": torch.cuda.is_available(),
+        "importlib.metadata.version('torch')": importlib.metadata.version("torch"),
     }
+
+    installed_packages = [(dist.metadata["Name"], dist.version) for dist in distributions()]
+    for package in installed_packages:
+        platform_details[package[0]] = package[1]
+
+    try:
+        nvmlInit()
+        platform_details["driver_version"] = nvmlSystemGetDriverVersion()
+        deviceCount = nvmlDeviceGetCount()
+        for i in range(deviceCount):
+            handle = nvmlDeviceGetHandleByIndex(i)
+            platform_details[f"device_{i}"] = nvmlDeviceGetName(handle)
+
+    except Exception as e:
+        platform_details["driver_version"] = "NVidia GPU not found"
+        print(f"Error: {e}")
+
+    return platform_details
 
 
 def str2bool(value: str) -> bool:
@@ -42,44 +71,34 @@ def str2bool(value: str) -> bool:
 
 def is_cuda():
     out = []
-    out.append(f'cuda.is_available: {torch.cuda.is_available()}')
+    out.append(f"cuda.is_available: {torch.cuda.is_available()}")
     out.append(f'importlib.metadata.version("torch"): {importlib.metadata.version("torch")}')
     pprint.pp(out)
-    return out 
+    return out
+
 
 def is_working():
     out = []
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     t = torch.rand(5, 3).to(device)
     out.append(str(t))
-    out.append(f'shape: {t.shape}')
-    out.append(f'dtype: {t.dtype}')
-    out.append(f'device: {t.device}')
+    out.append(f"shape: {t.shape}")
+    out.append(f"dtype: {t.dtype}")
+    out.append(f"device: {t.device}")
     pprint.pp(out)
-    return out 
+    return out
+
 
 def test() -> int:
     """test function"""
     logger = logging.getLogger()
     test_config = os.environ["TEST_CONFIG"]
-    logger.info(f'Invoked test function - TEST_CONFIG={test_config!r}')
+    logger.info(f"Invoked test function - TEST_CONFIG={test_config!r}")
     logger.info(f"details={details()}")
 
-    installed_packages = [(dist.metadata['Name'], dist.version) for dist in distributions()]
-    logger.info(f"installed_packages={installed_packages}")
-   
-    try:
-        nvmlInit()
-        print(f"Driver Version: {nvmlSystemGetDriverVersion()}")
-        deviceCount = nvmlDeviceGetCount()
-
-        for i in range(deviceCount):
-            handle = nvmlDeviceGetHandleByIndex(i)
-            print(f"Device {i} : {nvmlDeviceGetName(handle)}")
-    
-    except Exception as e:
-        print(f"Nvidia GPU not found")
-        print(f"Error: {e}")
+    platform_details = details()
+    for key in platform_details.keys():
+        logger.info(f"{key}: {platform_details[key]}")
 
     is_cuda()
     is_working()
@@ -94,9 +113,7 @@ def main() -> int:
 
     configures logging and processes command line arguments
     """
-    with io.open(
-        f"{os.path.dirname(os.path.realpath(__file__))}/logging_config.yaml"
-    ) as f:
+    with io.open(f"{os.path.dirname(os.path.realpath(__file__))}/logging_config.yaml") as f:
         logging_config = yaml.load(f, Loader=yaml.FullLoader)
 
     logging.config.dictConfig(logging_config)

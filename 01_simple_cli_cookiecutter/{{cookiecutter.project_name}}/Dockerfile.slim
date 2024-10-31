@@ -51,7 +51,6 @@ COPY --chmod=755 <<EOF /workbench/start.sh
 #!/usr/bin/env bash
 . ./.env
 env
-pip list
 python main.py --test
 EOF
 
