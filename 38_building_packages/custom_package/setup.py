@@ -4,8 +4,8 @@ extension_module = Extension(
     'pymanylinuxdemo.extension',
      sources=['pymanylinuxdemo/extension.c'],
      library_dirs=['/usr/lib64'],
-     include_dirs=['/usr/include'],
-     libraries=['blas']
+     include_dirs=['/usr/include/openblas'],
+     libraries=['openblas']
 )
 
 setup(

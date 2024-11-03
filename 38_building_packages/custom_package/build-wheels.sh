@@ -38,5 +38,7 @@ echo "**************"
 
 #"${PYBIN}/pip" install python-manylinux-demo --no-index -f ./wheelhouse
 "${PYBIN}/pip" install python-manylinux-demo --no-index -f ./wheelhouse
-(cd "$HOME"; "${PYBIN}/nosetests" pymanylinuxdemo)
+"${PYBIN}/pip" list
+"${PYBIN}/pip" show -f python-manylinux-demo
+"${PYBIN}/nosetests" pymanylinuxdemo
 #done
