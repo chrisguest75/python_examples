@@ -1,14 +1,10 @@
 # AV MEDIA HANDLING
 
-Demonstrate using `av` library.  
-
-TODO:
-
-- Read an audio stream and write it out pcm.  
+Demonstrate using `av` library.
 
 NOTES:
 
-- Pillow library needs to be installed.  
+- Pillow library needs to be installed.
 
 ## Contents
 
@@ -57,8 +53,7 @@ pipenv shell
 cp .env.template .env
 
 # run with arguments
-pipenv run start --test
-pipenv run start:test
+pipenv run start
 ```
 
 ## Generate Media
@@ -91,8 +86,11 @@ curl -s -L -o ./out/audio/${PODCASTFILE} $FEED_URL
 
 ```sh
 # start - will also build
-just start write_frames
+just start_frames write_frames
 just start_audio audio_speedup
+just start_hls export_hls_audio
+
+vlc ./out/audio_speedup.wav
 ```
 
 ## Docker
@@ -141,4 +139,4 @@ pipenv run python
 
 - Python testing in Visual Studio Code [here](https://code.visualstudio.com/docs/python/testing#_example-test-walkthroughs)
 - PyAV Documentation [here](https://pyav.basswood-io.com/docs/stable/)  
-https://stackoverflow.com/questions/2677317/how-to-read-remote-video-on-amazon-s3-using-ffmpeg
+  https://stackoverflow.com/questions/2677317/how-to-read-remote-video-on-amazon-s3-using-ffmpeg

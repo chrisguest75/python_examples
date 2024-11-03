@@ -22,7 +22,6 @@ python_version = "3.11"
 
 [scripts]
 "start" = "python main.py"
-"start:test" = "python main.py --test"
 test = "pytest"
 lint = "flake8"
 format = "black --line-length=120 ."

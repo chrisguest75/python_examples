@@ -14,11 +14,18 @@ install:
   export PIPENV_VENV_IN_PROJECT=1
   pipenv install --dev --python=$(pyenv which python) --verbose
 
-start operation:
-  pipenv run python main.py --file ./out/testcard/testcard_960_720p_30fps.mp4 --operation {{ operation }}
+
+start_frames operation:
+  pipenv run python main.py --file ./out/testcard/testcard_960_720p_30fps.mp4 --output './out/frames' --operation {{ operation }}
 
 start_audio operation:
-  pipenv run python main.py --file ./out/audio/LNL305.mp3 --operation {{ operation }}
+  pipenv run python main.py --file ./out/audio/LNL305.mp3 --output './out/audio_speedup.wav' --operation {{ operation }}
+
+start_hls operation:
+  pipenv run python main.py --file "http://lstn.lv/bbc.m3u8?station=bbc_6music&bitrate=96000" --output './out/hls_extract.pcm' --operation {{ operation }}
+ffmpeg  -ac 1 -f s16le -ar 22050 -i  './out/hls_extract.pcm' -ac 1  './out/hls_extract.mp3'
+vlc './out/hls_extract.mp3'
+
 
 build_image distro:
   docker buildx build --progress=plain --load -f Dockerfile.{{ distro }} -t 46_av{{ distro }}:latest .

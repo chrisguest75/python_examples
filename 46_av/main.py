@@ -80,14 +80,47 @@ def audio_speedup(file: str, output: str) -> None:
 
 def write_frames(file: str, output:str) -> None:
     av.logging.set_level(av.logging.VERBOSE)
-    container = av.open("./out/testcard/testcard_960_720p_30fps.mp4")
+    container = av.open(file)
 
     for index, frame in enumerate(container.decode(video=0)):
         frame.to_image().save(f"{output}/frame-{index:04d}.jpg")
 
+def export_hls_audio(file: str, output:str) -> None:
+    logger = logging.getLogger()
+    input_container = av.open(file)
+
+    # Create an audio resampler to convert the audio format
+    resampler = av.AudioResampler(format='s16', layout='mono', rate=22050)
+
+    # Duration limit in seconds (2 minutes)
+    duration_limit = 1 * 60
+    cumulative_duration = 0.0  # Initialize cumulative duration
+
+    # Open the output raw PCM file
+    with open(output, 'wb') as pcm_file:
+        # Iterate through the audio frames
+        for frame in input_container.decode(audio=0):
+            # Add the frame duration to the cumulative duration (in seconds)
+            cumulative_duration += frame.time_base * frame.samples
+
+            # Stop processing if we reach or exceed 2 minutes of audio
+            if cumulative_duration >= duration_limit:
+                break
+            else:
+                logger.info(f"cumulative_duration: {cumulative_duration}, frame.time_base: {frame.time_base}, frame.samples: {frame.samples}")
+
+            # Resample the frame to the desired format
+            resampled_frames = resampler.resample(frame)
+
+            # Write each resampled frame to the PCM file
+            for resampled_frame in resampled_frames:
+                pcm_file.write(resampled_frame.planes[0])
+
+    input_container.close()
+    logger.info("Raw PCM file has been written with mono, s16le format at 22 kHz for 2 minutes of audio.")
 
 
-def test(file: str, operation: str) -> int:
+def test(file: str, operation: str, output: str) -> int:
     """test function"""
     logger = logging.getLogger()
     test_config = os.environ["TEST_CONFIG"]
@@ -99,9 +132,11 @@ def test(file: str, operation: str) -> int:
         logger.info(f"{key}: {platform_details[key]}")
     
     if operation == "audio_speedup":
-        audio_speedup(file, './out/audio_speedup.wav')
+        audio_speedup(file, output)
     elif operation == "write_frames":
-        write_frames(file, './out/frames')
+        write_frames(file, output)
+    elif operation == "export_hls_audio":
+        export_hls_audio(file, output)
     else:
         logger.error(f"Invalid operation: {operation}")
     
@@ -128,10 +163,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="CLI Skeleton")
     parser.add_argument("--file", dest="file", type=str)
     parser.add_argument("--operation", dest="operation", type=str)
+    parser.add_argument("--output", dest="output", type=str)
 
     args = parser.parse_args()
 
-    success = test(args.file, args.operation)
+    success = test(args.file, args.operation, args.output)
 
     return success
 
