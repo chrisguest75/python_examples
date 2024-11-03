@@ -1,29 +1,42 @@
 #!/bin/bash
-set -e -u -x
+set -e -u
 
 function repair_wheel {
     wheel="$1"
     if ! auditwheel show "$wheel"; then
         echo "Skipping non-platform wheel $wheel"
     else
-        auditwheel repair "$wheel" --plat "$PLAT" -w ./wheelhouse/
+        auditwheel -vvv repair "$wheel" --plat "$PLATFORM" -w ./wheelhouse/
     fi
 }
 
 # Compile wheels
 #for PYBIN in /opt/python/*/bin; do
-    "${PYBIN}/pip" install -r ./dev-requirements.txt
-    "${PYBIN}/python" setup.py sdist bdist_wheel
-    #"${PYBIN}/pip" wheel ./ --no-deps -w ./wheelhouse/
+echo "**************"
+echo "Building wheel for $PYBIN"
+echo "**************"
+"${PYBIN}/pip" install -r ./dev-requirements.txt
+#DISTUTILS_DEBUG=1 "${PYBIN}/python" setup.py sdist bdist_wheel
+DISTUTILS_DEBUG=1 "${PYBIN}/pip" wheel ./ --no-deps -w ./wheelhouse/
 #done
 
 # Bundle external shared libraries into the wheels
 for whl in wheelhouse/*.whl; do
+    echo "**************"
+    echo "Repairing wheel $whl"
+    echo "**************"
     repair_wheel "$whl"
 done
 
+
+
 # Install packages and test
 #for PYBIN in /opt/python/*/bin/; do
-    "${PYBIN}/pip" install python-manylinux-demo --no-index -f ./wheelhouse
-    (cd "$HOME"; "${PYBIN}/nosetests" pymanylinuxdemo)
+echo "**************"
+echo "Testing wheel for $PYBIN"
+echo "**************"
+
+#"${PYBIN}/pip" install python-manylinux-demo --no-index -f ./wheelhouse
+"${PYBIN}/pip" install python-manylinux-demo --no-index -f ./wheelhouse
+(cd "$HOME"; "${PYBIN}/nosetests" pymanylinuxdemo)
 #done

@@ -28,3 +28,4 @@ manylinux-interpreters ensure-all
 - https://github.com/pypa/python-manylinux-demo
 - https://github.com/math-atlas/math-atlas/tree/master
 - https://stackoverflow.com/questions/42585210/extending-setuptools-extension-to-use-cmake-in-setup-py
+- https://python.readthedocs.io/en/v2.7.2/extending/building.html

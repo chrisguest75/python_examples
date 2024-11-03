@@ -5,7 +5,7 @@ extension_module = Extension(
      sources=['pymanylinuxdemo/extension.c'],
      library_dirs=['/usr/lib64'],
      include_dirs=['/usr/include'],
-     libraries=['libblas']
+     libraries=['blas']
 )
 
 setup(
