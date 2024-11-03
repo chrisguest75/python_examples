@@ -1,0 +1,43 @@
+FROM quay.io/pypa/manylinux2014_x86_64 AS builder
+
+# Install a system package required by our library
+RUN yum install -y atlas atlas-devel blas blas-devel lapack lapack-devel
+
+WORKDIR /scratch
+COPY pymanylinuxdemo pymanylinuxdemo
+COPY build-wheels.sh build-wheels.sh
+COPY dev-requirements.txt dev-requirements.txt
+COPY setup.py setup.py
+COPY README.md README.md
+
+ARG PYVERSION=cp311-cp311
+ENV PYBIN=/opt/python/${PYVERSION}/bin/
+COPY --chmod=755 <<EOF /scratch/build.sh
+#!/usr/bin/env bash
+set -eufx
+echo ""
+echo "***************************"
+echo "** env"
+echo "***************************"
+env
+
+echo ""
+echo "***************************"
+echo "** interpreters"
+echo "***************************"
+
+manylinux-interpreters list
+
+echo ""
+echo "***************************"
+echo "** build"
+echo "***************************"
+
+export PYBIN=/opt/python/${PYVERSION}/bin/
+echo ${PYBIN}
+${PYBIN}/python --version
+
+./build-wheels.sh
+EOF
+
+CMD ["/scratch/build.sh"]
