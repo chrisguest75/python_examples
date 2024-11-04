@@ -2,6 +2,10 @@
 
 Demonstrate using `av` library.
 
+TODO:
+
+* The HLS to wav seems corrupted
+
 NOTES:
 
 - Pillow library needs to be installed.
@@ -85,12 +89,15 @@ curl -s -L -o ./out/audio/${PODCASTFILE} $FEED_URL
 ## Local
 
 ```sh
+alias vlc="/mnt/c/Program\ Files/VideoLAN/VLC/vlc.exe"  
+
 # start - will also build
 just start_frames write_frames
 just start_audio audio_speedup
-just start_hls export_hls_audio
-
 vlc ./out/audio_speedup.wav
+
+just start_hls export_hls_audio
+vlc './out/hls_extract.mp3'
 ```
 
 ## Docker
