@@ -1,0 +1,28 @@
+set dotenv-load := true
+
+export PIPENV_IGNORE_VIRTUALENVS := "1"
+export PIPENV_VENV_IN_PROJECT := "1"
+
+# default lists actions
+default:
+  @just -f justfile --list
+
+clean:
+  rm -rf ./.venv || true
+  rm Pipfile.lock || true
+
+install:
+  #!/usr/bin/env bash
+  pipenv install --dev --python=$(pyenv which python) --verbose
+
+lock:
+  #!/usr/bin/env bash
+  pipenv lock --verbose
+
+requirements:
+  #!/usr/bin/env bash
+  pipenv requirements --dev
+
+start:
+  pipenv run python ./main.py
+
