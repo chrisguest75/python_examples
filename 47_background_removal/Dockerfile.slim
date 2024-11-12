@@ -1,0 +1,59 @@
+# syntax=docker/dockerfile:1.10.0
+FROM python:3.11.10-slim-bookworm AS build-env
+
+RUN pip install pipenv
+
+WORKDIR /workbench
+COPY ./Pipfile ./Pipfile.* /workbench/
+
+COPY --chmod=755 <<EOF /workbench/check-lock.sh
+#!/usr/bin/env bash
+if [ ! -f ./Pipfile.lock ]; then
+    pipenv lock
+fi
+EOF
+
+RUN /workbench/check-lock.sh
+RUN pipenv requirements > ./requirements.txt
+RUN python -m venv /workbench/venv
+ENV PATH="/workbench/venv/bin:$PATH"
+RUN pip install --no-cache-dir -r ./requirements.txt 
+
+# **************************
+# * Final stage
+# **************************
+FROM python:3.11.10-slim-bookworm AS final
+
+RUN apt-get update \
+    && apt-get install -fy -qq --no-install-recommends ca-certificates \
+    && apt-get clean 
+
+WORKDIR /workbench
+
+ARG USERID=1000
+ARG GROUPID=1000
+RUN addgroup --system --gid $GROUPID appuser
+RUN adduser --system --uid $USERID --gid $GROUPID appuser
+
+COPY --chmod=755 <<EOF /workbench/.env
+export TEST_CONFIG="This is a test value from .env"
+export PATH="/workbench/venv/bin:$PATH"
+export LANG=C.UTF-8
+export PYTHONDONTWRITEBYTECODE=1
+export PYTHONUNBUFFERED=1
+EOF
+
+COPY --from=build-env /workbench/venv /workbench/venv
+COPY ./tests /workbench/tests
+COPY ./main.py ./logging_config.yaml /workbench/
+
+COPY --chmod=755 <<EOF /workbench/start.sh
+#!/usr/bin/env bash
+. ./.env
+env
+python main.py --test
+EOF
+
+USER appuser
+CMD ["./start.sh"]
+
