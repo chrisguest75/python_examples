@@ -1,6 +1,10 @@
 # BACKGROUND REMOVAL
 
-Background removal example.
+Background removal and conversion to SVG example.
+
+TODO:
+
+- Tidy it up to be less hardcoded and to do it all in one execution
 
 ## Contents
 
@@ -11,6 +15,7 @@ Background removal example.
   - [Local](#local)
   - [Download Content](#download-content)
   - [Remove Background](#remove-background)
+  - [SVG Outlines](#svg-outlines)
   - [Docker](#docker)
   - [Debugging and Troubleshooting](#debugging-and-troubleshooting)
     - [Interpreter](#interpreter)
@@ -77,30 +82,49 @@ ffmpeg -i ./out/dance.mp4.webm -ss ${START_TIME} -t ${DURATION} ./out/frames/dan
 ## Remove Background
 
 ```sh
-pipenv run start:test --input ./out/frames/dance_00001.jpg --output ./out/converted/dance_00001.png
+pipenv run start:test --convert background --input ./out/frames/dance_00001.jpg --output ./out/converted/dance_00001.png
 
-mkdir -p ./out/convertedbmp
-mkdir -p ./out/svg
+# convert a directory
+pipenv run start:test --convert background --input ./out/frames --output ./out/converted
 
+# mkdir -p ./out/convertedbmp
+# mkdir -p ./out/svg
 
+# for file in ./out/converted/dance_*.png; do
+#     # remove extension
+#     outname="${file%.*}"
+#     bmppath="./out/convertedbmp/$(basename $outname).bmp"
+#     svgpath="./out/svg/$(basename $outname).svg"
+#     convert "$file" "$bmppath"
+#     potrace --svg --output "$svgpath" "$bmppath"
+# done
+
+# export NUMBER=00010
+# convert "./out/converted/dance_${NUMBER}.png" ./out/convertedbmp/dance_${NUMBER}.bmp
+# potrace --svg --output ./out/svg/dance_${NUMBER}.svg ./out/convertedbmp/dance_${NUMBER}.bmp
+
+# # open in chrome
+# open ./out/svg/dance_${NUMBER}.svg
+```
+
+## SVG Outlines
+
+Once you have the `frames.json` start in liveserver extension to view.
+
+```sh
+mkdir -p ./out/mask
 for file in ./out/converted/dance_*.png; do
     # remove extension
     outname="${file%.*}"
-    bmppath="./out/convertedbmp/$(basename $outname).bmp"
-    svgpath="./out/svg/$(basename $outname).svg"
-    convert "$file" "$bmppath"
-    potrace --svg --output "$svgpath" "$bmppath"
+    outpath="./out/mask/$(basename $outname).png"
+    convert $file -alpha extract $outpath
 done
 
+# convert a directory
+mkdir -p ./out/svgmask
+pipenv run start:test --convert svg --input ./out/mask --output ./out/svgmask
 
-export NUMBER=00010
-convert "./out/converted/dance_${NUMBER}.png" ./out/convertedbmp/dance_${NUMBER}.bmp
-potrace --svg --output ./out/svg/dance_${NUMBER}.svg ./out/convertedbmp/dance_${NUMBER}.bmp
-
-# open in chrome
-open ./out/svg/dance_${NUMBER}.svg
-
-
+./process-frames.sh
 ```
 
 ## Docker

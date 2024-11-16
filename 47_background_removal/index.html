@@ -84,37 +84,28 @@
         let frame = 0
         let frames = {}
         async function create() {
-            /*frames = await fetch("frames.json")
+            frames = await fetch("frames.json")
                 .then(response => response.json())
-                .then(json => frames = json);*/
+                .then(json => frames = json);
 
             setInterval(update, 20)
         }
 
         function update() {
-            // format with leading zeros
-            const frameNumber = (frame + 1).toString().padStart(5, '0');
+            let svg = d3.select("#svgcontainer").html("").append("svg")
+                .attr("viewBox", "0 0 1080.000000 1920.000000");
+            //.attr("preserveAspectRatio=", "xMidYMid meet");
 
-            fetch('out/svg/dance_' + frameNumber + '.svg')
-                .then(response => response.text())
-                .then(data => {
-                    d3.select("#svgcontainer").html(data);
-                })
-                .catch(error => console.log(error));
+            let dancer = svg.append("g");
+            //.attr("transform", 'translate(0.000000,1920.000000) scale(0.100000,-0.100000)')
+            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 4) % frames.frames.length)].path).attr("fill", "hsl(" + (frame + 80) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");
+            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 3) % frames.frames.length)].path).attr("fill", "hsl(" + (frame + 60) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");
+            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 2) % frames.frames.length)].path).attr("fill", "hsl(" + (frame + 40) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");
+            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 1) % frames.frames.length)].path).attr("fill", "hsl(" + 30 + ", 70%, 43%)").attr("fill-opacity", "0.25");
+            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 0) % frames.frames.length)].path).attr("fill", "hsl(" + 0 + ", 0%, 0%)").attr("fill-opacity", "1.00");
 
-
-            /*
-            let svg = d3.select("#svgcontainer").html("").append("svg").attr("viewBox", "0 0 1280.000000 720.000000");
-
-            let dancer = svg.append("g").attr("transform", 'translate(0.000000,720.000000) scale(0.100000,-0.100000)')
-            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 4) % frames.frames.length)].path).attr("fill", "hsl(" + (frame + 80) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
-            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 3) % frames.frames.length)].path).attr("fill", "hsl(" + (frame + 60) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
-            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 2) % frames.frames.length)].path).attr("fill", "hsl(" + (frame + 40) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
-            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 1) % frames.frames.length)].path).attr("fill", "hsl(" + 30 + ", 70%, 43%)").attr("fill-opacity", "0.25");    
-            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 0) % frames.frames.length)].path).attr("fill", "hsl(" + 0 + ", 0%, 0%)").attr("fill-opacity", "1.00");    
-            */
             frame++;
-            frame = frame % 89
+            frame = frame % frames.frames.length
 
         }
 
