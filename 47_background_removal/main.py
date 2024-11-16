@@ -5,6 +5,7 @@ import logging.config
 import sys
 import traceback
 import yaml
+import json
 import os
 import platform
 import importlib.metadata
@@ -91,7 +92,7 @@ def convert_mask_to_svg(inputFile: str, outputFile:str):
 
     return svg_path
 
-def test(inputFile: str, outputFile:str, convert: str) -> int:
+def test(inputFile: str, outputFile:str, convert: str, overwrite:bool) -> int:
     """test function"""
     logger = logging.getLogger()
     test_config = os.environ["TEST_CONFIG"]
@@ -101,6 +102,9 @@ def test(inputFile: str, outputFile:str, convert: str) -> int:
     # platform_details = details()
     # for key in platform_details.keys():
     #     logger.info(f"{key}: {platform_details[key]}")
+
+    frame_number = 1
+    frames = { 'frames': [] }
 
     # is inputFile a directory?
     if os.path.isdir(inputFile):
@@ -118,30 +122,59 @@ def test(inputFile: str, outputFile:str, convert: str) -> int:
         # iterate over a directory of images
         for filename in files:
             if os.path.isfile(os.path.join(inputDir, filename)):
+                
+                logger.info(f"Processing {filename} ({count} files remaining)")
 
-                if convert == "svg":
-                    infile = os.path.join(inputDir, filename)
-                    filename = filename.replace(".png", ".svg")
-                    outfile = f"{outputDir}/{filename}"
-                    svg_path = convert_mask_to_svg(infile, outfile)
-                    count -= 1
-                elif convert == "background":
+                if convert == "background":
                     if filename.endswith(".png") or filename.endswith(".jpg"):
-                        logger.info(f"Processing {filename} ({count} files remaining)")
+                        pngfilename = filename.replace(".jpg", ".png")
+
+                        if os.path.exists(f"{outputDir}/{pngfilename}") and not overwrite:
+                            logger.info(f"Skipping {filename}")
+                            continue    
+
                         input = Image.open(f"{inputDir}/{filename}")
                         output = remove(input)
                         # replace extension with .png
                         filename = filename.replace(".jpg", ".png")
                         output.save(f"{outputDir}/{filename}")
-                        count -= 1
-    else:
-        # remove background
-        input = Image.open(inputFile)
-        output = remove(input)
+                
+                elif convert == "mask":
+                    infile = os.path.join(inputDir, filename)
+                    image = Image.open(infile)
+                    # Extract the alpha channel
+                    alpha_channel = image.getchannel("A")  # "A" stands for Alpha
+                    outfile = f"{outputDir}/{filename}"
+                    alpha_channel.save(outfile)
 
-        # create directory if not exists
-        os.makedirs(os.path.dirname(outputFile), exist_ok=True)
-        output.save(outputFile)
+                elif convert == "svg":
+                    infile = os.path.join(inputDir, filename)
+                    filename = filename.replace(".png", ".svg")
+                    outfile = f"{outputDir}/{filename}"
+                    svg_path = convert_mask_to_svg(infile, outfile)
+                    frame = {
+                        "name": filename,
+                        "path": svg_path,
+                        "number": frame_number
+                    }
+                    frames['frames'].append(frame)
+                    frame_number += 1
+
+                count -= 1
+
+                
+    # else:
+    #     # remove background
+    #     input = Image.open(inputFile)
+    #     output = remove(input)
+
+    #     # create directory if not exists
+    #     os.makedirs(os.path.dirname(outputFile), exist_ok=True)
+    #     output.save(outputFile)
+
+    if convert == "svg":
+        with open("./frames.json", "w") as f:
+            f.write(json.dumps(frames, indent=4))
 
     return 0
 
@@ -167,9 +200,10 @@ def main() -> int:
     parser.add_argument("--convert", dest="convert", type=str, help="svg|background", required=True)
     parser.add_argument("--input", dest="input", type=str, required=True)
     parser.add_argument("--output", dest="output", type=str, required=True)
+    parser.add_argument("--overwrite", dest="overwrite", type=bool , default=False)
     args = parser.parse_args()
 
-    success = test(args.input, args.output, args.convert)
+    success = test(args.input, args.output, args.convert, args.overwrite)
 
     return success
 

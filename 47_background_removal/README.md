@@ -67,13 +67,18 @@ just start
 ## Download Content
 
 ```sh
-yt-dlp -o ./out/dance.mp4 https://www.youtube.com/shorts/jMOoVUPyLPQ
+mkdir -p ./out
+VIDEO_URL=https://www.youtube.com/shorts/56Mrl-QIGE4
+VIDEO_URL=https://www.youtube.com/shorts/jMOoVUPyLPQ
+
+yt-dlp -o ./out/dance.mp4 $VIDEO_URL
 
 vlc ./out/dance.mp4.webm
 
 mkdir -p ./out/frames
 
 # exports
+ffmpeg -i ./out/dance.mp4.webm ./out/frames/dance_%05d.jpg
 export START_TIME=00:00:00
 export DURATION=00:30
 ffmpeg -i ./out/dance.mp4.webm -ss ${START_TIME} -t ${DURATION} ./out/frames/dance_%05d.jpg
@@ -82,7 +87,7 @@ ffmpeg -i ./out/dance.mp4.webm -ss ${START_TIME} -t ${DURATION} ./out/frames/dan
 ## Remove Background
 
 ```sh
-pipenv run start:test --convert background --input ./out/frames/dance_00001.jpg --output ./out/converted/dance_00001.png
+#pipenv run start:test --convert background --input ./out/frames/dance_00001.jpg --output ./out/converted/dance_00001.png
 
 # convert a directory
 pipenv run start:test --convert background --input ./out/frames --output ./out/converted
@@ -112,19 +117,11 @@ pipenv run start:test --convert background --input ./out/frames --output ./out/c
 Once you have the `frames.json` start in liveserver extension to view.
 
 ```sh
-mkdir -p ./out/mask
-for file in ./out/converted/dance_*.png; do
-    # remove extension
-    outname="${file%.*}"
-    outpath="./out/mask/$(basename $outname).png"
-    convert $file -alpha extract $outpath
-done
+# convert removed backgrounds to svg
+pipenv run start:test --convert mask --input ./out/converted --output ./out/mask
 
-# convert a directory
-mkdir -p ./out/svgmask
+# convert a directory of masks to svg
 pipenv run start:test --convert svg --input ./out/mask --output ./out/svgmask
-
-./process-frames.sh
 ```
 
 ## Docker
