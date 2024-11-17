@@ -96,17 +96,20 @@
                 .attr("viewBox", "0 0 1080.000000 1920.000000");
             //.attr("preserveAspectRatio=", "xMidYMid meet");
 
-            let dancer = svg.append("g");
-            //.attr("transform", 'translate(0.000000,1920.000000) scale(0.100000,-0.100000)')
+            /*let dancer = svg.append("g")
+                .attr("transform", 'translate(250.000000,-550.000000) scale(2.000000,2.000000)')*/
+            let dancer = svg.append("g")
+                .attr("transform", 'translate(-250.000000,-250.000000) scale(1.250000,1.250000)')
+
+            //.attr("transform", 'translate(0.000000,0.000000) scale(0.100000,-0.100000)')
             dancer.append("path").attr("d", frames.frames[Math.abs((frame - 4) % frames.frames.length)].path).attr("fill", "hsl(" + (frame + 80) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");
             dancer.append("path").attr("d", frames.frames[Math.abs((frame - 3) % frames.frames.length)].path).attr("fill", "hsl(" + (frame + 60) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");
             dancer.append("path").attr("d", frames.frames[Math.abs((frame - 2) % frames.frames.length)].path).attr("fill", "hsl(" + (frame + 40) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");
-            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 1) % frames.frames.length)].path).attr("fill", "hsl(" + 30 + ", 70%, 43%)").attr("fill-opacity", "0.25");
-            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 0) % frames.frames.length)].path).attr("fill", "hsl(" + 0 + ", 0%, 0%)").attr("fill-opacity", "1.00");
+            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 1) % frames.frames.length)].path).attr("fill", "hsl(" + 30 + ", 70%, 43%)");
+            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 0) % frames.frames.length)].path).attr("fill", "hsl(" + 0 + ", 0%, 0%)").attr("fill-opacity", "1.00").attr("stroke", "hsl(" + (frame + 80) % frames.frames.length + ", 70%, 23%)").attr("stroke-width", "10");
 
             frame++;
             frame = frame % frames.frames.length
-
         }
 
     </script>
