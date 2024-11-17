@@ -131,6 +131,7 @@ def test(inputFile: str, outputFile:str, convert: str, overwrite:bool) -> int:
 
                         if os.path.exists(f"{outputDir}/{pngfilename}") and not overwrite:
                             logger.info(f"Skipping {filename}")
+                            count -= 1
                             continue    
 
                         input = Image.open(f"{inputDir}/{filename}")
@@ -140,6 +141,11 @@ def test(inputFile: str, outputFile:str, convert: str, overwrite:bool) -> int:
                         output.save(f"{outputDir}/{filename}")
                 
                 elif convert == "mask":
+                    if os.path.exists(f"{outputDir}/{filename}") and not overwrite:
+                        logger.info(f"Skipping {filename}")
+                        count -= 1
+                        continue    
+
                     infile = os.path.join(inputDir, filename)
                     image = Image.open(infile)
                     # Extract the alpha channel
@@ -148,6 +154,11 @@ def test(inputFile: str, outputFile:str, convert: str, overwrite:bool) -> int:
                     alpha_channel.save(outfile)
 
                 elif convert == "svg":
+                    if os.path.exists(f"{outputDir}/{filename}") and not overwrite:
+                        logger.info(f"Skipping {filename}")
+                        count -= 1
+                        continue    
+                                        
                     infile = os.path.join(inputDir, filename)
                     filename = filename.replace(".png", ".svg")
                     outfile = f"{outputDir}/{filename}"

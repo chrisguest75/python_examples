@@ -4,7 +4,7 @@ Background removal and conversion to SVG example.
 
 TODO:
 
-- Tidy it up to be less hardcoded and to do it all in one execution
+- Try to do in one svg object with animation https://gsap.com/
 
 ## Contents
 
