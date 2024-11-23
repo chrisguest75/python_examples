@@ -14,7 +14,7 @@ brew install commitizen
 code --install-extension vivaxy.vscode-conventional-commits
 
 # install hooks
-cz init
+pre-commit install --hook-type commit-msg --hook-type pre-push
 ```
 
 ## VSCODE
