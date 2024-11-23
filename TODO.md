@@ -28,4 +28,5 @@
 - https://towardsdatascience.com/how-to-shrink-numpy-scipy-pandas-and-matplotlib-for-your-data-product-4ec8d7e86ee4
 - https://github.com/Naapperas/zon zod like schema checking.
 - pipx
-- uv
+- uv - https://hynek.me/articles/docker-uv/
+- https://sourcery.ai/blog/python-best-practices/
