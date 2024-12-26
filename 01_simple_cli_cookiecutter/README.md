@@ -4,17 +4,20 @@ A cli cookiecutter for quickly spinning up new projects.
 
 TODO:
 
+- Make the nix changes to the justfile transparent.  
 - Add pdoc
 - Get hooks working to remove files
 - Add context logger filter
 
-## Contains
+## Supports
 
 - Pipenv
 - Logging
 - Linting
 - Argument parsing
 - Pytest
+- Nix
+- Docker Build
 
 ## Install
 

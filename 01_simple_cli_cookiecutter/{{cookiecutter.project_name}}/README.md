@@ -12,14 +12,10 @@ If using `vscode` remember to set your interpreter location to `.venv/bin/python
 
 ## Start
 
-```sh
-# required in terminal if using pipenv
-# for vscode
-export PIPENV_IGNORE_VIRTUALENVS=1
-export PIPENV_VENV_IN_PROJECT=1
+## Linux/Mac/WSL
 
+```sh
 # install
-pipenv install --dev
 just install
 
 # lint and test code
@@ -36,6 +32,32 @@ cp .env.template .env
 # run with arguments
 pipenv run start --test
 pipenv run start:test
+```
+
+## NixOS
+
+Open a pure shell and install packages.  
+NOTE: Make sure the `flake.nix` and `flake.lock` are staged in `git`.  
+
+NOTE:
+
+* `numpy` installs precompiled binaries that link to glib expecting FHS compliant filesystem. We have to use `nix-ld` to map the paths from `nix-store`.  
+* We map `NIX_LD_LIBRARY_PATH` to `LD_LIBRARY_PATH` - enable this in the justfile.  
+
+```sh
+nix develop --impure --command bash -c 'python --version'
+
+# enter the flake - we have to use impure for nix-ld
+nix develop --impure
+
+zsh
+
+just install
+
+# create .env file
+cp .env.template .env
+
+just start
 ```
 
 ## Local

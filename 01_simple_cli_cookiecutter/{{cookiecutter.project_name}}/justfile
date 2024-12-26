@@ -12,9 +12,12 @@ install:
   #!/usr/bin/env bash
   export PIPENV_IGNORE_VIRTUALENVS=1
   export PIPENV_VENV_IN_PROJECT=1
+  #pipenv install --dev --verbose
   pipenv install --dev --python=$(pyenv which python) --verbose
 
 start:
+  #!/usr/bin/env bash
+  #export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
   pipenv run start:test
 
 {% if cookiecutter.create_dockerfile == 'y' %}
