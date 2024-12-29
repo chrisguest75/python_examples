@@ -11,6 +11,7 @@ TODO:
 * git
 * code
 * bashrc or zshrc
+* This needs updating for numpy usage; cookiecutter and nix_examples show using nix_ld.  
 
 ## Prereqs
 
