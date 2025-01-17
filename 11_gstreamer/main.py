@@ -65,6 +65,12 @@ def message_callback(bus, message):
         logger.error(f"{error}: {message}")
         mainloop.quit()
 
+def round_to_significant_figures(value, sig_figs):
+    if value == 0:
+        return 0  # Avoid math domain error
+    return round(value, sig_figs - int(math.floor(math.log10(abs(value)))) - 1)
+
+
 def write_points():
     logger = logging.getLogger()
 
@@ -74,7 +80,8 @@ def write_points():
     for i in samples:
         sample = minSample / float(i)
         if math.isnan(sample) == False:
-            normalized.append(minSample / float(i))
+            value = round_to_significant_figures(minSample / float(i), 5)
+            normalized.append(value)
 
     logger.info(f"Samples: {len(normalized)}")
     f = open("./out/samples.txt", "w")
