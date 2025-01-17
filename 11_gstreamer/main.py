@@ -6,12 +6,12 @@ import sys
 import traceback
 import yaml
 import os
-from gi.repository import GLib, Gst
-import gi
 import json
 import math
 
+import gi
 gi.require_version("Gst", "1.0")
+from gi.repository import GLib, Gst
 
 global samples
 samples = []
@@ -92,7 +92,7 @@ def process(filepath: str, num_samples: int) -> int:
     logger.info(f"Invoked test function - TEST_CONFIG='{test_config}'")
 
     logger.info(f"{Gst.version()[0]}.{Gst.version()[1]}")
-
+    logger.info(f"Filepath: {filepath} Samples: {num_samples}")
     uri = filepath
     pipeline = Gst.parse_launch(f'uridecodebin uri={uri} ! fakesink')
 
@@ -104,12 +104,14 @@ def process(filepath: str, num_samples: int) -> int:
     duration = pipeline.query_duration(Gst.Format.TIME)[1]
 
     duration_sec = duration / 1e9
-    logger.info(f"Duration: {duration_sec} seconds")
+    logger.info(f"GST Duration: {duration} Duration: {duration_sec} seconds")
 
     # Clean up
     pipeline.set_state(Gst.State.NULL)
+    # 10 samples per second
+    interval = 100_000_000 
 
-    interval = int((duration_sec / num_samples) * 1000_000_000)
+    #interval = int((duration_sec / num_samples) * 1000_000_000)
 
     gstLaunch = "uridecodebin name=decode uri={0} ! audioconvert ! level name={1} interval={2} post-messages=true ! fakesink qos=false name=nullsink".format(uri, WAVE_LEVEL, interval)
 

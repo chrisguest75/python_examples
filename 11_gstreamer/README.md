@@ -4,6 +4,19 @@ Demonstrate a simple `gstreamer` pipeline.
 
 ## Start
 
+### Nix
+
+```sh
+# installation
+just nix 
+just install 
+
+# process
+just start-waveform
+```
+
+### Normal
+
 ```sh
 export PIPENV_VENV_IN_PROJECT=1
 # install

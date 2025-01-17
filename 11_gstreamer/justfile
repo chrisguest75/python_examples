@@ -1,0 +1,40 @@
+set dotenv-load := true
+
+export MEDIA_URL:="audio/brutalist.mp3"
+
+# default lists actions
+default:
+  @just -f justfile --list
+
+clean:
+  rm -rf ./.venv || true
+  rm Pipfile.lock || true
+
+nix:
+  #!/usr/bin/env bash
+  set -xeufo pipefail
+  nix develop --impure --command zsh
+
+install:
+  #!/usr/bin/env bash
+  export PIPENV_IGNORE_VIRTUALENVS=1
+  export PIPENV_VENV_IN_PROJECT=1
+  #pipenv install --dev --verbose
+  pipenv install --dev --python=$(pyenv which python) --verbose
+
+start:
+  #!/usr/bin/env bash
+  export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
+  pipenv run start:test
+
+# 
+start-waveform *args="--samples 1000 --file file://$(pwd)/${MEDIA_URL}":
+  #!/usr/bin/env bash
+  export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
+  mkdir -p ./out || true
+  pipenv run start --process {{ args }} 
+
+ffprobe:
+  #!/usr/bin/env bash
+  set -eufo pipefail
+  ffprobe -v error -show_format -show_streams -print_format json "${MEDIA_URL}" | jq .       
