@@ -1,0 +1,34 @@
+set dotenv-load := true
+
+# default lists actions
+default:
+  @just -f justfile --list
+
+nix:
+  #!/usr/bin/env bash
+  set -xeufo pipefail
+  nix develop --command zsh
+
+init:
+  #!/usr/bin/env bash
+  set -xeufo pipefail
+  uv init .
+
+start *args:
+  #!/usr/bin/env bash
+  set -eufo pipefail
+  uv run ./main.py \{\{ args \}\}
+
+test: 
+  #!/usr/bin/env bash
+  set -eufo pipefail
+  uv run pytest
+
+lint:  
+  #!/usr/bin/env bash
+  set -eufo pipefail
+  uv run flake8
+
+format:
+  #!/usr/bin/env bash
+  uv run black --line-length=120 .
