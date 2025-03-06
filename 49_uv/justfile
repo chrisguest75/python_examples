@@ -32,3 +32,27 @@ lint:
 format:
   #!/usr/bin/env bash
   uv run black --line-length=120 .
+
+build_image distro:
+  docker buildx build --progress=plain --no-cache --load -f Dockerfile.{{ distro }} -t 49_uv_{{ distro }}:latest .
+
+start_image distro: (build_image distro)
+  docker run 49_uv_{{ distro }}:latest
+
+dive distro: (build_image distro)
+  dive 49_uv_{{ distro }}:latest
+
+details distro: (build_image distro)
+  @echo "******************************"
+  @echo "** Labels"
+  @echo "******************************"
+  docker inspect -f '{{{{ .Config.Labels }}}}' 49_uv_{{ distro }}:latest
+  @echo "******************************"
+  @echo "** Dive CI"
+  @echo "******************************"
+  dive 49_uv_{{ distro }}:latest --ci || true
+  @echo "******************************"
+  @echo "** Size"
+  @echo "******************************"
+  container-diff analyze --json daemon://49_uv_{{ distro }}:latest | jq .
+
