@@ -30,24 +30,17 @@ If using `vscode` remember to set your interpreter location to `.venv/bin/python
 ## Start
 
 ```sh
-export PIPENV_VENV_IN_PROJECT=1
-# install
-pipenv install --dev
+just nix
 
-# lint and test code
-pipenv run format
-pipenv run lint
-pipenv run test
+just install 
 
-# enter venv
-pipenv shell
+just lint
 
-# create .env file
-cp .env.template .env
+just format
 
-# run with arguments
-pipenv run start --test
-pipenv run start:test
+just test
+
+just start --test
 ```
 
 ## Auditing
