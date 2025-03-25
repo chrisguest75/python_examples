@@ -32,3 +32,4 @@ lint:
 format:
   #!/usr/bin/env bash
   uv run black --line-length=120 .
+
