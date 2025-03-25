@@ -1,0 +1,74 @@
+set dotenv-load := true
+
+export DEFAULT_APPLICATION:="uv"
+
+# default lists actions
+default:
+  @just -f justfile --list
+
+nix:
+  #!/usr/bin/env bash
+  set -xeufo pipefail
+  nix develop --command zsh
+
+init:
+  #!/usr/bin/env bash
+  set -xeufo pipefail
+  uv init .
+
+start *args:
+  #!/usr/bin/env bash
+  set -eufo pipefail
+  uv run ./main.py {{ args }}
+
+test: 
+  #!/usr/bin/env bash
+  set -eufo pipefail
+  uv run pytest
+
+lint:  
+  #!/usr/bin/env bash
+  set -eufo pipefail
+  uv run flake8
+
+format:
+  #!/usr/bin/env bash
+  uv run black --line-length=120 .
+
+# build docker image 
+docker-build application="$DEFAULT_APPLICATION": 
+  #!/usr/bin/env bash
+  set -xeufo pipefail  
+  docker build --progress=plain -f Dockerfile.{{ application }} -t 49_uv_{{ application }}:latest .
+
+# get shell in docker container
+docker-shell application="$DEFAULT_APPLICATION": (docker-build application)
+  #!/usr/bin/env bash
+  set -xeufo pipefail  
+  docker run -it --entrypoint bash 49_uv_{{ application }}:latest
+
+# run docker image
+docker-run application="$DEFAULT_APPLICATION": (docker-build application)
+  #!/usr/bin/env bash
+  set -xeufo pipefail  
+  docker run -it -p 5900:5900 49_uv_{{ application }}:latest
+
+docker-dive application: (docker-build application)
+  #!/usr/bin/env bash
+  set -xeufo pipefail  
+  dive 49_uv_{{ application }}:latest
+
+docker-details application: (docker-build application)
+  @echo "******************************"
+  @echo "** Labels"
+  @echo "******************************"
+  docker inspect -f '{{{{ .Config.Labels }}}}' 49_uv_{{ application }}:latest
+  @echo "******************************"
+  @echo "** Dive CI"
+  @echo "******************************"
+  dive 49_uv_{{ application }}:latest --ci || true
+  @echo "******************************"
+  @echo "** Size"
+  @echo "******************************"
+  container-diff analyze --json daemon://49_uv_{{ application }}:latest | jq .
+
