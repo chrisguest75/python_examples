@@ -41,40 +41,41 @@ def details() -> str:
     """return details about python version and platform as a dict"""
 
     platform_details = {
-        "python_version": sys.version,
-        "platform": sys.platform,
-        "platform_details": platform.platform(),
-        "dist": str(dist()),
-        "linux_distribution": linux_distribution(),
-        "system": platform.system(),
-        "machine": platform.machine(),
-        "uname": platform.uname(),
-        "version": platform.version(),
-        "mac_ver": platform.mac_ver(),
+        "platform": {
+            "python_version": sys.version,
+            "platform": sys.platform,
+            "platform_details": platform.platform(),
+            "dist": str(dist()),
+            "linux_distribution": linux_distribution(),
+            "system": platform.system(),
+            "machine": platform.machine(),
+            "uname": platform.uname(),
+            "version": platform.version(),
+            "mac_ver": platform.mac_ver(),
+        }
     }
+    platform_details["cpu"] = {}
     for key, value in get_cpu_info().items():
-        platform_details[key] = value
+        platform_details["cpu"][key] = value
 
+    platform_details["packages"] = {}
     installed_packages = [(dist.metadata["Name"], dist.version) for dist in distributions()]
     for package in installed_packages:
-        platform_details[package[0]] = package[1]
+        platform_details["packages"][package[0]] = package[1]
 
-    deviceCount = 0
+    platform_details["gpu"] = {}
+    platform_details["gpu"]["device_count"] = 0
     try:      
         nvmlInit()
-        platform_details["GPU Driver Version"] = nvmlSystemGetDriverVersion()
+        platform_details["gpu"]["driver_version"] = nvmlSystemGetDriverVersion()
         deviceCount = nvmlDeviceGetCount()
-        platform_details["GPU Device Count"] = deviceCount
+        platform_details["gpu"]["device_count"] = deviceCount
 
         for i in range(deviceCount):
-            platform_details["GPU"] = True
             handle = nvmlDeviceGetHandleByIndex(i)
-            platform_details[f"GPU Device {i}"] = nvmlDeviceGetName(handle)
+            platform_details["gpu"][f"device_{i}"] = nvmlDeviceGetName(handle)
     except Exception as e:
         logging.error(f"Error getting GPU details: {e}")
-    finally:
-        if deviceCount == 0:
-            platform_details["GPU"] = False
 
     return platform_details
 
@@ -92,8 +93,9 @@ def test() -> int:
     logger.info(f"details={details()}")
 
     platform_details = details()
-    for key in platform_details.keys():
-        logger.info(f"{key}: {platform_details[key]}")
+    for group in platform_details.keys():
+        for key in platform_details[group].keys():
+            logger.info({ "message": "environment diagnostic", f"{group}.{key}": platform_details[group][key] })
 
     return 0
 
