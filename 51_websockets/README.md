@@ -2,6 +2,11 @@
 
 Demonstrate `websockets` by using AV to decode an MP3 as PCM and send it over a websocket for saving in a WAV file.  
 
+TODO:
+
+* producer consumer example
+* wrapping binary data in a structure
+
 ## Contents
 
 - [WEBSOCKETS](#websockets)
@@ -50,6 +55,7 @@ uv add --dev flake8-2020
 
 ## Resources
 
+* https://websockets.readthedocs.io/en/stable/intro/index.html
 * An extremely fast Python package and project manager, written in Rust. [here](https://docs.astral.sh/uv/)
 * https://github.com/astral-sh/uv
 * https://www.datacamp.com/tutorial/python-uv
