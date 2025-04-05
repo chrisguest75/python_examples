@@ -6,6 +6,7 @@ TODO:
 
 * producer consumer example
 * wrapping binary data in a structure
+* aysncio queue
 
 ## Contents
 
