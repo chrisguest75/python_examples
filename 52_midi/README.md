@@ -7,15 +7,21 @@ TODO:
 * Generate midi events onto channel
 * Save a midi file
 * Create a simple arpeggio
+* Print out virtual channels
 
 ## Contents
 
 - [MIDI](#midi)
   - [Contents](#contents)
+  - [Dependencies](#dependencies)
   - [Install](#install)
   - [Start](#start)
   - [Created](#created)
   - [Resources](#resources)
+
+## Dependencies
+
+* tmuxinator
 
 ## Install
 

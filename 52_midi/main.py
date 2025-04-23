@@ -10,6 +10,9 @@ import platform
 from importlib.metadata import distributions
 import time
 import rtmidi
+from rtmidi.midiutil import open_midioutput
+from rtmidi.midiconstants import NOTE_OFF, NOTE_ON
+from rtmidi.midiutil import open_midiinput
 
 def log_uncaught_exceptions(exc_type, exc_value, exc_traceback):
     """catches unhandled exceptions and logs them"""
@@ -58,24 +61,68 @@ def test() -> int:
         logger.info(f"{key}: {platform_details[key]}")
 
 
-    midiout = rtmidi.MidiOut()
+def producer() -> int:
+    logger = logging.getLogger()
+    try:
+        midiout, port_name = open_midioutput(0)
+    except (EOFError, KeyboardInterrupt, rtmidi.NoDevicesError):
+        logger.error("Error opening MIDI output port")
+    finally:
+        midiout = rtmidi.MidiOut() 
+        midiout.open_virtual_port("My virtual output")
+        logger.info("Opened virtual MIDI output port")
+
     available_ports = midiout.get_ports()
     logger.info(f"Available MIDI ports: {available_ports}")
 
-    if available_ports:
-        midiout.open_port(0)
-    else:
-        midiout.open_virtual_port("My virtual output")
-
     with midiout:
-        note_on = [0x90, 60, 112] # channel 1, middle C, velocity 112
-        note_off = [0x80, 60, 0]
-        midiout.send_message(note_on)
-        time.sleep(0.5)
-        midiout.send_message(note_off)
-        time.sleep(0.1)
+        while True:
+            note_on = [NOTE_ON, 60, 112]  # channel 1, middle C, velocity 112
+            note_off = [NOTE_OFF, 60, 0]
+            midiout.send_message(note_on)
+            time.sleep(0.5)
+            midiout.send_message(note_off)
+            time.sleep(0.1)
+            time.sleep(1.0)
+            logger.info(f"Note sent")  # Sleep for a bit before sending the next note
 
     del midiout
+
+    return 0
+
+def consumer() -> int:
+    logger = logging.getLogger()
+    midiin = rtmidi.MidiIn()
+    available_ports = midiin.get_ports()
+    logger.info(f"Available MIDI ports: {available_ports}")
+
+    try:
+        midiin, port_name = open_midiinput(0)
+    except (EOFError, KeyboardInterrupt, rtmidi.NoDevicesError):
+        logger.error("Error opening MIDI output port")
+    finally:
+        midiin = rtmidi.MidiIn() 
+        midiin.open_virtual_port("My virtual output")
+        logger.info("Opened virtual MIDI output port")
+
+    logger.info("Entering main loop. Press Control-C to exit.")
+    try:
+        timer = time.time()
+        while True:
+            msg = midiin.get_message()
+
+            if msg:
+                message, deltatime = msg
+                timer += deltatime
+                logger.info("[%s] @%0.6f %r" % (port_name, timer, message))
+
+            time.sleep(0.01)
+    except KeyboardInterrupt:
+        logger.info('')
+    finally:
+        logger.info("Exit.")
+        midiin.close_port()
+        del midiin
 
     return 0
 
@@ -96,12 +143,18 @@ def main() -> int:
     sys.excepthook = log_uncaught_exceptions
 
     parser = argparse.ArgumentParser(description="CLI Skeleton")
-    parser.add_argument("--test", dest="test", action="store_true")
+    parser.add_argument("--producer", dest="producer", action="store_true")
+    parser.add_argument("--consumer", dest="consumer", action="store_true")
     args = parser.parse_args()
 
     success = 0
-    if args.test:
-        success = test()
+    
+    test()
+
+    if args.producer:
+        success = producer()
+    elif args.consumer:
+        success = consumer()
     else:
         parser.print_help()
 

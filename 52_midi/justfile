@@ -11,6 +11,10 @@ nix:
   set -xeufo pipefail
   nix develop --command zsh
 
+terminal:
+  #!/usr/bin/env bash
+  tmuxinator start -p ./terminal.yaml
+
 init:
   #!/usr/bin/env bash
   set -xeufo pipefail
