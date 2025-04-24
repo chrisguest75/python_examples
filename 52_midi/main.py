@@ -61,16 +61,18 @@ def test() -> int:
         logger.info(f"{key}: {platform_details[key]}")
 
 
-def producer() -> int:
+def producer(port_name: str) -> int:
     logger = logging.getLogger()
+    midiout = None
     try:
         midiout, port_name = open_midioutput(0)
     except (EOFError, KeyboardInterrupt, rtmidi.NoDevicesError):
         logger.error("Error opening MIDI output port")
-    finally:
+
+    if midiout is None:
         midiout = rtmidi.MidiOut() 
-        midiout.open_virtual_port("My virtual output")
-        logger.info("Opened virtual MIDI output port")
+        midiout.open_virtual_port(port_name)
+        logger.info(f"Opened virtual MIDI output port '{port_name}'")
 
     available_ports = midiout.get_ports()
     logger.info(f"Available MIDI ports: {available_ports}")
@@ -84,26 +86,27 @@ def producer() -> int:
             midiout.send_message(note_off)
             time.sleep(0.1)
             time.sleep(1.0)
-            logger.info(f"Note sent")  # Sleep for a bit before sending the next note
+            logger.info(f"Note sent {note_on}")  # Sleep for a bit before sending the next note
 
     del midiout
 
     return 0
 
-def consumer() -> int:
+def consumer(port_name: str) -> int:
     logger = logging.getLogger()
-    midiin = rtmidi.MidiIn()
-    available_ports = midiin.get_ports()
-    logger.info(f"Available MIDI ports: {available_ports}")
+    midiin = None
 
     try:
         midiin, port_name = open_midiinput(0)
     except (EOFError, KeyboardInterrupt, rtmidi.NoDevicesError):
         logger.error("Error opening MIDI output port")
-    finally:
+
+    if midiin is None:
         midiin = rtmidi.MidiIn() 
-        midiin.open_virtual_port("My virtual output")
-        logger.info("Opened virtual MIDI output port")
+        available_ports = midiin.get_ports()
+        logger.info(f"Available MIDI ports: {available_ports}")
+        midiin.open_virtual_port(port_name)
+        logger.info(f"Opened virtual MIDI output port {port_name}")
 
     logger.info("Entering main loop. Press Control-C to exit.")
     try:
@@ -151,10 +154,11 @@ def main() -> int:
     
     test()
 
+    port_name = "mymidi"
     if args.producer:
-        success = producer()
+        success = producer(port_name)
     elif args.consumer:
-        success = consumer()
+        success = consumer(port_name)
     else:
         parser.print_help()
 
