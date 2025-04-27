@@ -4,7 +4,7 @@ Generate midi events.
 
 TODO:
 
-* Save a midi file
+* Save a midi file https://dev.to/dm8ry/automating-midi-generation-with-python-a-comprehensive-guide-ckb
 * Create a simple arpeggio
 
 ## Contents
