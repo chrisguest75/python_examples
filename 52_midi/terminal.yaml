@@ -1,0 +1,10 @@
+name: Terminal
+root: .
+
+windows:
+  - main:
+      layout: even-vertical
+      panes:
+        - command2: echo "** PRODUCER **" && just start --producer
+        - command1: echo "** CONSUMER **" && just start --consumer
+

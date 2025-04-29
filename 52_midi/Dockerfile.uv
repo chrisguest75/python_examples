@@ -1,0 +1,63 @@
+# Use a Python image with uv pre-installed
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS build-env
+
+# Install the project into `/app`
+WORKDIR /scratch
+
+# Enable bytecode compilation
+ENV UV_COMPILE_BYTECODE=1
+
+# Copy from the cache instead of linking since it's a mounted volume
+ENV UV_LINK_MODE=copy
+
+COPY ./pyproject.toml ./uv.* /scratch/
+
+# Install the project's dependencies using the lockfile and settings
+# RUN --mount=type=cache,target=/root/.cache/uv \
+#     --mount=type=bind,source=uv.lock,target=uv.lock \
+#     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+RUN uv sync --frozen --no-install-project --no-dev
+
+# Then, add the rest of the project source code and install it
+# Installing separately from its dependencies allows optimal layer caching
+#RUN --mount=type=cache,target=/root/.cache/uv \
+RUN uv sync --frozen --no-dev
+
+# **************************
+# * Final stage
+# **************************
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS final
+
+RUN apt-get update \
+    && apt-get install -fy -qq --no-install-recommends ca-certificates \
+    && apt-get clean 
+
+WORKDIR /scratch
+
+ARG USERID=1000
+ARG GROUPID=1000
+RUN addgroup --system --gid $GROUPID appuser
+RUN adduser --system --uid $USERID --gid $GROUPID appuser
+
+COPY --chmod=755 <<EOF /scratch/.env
+export TEST_CONFIG="This is a test value from .env"
+export PATH="/scratch/.venv/bin:$PATH"
+export LANG=C.UTF-8
+export PYTHONDONTWRITEBYTECODE=1
+export PYTHONUNBUFFERED=1
+EOF
+
+COPY --from=build-env /scratch/.venv /scratch/.venv
+COPY ./tests /scratch/tests
+COPY ./main.py ./logging_config.yaml /scratch/
+
+COPY --chmod=755 <<EOF /scratch/start.sh
+#!/usr/bin/env bash
+. ./.env
+env
+python main.py --test
+EOF
+
+USER appuser
+CMD ["./start.sh"]
+
