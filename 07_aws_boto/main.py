@@ -30,11 +30,10 @@ def upload(local_path: str, bucket_name: str, s3_key: str):
     logger = logging.getLogger()
 
     # Replace the following with your own values
-    profile_name = os.environ['AWS_PROFILE']
     file_path = local_path
 
     # Create a session with the specified profile
-    session = Session(profile_name=profile_name)
+    session = Session()
 
     # Create an S3 client using the session
     s3 = session.client('s3')
@@ -50,11 +49,11 @@ def download(bucket_name: str, s3_key: str, local_path: str):
     logger = logging.getLogger()
 
     # Replace the following with your own values
-    profile_name = os.environ['AWS_PROFILE']
+    #profile_name = os.environ['AWS_PROFILE']
     file_path = local_path
 
     # Create a session with the specified profile
-    session = Session(profile_name=profile_name)
+    session = Session()
 
     # Create an S3 client using the session
     s3 = session.client('s3')
@@ -69,11 +68,8 @@ def download(bucket_name: str, s3_key: str, local_path: str):
 def signedupload(bucket_name: str, s3_key: str):
     logger = logging.getLogger()
 
-    # Replace the following with your own values
-    profile_name = os.environ['AWS_PROFILE']
-
     # Create a session with the specified profile
-    session = Session(profile_name=profile_name)
+    session = Session()
 
     # Create an S3 client using the session
     s3 = session.client('s3')
@@ -94,11 +90,8 @@ def signedupload(bucket_name: str, s3_key: str):
 def delete(bucket_name: str, s3_key: str):
     logger = logging.getLogger()
 
-    # Replace the following with your own values
-    profile_name = os.environ['AWS_PROFILE']
-
     # Create a session with the specified profile
-    session = Session(profile_name=profile_name)
+    session = Session()
 
     # Create an S3 resource using the session
     s3 = session.resource('s3')
@@ -134,6 +127,11 @@ def main():
     parser.add_argument("--bucket", dest="bucket", type=str)
     parser.add_argument("--prefix", dest="prefix", type=str)
     args = parser.parse_args()
+
+    if 'AWS_PROFILE' not in os.environ:
+        logger.warning("AWS_PROFILE environment variable is not set.")
+    else:
+        logger.info(f"AWS_PROFILE: {os.environ['AWS_PROFILE']}")
 
     if args.upload:
         logger.info(f"Upload {args.file} -> s3://{args.bucket}/{args.prefix}")

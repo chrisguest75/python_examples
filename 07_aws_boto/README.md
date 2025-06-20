@@ -33,8 +33,10 @@ pipenv shell
 # file with random data
 dd if=/dev/urandom of=random.bin bs=1024 count=1024
 
-# upload files
+# set AWS_PROFILE or default will be used.
 export AWS_PROFILE=myprofile
+
+# upload files
 BUCKET_NAME=mybucket
 pipenv run start --upload --file ./random.bin --bucket ${BUCKET_NAME} --prefix random.bin            
 pipenv run start --upload --file ./README.md --bucket ${BUCKET_NAME} --prefix README.md 
