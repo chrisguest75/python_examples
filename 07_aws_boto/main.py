@@ -46,6 +46,26 @@ def upload(local_path: str, bucket_name: str, s3_key: str):
     print(f"File '{file_path}' successfully uploaded to S3 bucket '{bucket_name}' as '{s3_key}'.")
 
 
+def download(bucket_name: str, s3_key: str, local_path: str):
+    logger = logging.getLogger()
+
+    # Replace the following with your own values
+    profile_name = os.environ['AWS_PROFILE']
+    file_path = local_path
+
+    # Create a session with the specified profile
+    session = Session(profile_name=profile_name)
+
+    # Create an S3 client using the session
+    s3 = session.client('s3')
+
+    # Download the file from S3
+    with open(file_path, 'wb') as file:
+        s3.download_fileobj(bucket_name, s3_key, file)
+
+    print(f"File 's3://{bucket_name}/{s3_key}' successfully downloaded to '{file_path}'.")
+
+
 def signedupload(bucket_name: str, s3_key: str):
     logger = logging.getLogger()
 
@@ -107,6 +127,7 @@ def main():
 
     parser = argparse.ArgumentParser(description="AWS BOTO")
     parser.add_argument("--upload", dest="upload", action="store_true")
+    parser.add_argument("--download", dest="download", action="store_true")
     parser.add_argument("--delete", dest="delete", action="store_true")
     parser.add_argument("--signed", dest="signed", action="store_true")
     parser.add_argument("--file", dest="file", type=str)
@@ -121,6 +142,9 @@ def main():
             signedupload(args.bucket, args.prefix)
         else:
             upload(args.file, args.bucket, args.prefix)
+    if args.download:
+        logger.info(f"Download s3://{args.bucket}/{args.prefix} -> {args.file}")
+        download(args.bucket, args.prefix, args.file)
     elif args.delete:
         logger.info(f"Delete s3://{args.bucket}/{args.prefix}")
         delete(args.bucket, args.prefix)

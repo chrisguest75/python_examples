@@ -17,6 +17,10 @@ Weirdly signed PUT urls cannot be generated with the AWS cli.  So there's a very
 # install
 pyenv install
 
+export PIPENV_VENV_IN_PROJECT=1
+# install
+pipenv install --dev
+
 pipenv run lint
 pipenv run test
 
@@ -30,9 +34,14 @@ pipenv shell
 dd if=/dev/urandom of=random.bin bs=1024 count=1024
 
 # upload files
+export AWS_PROFILE=myprofile
 BUCKET_NAME=mybucket
 pipenv run start --upload --file ./random.bin --bucket ${BUCKET_NAME} --prefix random.bin            
 pipenv run start --upload --file ./README.md --bucket ${BUCKET_NAME} --prefix README.md 
+
+# download files
+export BUCKET_NAME=mybucket
+pipenv run start --download --bucket ${BUCKET_NAME} --prefix myfile.m4a --file ./myfile.m4a      
 
 # delete files
 pipenv run start --delete --bucket ${BUCKET_NAME} --prefix README.md
