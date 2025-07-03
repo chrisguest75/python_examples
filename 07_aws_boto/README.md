@@ -5,6 +5,10 @@ Demonstrate a simple aws client for testing.
 TODO:
 
 * transparent and tls proxy https://earthly.dev/blog/mitmproxy/3* use wireshark to drop connections and throttle.
+* test mitm proxy with boto
+* add some tests to mock boto.
+* https://www.twoistoomany.com/exploring-boto3-events-with-mitmproxy/ 
+* https://github.com/micktwomey/exploring-boto3-events-with-mitmproxy 
 
 ## Reason
 
@@ -121,4 +125,5 @@ pipenv install pyyaml python-json-logger
 ## 👀 Resources
 
 * Boto3 documentation [here](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html)  
-
+* https://www.twoistoomany.com/exploring-boto3-events-with-mitmproxy/ 
+* https://github.com/micktwomey/exploring-boto3-events-with-mitmproxy 
