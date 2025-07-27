@@ -2,6 +2,10 @@
 
 The simplest way to write complex code with dependencies for scripting tools.  
 
+TODO:
+
+* Add structlog json output.
+
 ## Running
 
 ```sh
