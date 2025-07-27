@@ -2,6 +2,14 @@
 
 The simplest way to write complex code with dependencies for scripting tools.  
 
+## Running
+
+```sh
+./template.py
+# or 
+./example.py
+```
+
 ## Create a template
 
 ```sh
