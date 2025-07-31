@@ -15,6 +15,9 @@ NOTES:
 pip inspect
 
 pipenv graph
+
+# look inside the packages
+pipenv run pip show -f numpy
 ```
 
 ## Wheels
